@@ -88,7 +88,7 @@ print sas + syas;
 
 # SNIPPET 5 (array operations and loops)
 
-```
+```javascript
 var temp := [0, 0, 0]
 var new := []; // empty array declaration 
 var array := temp + new 
@@ -112,7 +112,7 @@ for i in array
 ```
 
 # SNIPPET 6 (types, literals and logical operators)
-```
+```javascript
 var this := 7;
 var that := 17.9;
 var those = "anything";
@@ -137,7 +137,7 @@ print("if " + a + " then not " + b + " but " + " if " + c + " then " + d);
 ```
 
 # SNIPPET 7 (arrays, tuples and loops)
-```
+```javascript
 var arr := ["cherry", "pie", "or", "cherry", "truffle"];
 
 for a in arr
@@ -158,7 +158,7 @@ print total;
 
 
 # SNIPPET 8
-```
+```javascript
 var x := 15; 
 var y := 36; 
 
@@ -177,7 +177,7 @@ print mult; //540
 ```
 
 # SNIPPET 9
-```
+```javascript
 var something := 1;
 something := func(x) is
    return x + 1;
@@ -186,7 +186,7 @@ print something(5); //6
 ```
 
 # SNIPPET 10
-```
+```javascript
 var x := 0;
 var y := -1;
 var z:= 4;
@@ -216,7 +216,7 @@ else
 end 
 ```
 # SNIPPET 11
-```
+```javascript
 var c;
 c := func (x, y, z) is 
   var count := 0;
@@ -234,7 +234,7 @@ c := func (x, y, z) is
 ```
 
 # SNIPPET 12: Logical operations
-```
+```javascript
 var positiveNumber := true;
 var evenNumber := true;
 if (positiveNumber and evenNumber) then
@@ -257,7 +257,7 @@ end
 ```
 
 # SNIPPET 13: Comparison Operations
-```
+```javascript
 var yearOfBirth := 1998;
 
 var adult := yearOfBirth <= 2002;
@@ -274,7 +274,7 @@ print isPi, isNotPi;        //false true
 ```
 
 # SNIPPET 14: Arithmetic operations & Dynamic Type conversion
-```
+```javascript
 var inumber1 := 10, inumber2 := 2, rnumber1 := 2.4, rnumber2 := 0.1;
 var result;
 
@@ -292,7 +292,7 @@ print result;		//4.16
 ```
 
 # SNIPPET 15: Tuples and Arrays
-```
+```javascript
 var carDescription := {brand := “KIA”, model := “Seltos”, year := 2019};
 carDescription := carDescription + {color := “red”};
 
@@ -313,7 +313,7 @@ print arrayRandom[8][1];     //Monday
 ```
 
 # SNIPPET 16: Functions and Loops (summation of the first N numbers)
-```
+```javascript
 var summation := func (N) is
 	var counter := 1, result := 0
 	while counter <= N loop
