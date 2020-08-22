@@ -72,7 +72,12 @@ end;
 ````
 # Snippet 5
 
-````javascript
+### Intentionally broken code
 
+````javascript
+var sas := empty;
+var syas := empty;
+
+print sas + syas;
 ````
 
