@@ -1,0 +1,28 @@
+var x := 0;
+var y := -1;
+var z:= 4;
+
+if x > y and x > z then
+    if y > z then
+        print z;
+    else
+        print y;
+    end
+else
+    if y > x and y > z then
+        if x > z then
+            print z;
+        else 
+            print x;
+        end
+    else 
+        if z > x and z > y then
+            if x > y then 
+                print y;
+            else 
+                print x;
+            end
+        end
+    end
+end 
+    
