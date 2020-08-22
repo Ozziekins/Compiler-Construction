@@ -34,8 +34,8 @@ end
 ## Third case ##
 ```
 var something := 1;
-something := increment(something) is
-   return something + 1;
+something := func(x) is
+   return x + 1;
 end
 print something;
 ```
@@ -72,7 +72,7 @@ end
 ## Fifth case ##
 ```
 var c;
-c := do_math(10, 5, 7) is 
+c := func (10, 5, 7) is 
   var count := 0;
     while x >= y loop
         if y > z then
