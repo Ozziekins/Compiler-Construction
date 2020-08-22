@@ -1,9 +1,0 @@
- func increment (x) is
-    return x + 1;
- end
- 
- {
- var something := 1;
- something := increment(something);
- print something;
- }
