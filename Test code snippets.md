@@ -71,7 +71,7 @@ var str := readString;
 
 //The same string should be printed in the end
 for char in str loop
-	print i; 
+	print char; 
 end;
 ````
 # Snippet 5
