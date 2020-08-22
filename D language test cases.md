@@ -43,15 +43,15 @@ for i in array
     end 
   
 // adding elements
-array[3] := 55.5;
-array[4] := 7*9;
-array[5] := "experience";
-array[6] := [5, 4];
+array[4] := 55.5;
+array[5] := 7*9;
+array[6] := "experience";
+array[7] := [5, 4];
   
 print ("Array after insertion : ") ;
-for i in 7
+for i in array
     loop
-        print (array[i]);
+        print i;
     end  
 ```
 
