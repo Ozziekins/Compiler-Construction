@@ -60,7 +60,7 @@ for i in array
 var this := 7;
 var that := 17.9;
 var those = "anything";
-var e := empty;
+var e;
 
 var r := is this;    //INTEGER
 var s := is that;      //REAL
