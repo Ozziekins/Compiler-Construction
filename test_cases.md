@@ -3,13 +3,15 @@
 var x := 15; 
 var y := 36; 
 
-print "The max var from x and y is "; // 36 
+
 
 if x > y then 
     print x; 
 else 
     print y; 
 end 
+
+print "The max var from x and y is "; // 36 
 
 var mult := x * y; 
 
@@ -18,11 +20,12 @@ print mult; //540
 ```
 ## Second case ##
 ```
-var array[20] := [];
+var array := [];
 var initial_value = -10;
-
-for i in array loop
+var k := 1;
+for i in 2..4 loop
     array[i] = initial_value + 1;
+    k := k + 1;
 end
 
 for i in array loop
@@ -47,23 +50,23 @@ var z:= 4;
 
 if x > y and x > z then
     if y > z then
-        print z;
+        print z; // z is minimum
     else
-        print y;
+        print y; // y is minimum
     end
 else
     if y > x and y > z then
         if x > z then
-            print z;
+            print z; // z is minimum
         else 
-            print x;
+            print x; // x is minimum
         end
     else 
         if z > x and z > y then
             if x > y then 
-                print y;
+                print y; // y is minimum
             else 
-                print x;
+                print x; // x is minimum
             end
         end
     end
@@ -72,7 +75,7 @@ end
 ## Fifth case ##
 ```
 var c;
-c := func (10, 5, 7) is 
+c := func (x, y, z) is 
   var count := 0;
     while x >= y loop
         if y > z then
@@ -84,5 +87,5 @@ c := func (10, 5, 7) is
     end
     return count;
  end
- print c;
+ print c(10, 5, 7);
 ```
