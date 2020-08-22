@@ -35,7 +35,7 @@ end
 ```
 var something := 1;
 something := increment(something) is
-   return x + 1;
+   return something + 1;
 end
 print something;
 ```
