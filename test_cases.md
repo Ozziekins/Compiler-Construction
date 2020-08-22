@@ -3,8 +3,6 @@
 var x := 15; 
 var y := 36; 
 
-
-
 if x > y then 
     print x; 
 else 
