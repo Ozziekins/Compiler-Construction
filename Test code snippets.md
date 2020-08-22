@@ -10,11 +10,11 @@ var factorial := func(n) is
     	return 1;
     else
         return n * factorial(n - 1);
-    end 
-end
+    end;
+end;
 var lambdafunc(x) => x/1.4;
 
-print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17"
+print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17";
 ````
 
 # Snippet 2
@@ -25,17 +25,17 @@ print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17"
 var uninitialized;
 if ( uninitialized is not empty ) then
 	print "Well, this is wrong.... \n It should be empty";
-	end
+	end;
     
 uninitialized := true;
 if ( uninitialized is not bool ) then
 	print "Well, this is wrong as well.... \n It should be bool";
-	end
+	end;
 
 uninitialized := "Everything is good?"
 if ( uninitialized is string ) then
 	print uninitialized;
-	end
+	end;
 ````
 
 # Snippet 3
@@ -46,25 +46,33 @@ if ( uninitialized is string ) then
 
 ````javascript
 var testArray := [1];
-var weirdStruct := {testArray}
+var weirdStruct := {testArray};
 
 var test = [1];
-weirdStruct += test // Now it should be like this { Array, Array size } 
+weirdStruct += test ;// Now it should be like this { Array, Array size }
 
 for (5-4) .. 10/2 loop // Go from 1 to 5, hotya hz chto vklyucheno: [1,5] or [1,5)
      test.1 += test.1;
-     test.2 += 1
-
-print "Array is" test.1, "While size is ", test.2 // Allow printing of arrays???
+     test.2 += 1;
+end; 
+     
+print "Array is" test.1, "While size is ", test.2; // Allow printing of arrays???
 ````
 # Snippet 4
 
+### Checking the input capabilities and "in" loop operator
+
 ````javascript
-func
+var str := readString;
+
+//The same string should be printed in the end
+for char in str loop
+	print i; 
+end;
 ````
 # Snippet 5
 
 ````javascript
-func
+
 ````
 
