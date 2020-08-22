@@ -80,7 +80,7 @@ print arrayRandom[8][1];     //Monday
 ##### Test 5: Functions and Loops (summation of the first N numbers)
 ```
 var summation := func (N) is
-	var counter := 1, result := 0;
+	var counter := 1, result := 0
 	while counter <= N loop
 		result := result + counter
 		counter := counter + 1
