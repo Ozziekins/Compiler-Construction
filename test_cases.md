@@ -21,7 +21,7 @@ print mult; //540
 ## Second case ##
 ```
 var array := [];
-var initial_value = -10;
+var initial_value := -10;
 var k := 1;
 for i in 2..4 loop
     array[i] = initial_value + 1;
@@ -40,7 +40,7 @@ var something := 1;
 something := func(x) is
    return x + 1;
 end
-print something;
+print something(5); //6
 ```
 ## Fourth case ##
 ```
