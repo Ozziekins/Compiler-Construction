@@ -1,0 +1,38 @@
+D language test cases
+----------------------
+
+First (to test operators)
+func (id)
+	is
+		id := 0;
+		while id < 5
+			loop
+				print id;
+				id := id + 1;
+				print id;
+			end
+	end
+
+
+Second (to test if else)
+if (7 < 0) and (0 < -7) then
+    {
+    	print("abhi")
+    }
+else
+	(7 > 0) or false
+	{
+		print("love")
+	}
+else
+	{
+    	print("geeksforgeeks") 
+	}
+end
+
+Third
+
+
+Fourth
+
+Fifth
