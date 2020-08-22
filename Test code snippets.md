@@ -23,17 +23,17 @@ print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17";
 
 ````javascript
 var uninitialized;
-if ( uninitialized is not empty ) then
+if (not ( is uninitialized = empty ) ) then
 	print "Well, this is wrong.... \n It should be empty";
 	end;
     
 uninitialized := true;
-if ( uninitialized is not bool ) then
+if ( is uninitialized /= bool ) then
 	print "Well, this is wrong as well.... \n It should be bool";
 	end;
 
 uninitialized := "Everything is good?"
-if ( uninitialized is string ) then
+if ( is uninitialized = string ) then
 	print uninitialized;
 	end;
 ````
