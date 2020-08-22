@@ -3,16 +3,15 @@
 ### First (arithmetic and loops)
 ```
 var thing := func (t) is
-    print temp;
+    print t;
     var id := 0;
     while id < 5
         loop
             print id;
             id := id + 1;
-            temp := temp + id;
             print id;
         end
-    t := temp;
+    t := t + id;
     print t;
 end
 
@@ -38,9 +37,9 @@ var temp := [0, 0, 0]
 var new := []; // empty array declaration 
 var array := temp + new 
 print ("Array before insertion : ");
-for i in 3
+for i in array
     loop
-        print (array[i]);
+        print i;
     end 
   
 // adding elements
