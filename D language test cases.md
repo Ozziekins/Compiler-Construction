@@ -62,20 +62,20 @@ var that := 17.9;
 var those = "anything";
 var e := empty;
 
-var t := is this INTEGER;    //true
-var f := is that empty;      //false
-var t_2 := is those STRING;  //true
-var f_2 := is e REAL;        //false
+var r := is this;    //INTEGER
+var s := is that;      //REAL
+var t := is those;  //STRING
+var u := is e;        //empty
 
+print r;
+print s;
 print t;
-print f;
-print t_2;
-print f_2;
+print u;
 
-var a := t and t_2;
-var b := not t;
-var c := f xor f_2;
-var d := t or t_2;
+var a := true and true;
+var b := not true;
+var c := false xor false;
+var d := true or true;
 
 print("if " + a + " then not " + b + " but " + " if " + c + " then " + d);
 ```
@@ -90,11 +90,12 @@ for a in arr
     end
     
 var range := [5000.07, 204, 555.90, 78];
-var t := {one:=1, two:=2, three:=3, four:=4, five:=5};
-for n in t.three
-    var total := 0;
+var t := {one:=1, two:=2, three:=3, four:=4};
+var total := 0;
+
+for n in t
     loop
         total := total + range[n];
     end
-    print total;
+print total;
 ```
