@@ -2,18 +2,21 @@
 
 ### First (arithmetic and loops)
 ```
-func (temp) is
+var thing := func (t) is
     print temp;
     var id := 0;
     while id < 5
         loop
             print id;
-            +id;
+            id := id + 1;
             temp := temp + id;
             print id;
         end
-    print temp;
+    t := temp;
+    print t;
 end
+
+print thing(2); //6
 ```
 
 ### Second (if then else)
