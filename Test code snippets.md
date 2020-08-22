@@ -12,7 +12,7 @@ var factorial := func(n) is
         return n * factorial(n - 1);
     end;
 end;
-var lambdafunc(x) => x/1.4;
+var lambdafunc := func(x)=> x/1.4;
 
 print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17";
 ````
