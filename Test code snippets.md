@@ -2,7 +2,7 @@
 
 # SNIPPET 1
 
-### Recursive function call test + lambda function test of rounding down
+### Recursive function call test + lambda function 
 
 ````javascript
 var factorial := func(n) is 
@@ -14,7 +14,7 @@ var factorial := func(n) is
 end;
 var lambdafunc := func(x)=> x/1.4;
 
-print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17";
+print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17,142";
 ````
 
 # Snippet 2
