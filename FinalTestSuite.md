@@ -1,25 +1,58 @@
+# Types, Literals and Logical operators
 
+## SNIPPET 1
+```javascript
+var positiveNumber := true;
+var evenNumber := true;
+if (positiveNumber and evenNumber) then
+	print “number is even and positive”;
+end
 
-# SNIPPET 1
+if (positiveNumber or evenNumber) then
+	print “number is even or positive or both even and positive”;
+end
 
-### Recursive function call test + lambda function 
+if (positiveNumber xor evenNumber) then
+	print “number is even or positive”;
+end
 
-````javascript
-var factorial := func(n) is 
-    if n = 0 then// Brackets are omitted intentionally
-    	return 1;
-    else
-        return n * factorial(n - 1);
-    end;
-end;
-var lambdafunc := func(x)=> x/1.4;
+if (not positiveNumber) then
+	print “number is negative”;
+else 
+	print “number is positive”;
+end
+```
+## SNIPPET 2
+```javascript
+var this := 7;
+var that := 17.9;
+var those = "anything";
+var e;
 
-print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17,142";
-````
+var r := is this;    //INTEGER
+var s := is that;      //REAL
+var t := is those;  //STRING
+var u := is e;        //empty
 
-# Snippet 2
+var sas := empty;
+var syas := empty;
 
-### Using the empty keyword + testing dynamic types
+print sas + syas;	//ERROR
+
+print r;
+print s;
+print t;
+print u;
+
+var a := true and true;
+var b := not true;
+var c := false xor false;
+var d := true or true;
+
+print("if " + a + " then not " + b + " but " + " if " + c + " then " + d);
+```
+
+## SNIPPET 3: Using the empty keyword + testing dynamic types
 
 ````javascript
 var uninitialized;
@@ -42,150 +75,8 @@ if ( is uninitialized = string ) then
 end;
 ````
 
-# Snippet 3
 
-### Testing the ".." loop thing and unnamed array concatenation inside of tuples
-
-#### *<u>**IN THIS LANGUAGE EVERYTHING STARTS FROM 1 !!!???**</u>*
-
-````javascript
-var testArray := [1];
-var weirdStruct := {testArray};
-
-var test = 1;
-weirdStruct = weirdStruct + {test} ;// Now it should be like this { Array, Array size }
-
-for i in (5-4) .. 10/2 loop // Go from 1 to 5, hotya hz chto vklyucheno: [1,5] or [1,5)
-     test.1 = test.1 + test.1;
-     test.2 = test.2 + 1;
-end; 
-     
-print "Array is" test.1, "While size is ", test.2; // Allow printing of arrays???
-````
-
-# Snippet 4
-
-### Checking the input capabilities and "in" loop operator
-
-````javascript
-var str := readString;
-
-//The same string should be printed in the end
-for char in str loop
-	print char; 
-end;
-````
-
-
-### combine somewhere
-
-````javascript
-var sas := empty;
-var syas := empty;
-
-print sas + syas;
-````
-
-# SNIPPET 5 (array operations and loops)
-
-```javascript
-var temp := [0, 0, 0]
-var new := []; // empty array declaration 
-var array := temp + new 
-print ("Array before insertion : ");
-for i in array
-    loop
-        print i;
-    end 
-  
-// adding elements
-array[4] := 55.5;
-array[5] := 7*9;
-array[6] := "experience";
-array[7] := [5, 4];
-  
-print ("Array after insertion : ") ;
-for i in array
-    loop
-        print i;
-    end  
-```
-
-# SNIPPET 6 (types, literals and logical operators)
-```javascript
-var this := 7;
-var that := 17.9;
-var those = "anything";
-var e;
-
-var r := is this;    //INTEGER
-var s := is that;      //REAL
-var t := is those;  //STRING
-var u := is e;        //empty
-
-print r;
-print s;
-print t;
-print u;
-
-var a := true and true;
-var b := not true;
-var c := false xor false;
-var d := true or true;
-
-print("if " + a + " then not " + b + " but " + " if " + c + " then " + d);
-```
-
-# SNIPPET 7 (arrays, tuples and loops)
-```javascript
-var arr := ["cherry", "pie", "or", "cherry", "truffle"];
-
-for a in arr
-    loop
-        print a;
-    end
-    
-var range := [5000.07, 204, 555.90, 78];
-var t := {one:=1, two:=2, three:=3, four:=4};
-var total := 0;
-
-for n in t
-    loop
-        total := total + range[n];
-    end
-print total;
-```
-
-
-# SNIPPET 8
-```javascript
-var x := 15; 
-var y := 36; 
-
-if x > y then 
-    print x; 
-else 
-    print y; 
-end 
-
-print "The max var from x and y is "; // 36 
-
-var mult := x * y; 
-
-print "x * y = "; 
-print mult; //540
-```
-
-# SNIPPET 9
-```javascript
-var something := 1;
-something := func(x) is
-   return x + 1;
-end
-print something(5); //6
-```
-
-# SNIPPET 10
+## SNIPPET 4: Comparison Operations
 ```javascript
 var x := 0;
 var y := -1;
@@ -215,48 +106,8 @@ else
     end
 end 
 ```
-# SNIPPET 11
-```javascript
-var c;
-c := func (x, y, z) is 
-  var count := 0;
-    while x >= y loop
-        if y > z then
-            y := y + 1;
-        else
-            z := z - 1;
-        end
-    count := count + 1;
-    end
-    return count;
- end
- print c(10, 5, 7);
-```
 
-# SNIPPET 12: Logical operations
-```javascript
-var positiveNumber := true;
-var evenNumber := true;
-if (positiveNumber and evenNumber) then
-	print “number is even and positive”;
-end
-
-if (positiveNumber or evenNumber) then
-	print “number is even or positive or both even and positive”;
-end
-
-if (positiveNumber xor evenNumber) then
-	print “number is even or positive”;
-end
-
-if (not positiveNumber) then
-	print “number is negative”;
-else 
-	print “number is positive”;
-end
-```
-
-# SNIPPET 13: Comparison Operations
+## SNIPPET 5 
 ```javascript
 var yearOfBirth := 1998;
 
@@ -273,7 +124,26 @@ var isNotPi := testReal /= PI;
 print isPi, isNotPi;        //false true
 ```
 
-# SNIPPET 14: Arithmetic operations & Dynamic Type conversion
+## SNIPPET 6
+```javascript
+var x := 15; 
+var y := 36; 
+
+if x > y then 
+    print x; 
+else 
+    print y; 
+end 
+
+print "The max var from x and y is "; // 36 
+
+var mult := x * y; 
+
+print "x * y = "; 
+print mult; //540
+```
+
+## SNIPPET 7: Arithmetic operations & Dynamic Type conversion
 ```javascript
 var inumber1 := 10, inumber2 := 2, rnumber1 := 2.4, rnumber2 := 0.1;
 var result;
@@ -291,7 +161,86 @@ result := inumber1 / rnumber1;
 print result;		//4.16
 ```
 
-# SNIPPET 15: Tuples and Arrays
+
+# Arrays, Tuples, Input and Loops
+
+## SNIPPET 8: Testing the ".." loop thing and unnamed array concatenation inside of tuples
+#### *<u>**IN THIS LANGUAGE EVERYTHING STARTS FROM 1 !!!???**</u>*
+
+````javascript
+var testArray := [1];
+var weirdStruct := {testArray};
+
+var test := 1;
+weirdStruct := weirdStruct + {test} ;// Now it should be like this { Array, Array size }
+
+for i in (5-4) .. 10/2 loop // Go from 1 to 5, hotya hz chto vklyucheno: [1,5] or [1,5)
+     test.1 := test.1 + test.1;
+     test.2 := test.2 + 1;
+end; 
+     
+print "Array is" test.1, "While size is ", test.2; // Allow printing of arrays???
+````
+
+## SNIPPET 9: Checking the input capabilities and "in" loop operator
+
+````javascript
+var str := readString;
+
+//The same string should be printed in the end
+for char in str loop
+	print char; 
+end;
+````
+
+## SNIPPET 10: array operations and loops
+
+```javascript
+var temp := [0, 0, 0]
+var new := []; // empty array declaration 
+var array := temp + new 
+print ("Array before insertion : ");
+for i in array
+    loop
+        print i;
+    end 
+  
+// adding elements
+array[4] := 55.5;
+array[5] := 7*9;
+array[6] := "experience";
+array[7] := [5, 4];
+  
+print ("Array after insertion : ") ;
+for i in array
+    loop
+        print i;
+    end  
+```
+
+
+## SNIPPET 11 
+```javascript
+var arr := ["cherry", "pie", "or", "cherry", "truffle"];
+
+for a in arr
+    loop
+        print a;
+    end
+    
+var range := [5000.07, 204, 555.90, 78];
+var t := {one:=1, two:=2, three:=3, four:=4};
+var total := 0;
+
+for n in t
+    loop
+        total := total + range[n];
+    end
+print total;
+```
+
+
+## SNIPPET 12
 ```javascript
 var carDescription := {brand := “KIA”, model := “Seltos”, year := 2019};
 carDescription := carDescription + {color := “red”};
@@ -301,7 +250,7 @@ print “This car is a ”, carDescription.color, “ ”, carDescription.1, “
 
 //This car is a red KIA Seltos made in 2019
 
-Var arrayRandom := [];
+var arrayRandom := [];
 arrayRandom[2] := 20;
 arrayRandom[4] := func (x, y) => x * y;
 arrayRandom[6] := {x:=15, y:= 17};
@@ -312,7 +261,38 @@ print arrayRandom[6].x;      //15
 print arrayRandom[8][1];     //Monday
 ```
 
-# SNIPPET 16: Functions and Loops (summation of the first N numbers)
+
+# Functions
+
+## SNIPPET 13
+```javascript
+var something := 1;
+something := func(x) is
+   return x + 1;
+end
+print something(5); //6
+```
+
+
+## SNIPPET 14
+```javascript
+var c;
+c := func (x, y, z) is 
+  var count := 0;
+    while x >= y loop
+        if y > z then
+            y := y + 1;
+        else
+            z := z - 1;
+        end
+    count := count + 1;
+    end
+    return count;
+ end
+ print c(10, 5, 7);
+```
+
+## SNIPPET 15: (summation of the first N numbers)
 ```javascript
 var summation := func (N) is
 	var counter := 1, result := 0
@@ -325,3 +305,19 @@ end
 
 print summation(5);			//15
 ```
+
+
+## SNIPPET 16: Recursive function call test + lambda function 
+
+````javascript
+var factorial := func(n) is 
+    if n = 0 then		// Brackets are omitted intentionally
+    	return 1;
+    else
+        return n * factorial(n - 1);
+    end;
+end;
+var lambdafunc := func(x)=> x/1.4;
+
+print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17,142";
+````
