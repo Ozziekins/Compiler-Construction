@@ -1,11 +1,3 @@
-//
-//  lexer.cpp
-//  CompilerLexer
-//
-//  Created by MacBookPro on 23.08.2020.
-//  Copyright © 2020 MacBookPro. All rights reserved.
-//
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -47,7 +39,7 @@ void lexer_skip_whitespace(lexer_t* lexer){
         lexer_advance(lexer);
     }
 }
-char* lexer_get_current_char_as_string(lexer_t* lexer){
+char* lexer_get_current_char(lexer_t* lexer){
     char* str = (char*)calloc(2, sizeof(char));
     str[0] = lexer->c;
     str[1] = '\0';
@@ -61,14 +53,17 @@ token_t* lexer_get_next_token(lexer_t* lexer){
         if (lexer->c == ' ')
             lexer_skip_whitespace(lexer);
         
+        if (lexer->c == '#')
+            lexer_remove_comment(lexer);
+        
         if (lexer->c == '"')
-            return lexer_collect_string(lexer);
+            return lexer_build_string(lexer);
         
         if (isdigit(lexer->c))
             return lexer_collect_value(lexer);
         
         if (isalpha(lexer->c))
-            return lexer_collect_id(lexer);
+            return lexer_collect_identifier(lexer);
         
         char* operato = (char*)calloc(1, sizeof(char));
         operato[0] = '\0';
@@ -84,24 +79,26 @@ token_t* lexer_get_next_token(lexer_t* lexer){
                 operato[2] = '\0';
                 return lexer_advance_with_token(lexer, init_token(OPERATOR, operato, lexer->line, lexer->column + 1));
             } else {
+                free(operato);
+                operato = nullptr;
                 lexer_stepback(lexer);
             }
         }
         
         if (lexer->c == '+' || lexer->c == '-' || lexer->c == '/' || lexer->c == '*' || lexer->c == '>' || lexer->c == '<' || lexer->c == '=')
-            return lexer_advance_with_token(lexer, init_token(OPERATOR, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1));
+            return lexer_advance_with_token(lexer, init_token(OPERATOR, lexer_get_current_char(lexer), lexer->line, lexer->column + 1));
         
         switch(lexer->c)
         {
-            case ';': return lexer_advance_with_token(lexer, init_token(SEMI, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1)); break;
-            case '(': return lexer_advance_with_token(lexer, init_token(LPAREN, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1)); break;
-            case ')': return lexer_advance_with_token(lexer, init_token(RPAREN, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1)); break;
-            case '[': return lexer_advance_with_token(lexer, init_token(LSQUARE, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1)); break;
-            case ']': return lexer_advance_with_token(lexer, init_token(RSQUARE, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1)); break;
-            case '{': return lexer_advance_with_token(lexer, init_token(LCURLY, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1)); break;
-            case '}': return lexer_advance_with_token(lexer, init_token(RCURLY, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1)); break;
-            case ',': return lexer_advance_with_token(lexer, init_token(COMMA, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1)); break;
-            case '.': return lexer_advance_with_token(lexer, init_token(OPERATOR, lexer_get_current_char_as_string(lexer), lexer->line, lexer->column + 1)); break;
+            case ';': return lexer_advance_with_token(lexer, init_token(SEMI, lexer_get_current_char(lexer), lexer->line, lexer->column + 1)); break;
+            case '(': return lexer_advance_with_token(lexer, init_token(LPAREN, lexer_get_current_char(lexer), lexer->line, lexer->column + 1)); break;
+            case ')': return lexer_advance_with_token(lexer, init_token(RPAREN, lexer_get_current_char(lexer), lexer->line, lexer->column + 1)); break;
+            case '[': return lexer_advance_with_token(lexer, init_token(LSQUARE, lexer_get_current_char(lexer), lexer->line, lexer->column + 1)); break;
+            case ']': return lexer_advance_with_token(lexer, init_token(RSQUARE, lexer_get_current_char(lexer), lexer->line, lexer->column + 1)); break;
+            case '{': return lexer_advance_with_token(lexer, init_token(LCURLY, lexer_get_current_char(lexer), lexer->line, lexer->column + 1)); break;
+            case '}': return lexer_advance_with_token(lexer, init_token(RCURLY, lexer_get_current_char(lexer), lexer->line, lexer->column + 1)); break;
+            case ',': return lexer_advance_with_token(lexer, init_token(COMMA, lexer_get_current_char(lexer), lexer->line, lexer->column + 1)); break;
+            case '.': return lexer_advance_with_token(lexer, init_token(OPERATOR, lexer_get_current_char(lexer), lexer->line, lexer->column + 1)); break;
             case '\n': lexer_advance(lexer); lexer->line += 1; lexer->column = 0; break;
             case '\t': lexer_advance(lexer); lexer->column += 3; break;
             default: lexer_advance(lexer);
@@ -110,13 +107,13 @@ token_t* lexer_get_next_token(lexer_t* lexer){
     return nullptr;
 }
 
-token_t* lexer_collect_string(lexer_t* lexer){
+token_t* lexer_build_string(lexer_t* lexer){
     lexer_advance(lexer);
     char* value = (char*)calloc(1, sizeof(char));
     value[0] = '\0';
     
     while (lexer->c != '"') {
-        char* string = lexer_get_current_char_as_string(lexer);
+        char* string = lexer_get_current_char(lexer);
         value = (char*) realloc(value, (strlen(value) + strlen(string) + 1)* sizeof(char));
         strcat(value, string);
         lexer_advance(lexer);
@@ -131,7 +128,7 @@ token_t* lexer_collect_value(lexer_t* lexer){
     value[0] = '\0';
     
     while (isdigit(lexer->c) || lexer->c == '.') {
-        char* string = lexer_get_current_char_as_string(lexer);
+        char* string = lexer_get_current_char(lexer);
         value = (char*) realloc(value, (strlen(value) + strlen(string) + 1)* sizeof(char));
         strcat(value, string);
         lexer_advance(lexer);
@@ -140,12 +137,12 @@ token_t* lexer_collect_value(lexer_t* lexer){
     return init_token(LITERAL, value, lexer->line, lexer->column);
 }
 
-token_t* lexer_collect_id(lexer_t* lexer){
+token_t* lexer_collect_identifier(lexer_t* lexer){
     char* value = (char*)calloc(1, sizeof(char));
     value[0] = '\0';
     
     while (isalnum(lexer->c)) {
-        char* string = lexer_get_current_char_as_string(lexer);
+        char* string = lexer_get_current_char(lexer);
         value = (char*) realloc(value, (strlen(value) + strlen(string) + 1)* sizeof(char));
         strcat(value, string);
         lexer_advance(lexer);
@@ -171,4 +168,10 @@ token_t* lexer_collect_id(lexer_t* lexer){
 token_t* lexer_advance_with_token(lexer_t* lexer, token_t* token){
     lexer_advance(lexer);
     return token;
+}
+
+void lexer_remove_comment(lexer_t* lexer) {
+    while (lexer->c != '\n') {
+        lexer_advance(lexer);
+    }
 }
