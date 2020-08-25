@@ -1,10 +1,3 @@
-//
-//  main.cpp
-//  CompilerLexer
-//
-//  Created by MacBookPro on 23.08.2020.
-//  Copyright © 2020 MacBookPro. All rights reserved.
-//
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
