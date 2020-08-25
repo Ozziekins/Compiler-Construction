@@ -1,26 +1,19 @@
-var this := 7;
-var that := 17.9;
-var those := "anything";
-var e;
+var positiveNumber := true;
+var evenNumber := true;
+if (positiveNumber and evenNumber) then
+	print "number is even and positive";
+end
 
-var r := is this;    //INTEGER
-var s := is that;      //REAL
-var t := is those;  //STRING
-var u := is e;        //empty
+if (positiveNumber or evenNumber) then
+	print "number is even or positive or both even and positive";
+end
 
-var sas := empty;
-var syas := empty;
+if (positiveNumber xor evenNumber) then
+	print "number is even or positive";
+end
 
-print sas + syas;	//ERROR
-
-print r;
-print s;
-print t;
-print u;
-
-var a := true and true;
-var b := not true;
-var c := false xor false;
-var d := true or true;
-
-print "if " + a + " then not " + b + " but " + " if " + c + " then " + d;
+if (not positiveNumber) then
+	print "number is negative";
+else 
+	print "number is positive";
+end

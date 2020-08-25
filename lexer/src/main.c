@@ -57,7 +57,6 @@ int main(int argc, char const *argv[])
 
 	while ((token = get_next(lexer)) != (void*)0)
 	{
-		count += 1;
 		printf("(%s, %s, %d, %d)\n", token->value, type_arr[token->type], token->line_num, token->tok_num);
 	}
 	return 0;

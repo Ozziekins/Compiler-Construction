@@ -110,30 +110,6 @@ token_T* get_next(lexer_T* lexer)
 			return get_string(lexer);
 		}
 
-		if (lexer->c == '-')
-		{
-			char* word = calloc(2, sizeof(char));
-			word[0] = lexer->c;
-			word[1] = '\0';
-
-			advance_lexer(lexer);
-			if (isdigit(lexer->c))
-			{
-				while (isdigit(lexer->c) || lexer->c == '.')
-				{
-					char* s = get_current_char_as_string(lexer);
-					word = realloc(word, (strlen(word) + strlen(s) + 1) * sizeof(char));
-					strcat(word, s);
-
-					advance_lexer(lexer);
-				}
-				return init_token(TOKEN_NUMBER, word, lexer->line_count, lexer->tok_count);
-			}
-			else
-				advance_lexer(lexer);
-				return init_token(TOKEN_MINUS, word, lexer->line_count, lexer->tok_count);
-		}
-
 		if (lexer->c == ':')
 		{
 			return get_assignment(lexer);
@@ -161,9 +137,8 @@ token_T* get_next(lexer_T* lexer)
 				return init_token(TOKEN_NEQ, word, lexer->line_count, lexer->tok_count);
 
 			}
-			else if (lexer->c = ' ')
+			else
 			{
-				advance_lexer(lexer);
 				return init_token(TOKEN_DIV, word, lexer->line_count, lexer->tok_count);
 			}
 		}
@@ -279,10 +254,10 @@ token_T* get_next(lexer_T* lexer)
 				return
 				advance_lexer_with_token(lexer, init_token(TOKEN_PLUS, get_current_char_as_string(lexer), lexer->line_count, lexer->tok_count));
 				break;
-			// case '-':
-			// 	return
-			// 	advance_lexer_with_token(lexer, init_token(TOKEN_MINUS, get_current_char_as_string(lexer), lexer->line_count, lexer->tok_count));
-			// 	break;
+			case '-':
+				return
+				advance_lexer_with_token(lexer, init_token(TOKEN_MINUS, get_current_char_as_string(lexer), lexer->line_count, lexer->tok_count));
+				break;
 			case '*':
 				return
 				advance_lexer_with_token(lexer, init_token(TOKEN_MULT, get_current_char_as_string(lexer), lexer->line_count, lexer->tok_count));
