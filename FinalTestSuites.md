@@ -5,21 +5,21 @@
 var positiveNumber := true;
 var evenNumber := true;
 if (positiveNumber and evenNumber) then
-	print “number is even and positive”;
+	print "number is even and positive";
 end
 
 if (positiveNumber or evenNumber) then
-	print “number is even or positive or both even and positive”;
+	print "number is even or positive or both even and positive";
 end
 
 if (positiveNumber xor evenNumber) then
-	print “number is even or positive”;
+	print "number is even or positive";
 end
 
 if (not positiveNumber) then
-	print “number is negative”;
+	print "number is negative";
 else 
-	print “number is positive”;
+	print "number is positive";
 end
 ```
 ## SNIPPET 2
@@ -242,11 +242,11 @@ print total;
 
 ## SNIPPET 12
 ```javascript
-var carDescription := {brand := “KIA”, model := “Seltos”, year := 2019};
-carDescription := carDescription + {color := “red”};
+var carDescription := {brand := "KIA", model := "Seltos", year := 2019};
+carDescription := carDescription + {color := "red"};
 
-print “This car is a ”, carDescription.color, “ ”, carDescription.1, “ ”,
-        carDescription.model, “ made in “, carDescription.3;
+print "This car is a ", carDescription.color, " ", carDescription.1, " ",
+        carDescription.model, " made in ", carDescription.3;
 
 //This car is a red KIA Seltos made in 2019
 
@@ -254,7 +254,7 @@ var arrayRandom := [];
 arrayRandom[2] := 20;
 arrayRandom[4] := func (x, y) => x * y;
 arrayRandom[6] := {x:=15, y:= 17};
-arrayRandom[8] := [“Monday”, “Friday”];
+arrayRandom[8] := ["Monday", "Friday"];
 
 print arrayRandom[4](5,4);     //20
 print arrayRandom[6].x;      //15
