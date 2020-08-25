@@ -26,7 +26,7 @@ end
 ```javascript
 var this := 7;
 var that := 17.9;
-var those = "anything";
+var those := "anything";
 var e;
 
 var r := is this;    //INTEGER
@@ -49,7 +49,7 @@ var b := not true;
 var c := false xor false;
 var d := true or true;
 
-print if " + a + " then not " + b + " but " + " if " + c + " then " + d;
+print "if " + a + " then not " + b + " but " + " if " + c + " then " + d;
 ```
 
 ## SNIPPET 3: Using the empty keyword + testing dynamic types
