@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/Programming/projects/Github/Compiler-Construction/Lexer/Lexer.cpp
+include/Lexer.h
+D:/Programming/projects/Github/Compiler-Construction/Lexer/include/Lexer.h
+iostream
+D:/Programming/projects/Github/Compiler-Construction/Lexer/iostream
+algorithm
+-
+
+D:/Programming/projects/Github/Compiler-Construction/Lexer/include/Lexer.h
+string
+-
+iostream
+-
+Token.h
+D:/Programming/projects/Github/Compiler-Construction/Lexer/include/Token.h
+
+D:/Programming/projects/Github/Compiler-Construction/Lexer/include/Token.h
+utility
+-
+vector
+-
+string
+D:/Programming/projects/Github/Compiler-Construction/Lexer/include/string
+map
+D:/Programming/projects/Github/Compiler-Construction/Lexer/include/map
+
+D:/Programming/projects/Github/Compiler-Construction/Lexer/main.cpp
+fstream
+-
+include/Lexer.h
+D:/Programming/projects/Github/Compiler-Construction/Lexer/include/Lexer.h
+sstream
+-
+iostream
+-
+
