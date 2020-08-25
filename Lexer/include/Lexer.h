@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <iostream>
 #include "Token.h"
 
 class Lexer {
@@ -38,14 +37,13 @@ public:
             contents.replace(found, endl-found," ");
         }
 
-        std::cout << contents;
 
     }
     Token getNextToken();
 
     //Mappings of tokens
     std::vector<std::string> keywords = {"for", "in", "loop", "end", "print", "var", "is", "then", "func", "return", "while", "else", "true", "false", "empty" }; //Is empty a keyword??
-    std::vector<std::string> operators = {"+","-","/","*",">","<","=",".","<=",">=","/=",":=","+=","=>","not", "and", "or", "xor",};
+    std::vector<std::string> operators = {"+","-","/","*",">","<","=",".","<=",">=","/=",":=","+=","=>","not", "and", "or", "xor",".."};
     std::map<char,Token::typeEnum> specialCharMappings ={
             {';', Token::TOKEN_SEMI},
             {'(', Token::TOKEN_LPAREN},

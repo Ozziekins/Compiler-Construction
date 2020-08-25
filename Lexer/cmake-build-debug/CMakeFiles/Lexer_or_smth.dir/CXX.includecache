@@ -17,8 +17,6 @@ algorithm
 D:/Programming/projects/Github/Compiler-Construction/Lexer/include/Lexer.h
 string
 -
-iostream
--
 Token.h
 D:/Programming/projects/Github/Compiler-Construction/Lexer/include/Token.h
 

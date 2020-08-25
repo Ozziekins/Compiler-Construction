@@ -73,7 +73,7 @@ Token Lexer::readString() {
 Token Lexer::readIdentifier() {
     std::string identifierName;
 
-    while (isalnum(currentChar)) {
+    while (isalnum(currentChar) || ( currentChar == '.' && isalnum(contents[currentIndex+1]))) {
         identifierName += currentChar;
         advance();
     }
