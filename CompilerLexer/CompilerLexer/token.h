@@ -1,11 +1,3 @@
-//
-//  token.h
-//  CompilerLexer
-//
-//  Created by MacBookPro on 23.08.2020.
-//  Copyright © 2020 MacBookPro. All rights reserved.
-//
-
 #ifndef token_h
 #define token_h
 
