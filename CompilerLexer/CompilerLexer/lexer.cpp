@@ -5,9 +5,10 @@
 #include "lexer.h"
 #include "token.h"
 
-char dkeys[50][10] = {"for", "in", "loop", "end", "print", "var", "is", "then", "not", "and", "or", "xor", "func", "return", "while", "else", "true", "false", "\0"};
+static char* dkeys[] = {"for", "in", "loop", "end", "print", "var", "is", "then", "not", "and", "or", "xor", "func", "return", "while", "else", "true", "false", "\0"};
 
 
+/* Initializes lexer with source program text which will be used for building tokens */
 lexer_t* init_lexer(char* contents){
     lexer_t* lexer = (lexer_t*)calloc(1, sizeof(struct LEXER_STRUCT));
     lexer->contents = contents;
@@ -18,6 +19,7 @@ lexer_t* init_lexer(char* contents){
     return lexer;
 }
 
+/* Read next character from source language text */
 void lexer_advance(lexer_t* lexer){
     if (lexer->c != '\0' && lexer->i < strlen(lexer->contents))
     {
@@ -27,18 +29,22 @@ void lexer_advance(lexer_t* lexer){
     }
 }
 
+/* Read previous character from source language text */
 void lexer_stepback(lexer_t* lexer){
     lexer->i -= 1;
     lexer->c = lexer->contents[lexer->i];
     lexer->column -= 1;
 }
 
+/* Removes blank spaces from source language text */
 void lexer_skip_whitespace(lexer_t* lexer){
     while (lexer->c == ' ' || lexer->c == 10)
     {
         lexer_advance(lexer);
     }
 }
+
+/* Get current character as a string */
 char* lexer_get_current_char(lexer_t* lexer){
     char* str = (char*)calloc(2, sizeof(char));
     str[0] = lexer->c;
@@ -47,6 +53,7 @@ char* lexer_get_current_char(lexer_t* lexer){
     return str;
 }
 
+/* Builds upcoming token based on how they begin in source language text*/
 token_t* lexer_get_next_token(lexer_t* lexer){
     while (lexer->c != '\0' && lexer->i < strlen(lexer->contents))
     {
@@ -107,6 +114,7 @@ token_t* lexer_get_next_token(lexer_t* lexer){
     return nullptr;
 }
 
+/* Builds string literal tokens */
 token_t* lexer_build_string(lexer_t* lexer){
     lexer_advance(lexer);
     char* value = (char*)calloc(1, sizeof(char));
@@ -123,6 +131,7 @@ token_t* lexer_build_string(lexer_t* lexer){
     return init_token(LITERAL, value, lexer->line, lexer->column);
 }
 
+/* Builds constant literal tokens */
 token_t* lexer_collect_value(lexer_t* lexer){
     char* value = (char*)calloc(1, sizeof(char));
     value[0] = '\0';
@@ -137,6 +146,7 @@ token_t* lexer_collect_value(lexer_t* lexer){
     return init_token(LITERAL, value, lexer->line, lexer->column);
 }
 
+/* Builds indentifier(variable) tokens */
 token_t* lexer_collect_identifier(lexer_t* lexer){
     char* value = (char*)calloc(1, sizeof(char));
     value[0] = '\0';
@@ -164,12 +174,13 @@ token_t* lexer_collect_identifier(lexer_t* lexer){
     }
 }
 
-
+/* Consume created tokens */
 token_t* lexer_advance_with_token(lexer_t* lexer, token_t* token){
     lexer_advance(lexer);
     return token;
 }
 
+/* Removes comments from source language text */
 void lexer_remove_comment(lexer_t* lexer) {
     while (lexer->c != '\n') {
         lexer_advance(lexer);
