@@ -1,20 +1,28 @@
-var temp := [0, 0, 0]
-var new := []; // empty array declaration
-var array := temp + new
-print ("Array before insertion : ");
-for i in array
-    loop
-        print i;
-    end
+var this := 7;
+var that := 17.9.5.5;
+var those := "anything";
+var e;
 
-// adding elements
-array[4] := 55.5;
-array[5] := 7*9;
-array[6] := "experience";
-array[7] := [5, 4];
+func(64);=>is end;
 
-print ("Array after insertion : ") ;
-for i in array
-    loop
-        print i;
-    end  
+var r := this is int;    //TRUE
+var s := that is real;      //TRUE
+var t := those is string;  //TRUE
+var u := e is empty;        //TRUE
+
+var sas := empty;
+var syas := empty;
+
+print sas + syas;	//ERROR
+
+print r;
+print s;
+print t;
+print u;
+
+var a := true and true;
+var b := not true;
+var c := false xor false;
+var d := true or true;
+
+print "if " , a , " then not " , b , " but " + " if " , c , " then " , d;

@@ -25,7 +25,6 @@ void Lexer::advance() {
     } else {
         std::cout << "Something is wrong when advancing!??\n";
     }
-
 }
 
 Token Lexer::getNextToken() {
@@ -50,7 +49,6 @@ Token Lexer::getNextToken() {
 }
 
 Token Lexer::readString() {
-
     //Skipping the current "
     advance();
 
@@ -58,7 +56,7 @@ Token Lexer::readString() {
     unsigned int quotePosition = contents.find('"', currentIndex);
     unsigned int stringLength = quotePosition - currentIndex;
 
-    //Does it create trash in memory??
+    //Getting a string value as substring
     std::string resultingString = contents.substr(currentIndex, stringLength);
 
     //Saving result now; so that we won't have problems because of moving forward in the source code
@@ -76,12 +74,12 @@ Token Lexer::readIdentifier() {
     std::string identifierName;
 
     while (isalnum(currentChar) ||
-            ( currentChar == '.' && isdigit(contents[currentIndex+1]) && isdigit(contents[currentIndex-1]))  ) {
+            ( currentChar == '.' && isdigit(contents[currentIndex+1]) && isdigit(contents[currentIndex-1])) ) {
         identifierName += currentChar;
         advance();
     }
 
-    if ( std::find( keywords.begin(), keywords.end(), identifierName) != keywords.end())
+    if ( std::find( keywords.begin(), keywords.end(), identifierName) != keywords.end() )
         return Token(Token::TOKEN_KEYWORD, identifierName, currentLine, currentPosOnLine - identifierName.length());
     else if ( std::find( operators.begin(), operators.end(), identifierName) != operators.end())
         return Token(Token::TOKEN_OPERATOR, identifierName, currentLine, currentPosOnLine - identifierName.length());
@@ -93,7 +91,7 @@ Token Lexer::readIdentifier() {
 Token Lexer::registerToken() {
 
     //Just read the token to properly classify it later; it is UNKNOWN now
-    Token finalToken = readUntilEnd();
+    Token finalToken = readUntilTokenDetected();
 
     if (currentChar != '\0') {
         advance();
@@ -102,7 +100,7 @@ Token Lexer::registerToken() {
     return finalToken;
 }
 
-Token Lexer::readUntilEnd() {
+Token Lexer::readUntilTokenDetected() {
 
     std::string unknownTokenValue;
 
@@ -116,12 +114,9 @@ Token Lexer::readUntilEnd() {
 
     //Going until its end if it is not a single char
     while ( currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 && !isalnum(currentChar)) {
-
         unknownTokenValue += currentChar; //Concatenate
-
         //This is to complete reading some tokens without implementing going back
-        if ( contents[currentIndex+1] == ' ' || contents[currentIndex+1] == '\n' //TODO IS THIS A KOSTIL???
-             || contents[currentIndex+1] == '\0' /*|| contents[currentIndex+1] == 32*/ || isalnum(contents[currentIndex+1]))
+        if ( contents[currentIndex+1] == ' ' || contents[currentIndex+1] == '\n' || contents[currentIndex+1] == '\0' || isalnum(contents[currentIndex+1]))
             break;
         else
             advance();

@@ -19,10 +19,11 @@ class Lexer {
     Token readString();
     Token readIdentifier();
     Token registerToken();
-    Token readUntilEnd(); //Is this how we are supposed to read some things???
+    Token readUntilTokenDetected(); //Is this how we are supposed to read some things???
 
 public:
     explicit Lexer(const std::string& code) {
+
         this->contents = code;
         this->currentChar = code[0];
         this->currentIndex = 0;
@@ -37,16 +38,16 @@ public:
             contents.replace(found, endl-found,"");
         }
 
-
     }
     Token getNextToken();
 
     //Mappings of tokens
     std::vector<std::string> keywords = {"for", "in", "loop", "end", "print", "var", "is", "then", "func", "return", "while", "else",
                                          "true", "false",
-                                         "empty","readInt", "readReal","readString",
-                                         "bool","int","real","string" }; //Is empty a keyword??
-    std::vector<std::string> operators = {"+","-","/","*",">","<","=",".","<=",">=","/=",":=","+=","=>","..","not", "and", "or", "xor"};
+                                         "readInt", "readReal","readString",
+                                         "bool","int","real","string","empty" }; //Is empty a keyword??
+
+    std::vector<std::string> operators = {"+","-","/","*",">","<","=",".","<=",">=","/=",":=","+=","=>", "not", "and", "or", "xor"};
     std::map<char,Token::typeEnum> specialCharMappings ={
             {';', Token::TOKEN_SEMI},
             {'(', Token::TOKEN_LPAREN},

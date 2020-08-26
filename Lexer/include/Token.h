@@ -10,7 +10,6 @@ public:
         TOKEN_IDENTIFIER,
         TOKEN_OPERATOR,
         TOKEN_KEYWORD,
-        TOKEN_EQUALS,
         TOKEN_LITERAL,
         TOKEN_UNKNOWN,
         TOKEN_SEMI,
@@ -25,7 +24,7 @@ public:
         TOKEN_RCURLY,
 
         TOKEN_COMMA,
-        TOKEN_EOF,
+        TOKEN_EOF
     } type;
 
 private:
@@ -39,7 +38,7 @@ public:
     void printInfo();
 
     Token(){}; //To create empty objects
-    Token(typeEnum t_type, const std::string& t_value,unsigned int t_line,unsigned int t_position){
+    Token(typeEnum t_type, const std::string& t_value, unsigned int t_line,unsigned int t_position){
         this->type = t_type;
         this->value = t_value;
         this->line = t_line;

@@ -6,7 +6,6 @@ std::ostream &operator<<(std::ostream &lhs,const Token::typeEnum e) {
     switch(e) {
         case Token::TOKEN_IDENTIFIER: lhs << "TOKEN_IDENTIFIER"; break;
         case Token::TOKEN_OPERATOR: lhs << "TOKEN_OPERATOR"; break;
-        case Token::TOKEN_EQUALS: lhs << "TOKEN_EQUALS"; break;
         case Token::TOKEN_LITERAL: lhs << "TOKEN_LITERAL"; break;
 
         case Token::TOKEN_LPAREN: lhs << "TOKEN_LPAREN"; break;
