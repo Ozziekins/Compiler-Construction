@@ -1,26 +1,15 @@
-var this := 7;
-var that := 17.9;
-var those := "anything";
-var e;
+var x := 15;
+var y := 36;
 
-var r := this is int;    //TRUE
-var s := that is real;      //TRUE
-var t := those is string;  //TRUE
-var u := e is empty;        //TRUE
+if x > y then
+    print x;
+else
+    print y;
+end
 
-var sas := empty;
-var syas := empty;
+print "The max var from x and y is "; // 36
 
-print sas + syas;	//ERROR
+var mult := x * y;
 
-print r;
-print s;
-print t;
-print u;
-
-var a := true and true;
-var b := not true;
-var c := false xor false;
-var d := true or true;
-
-print "if " + a + " then not " + b + " but " + " if " + c + " then " + d;
+print "x * y = ";
+print mult; //540

@@ -117,6 +117,7 @@ Token Lexer::readUntilEnd() {
                 && currentChar != '\0' && currentChar != 32 && !isalnum(currentChar)) {
         unknownTokenValue += currentChar;
 
+        //This is to complete reading some tokens without implementing going back
         if ( contents[currentIndex+1] == ' ' || contents[currentIndex+1] == '\n' //TODO IS THIS A KOSTIL???
              || contents[currentIndex+1] == '\0' /*|| contents[currentIndex+1] == 32*/ || isalnum(contents[currentIndex+1]))
             break;

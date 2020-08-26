@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.17)
-project(Lexer_or_smth)
+project(Lexer2)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Lexer_or_smth main.cpp Lexer.cpp include/Lexer.h Token.cpp include/Token.h)
+include_directories(include)
+
+add_executable(Lexer
+        include/Lexer.h
+        include/Token.h
+        CMakeLists.txt
+        Lexer.cpp
+        main.cpp
+        source_code.d
+        Token.cpp)
