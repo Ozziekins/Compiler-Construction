@@ -16,7 +16,7 @@ class Lexer {
 
     //Hidden functions
     void advance();
-    Token readString();
+    Token readLiteral();
     Token readIdentifier();
     Token registerToken();
     Token readUntilTokenDetected(); //Is this how we are supposed to read some things???
@@ -42,10 +42,13 @@ public:
     Token getNextToken();
 
     //Mappings of tokens
-    std::vector<std::string> keywords = {"for", "in", "loop", "end", "print", "var", "is", "then", "func", "return", "while", "else",
+    std::vector<std::string> keywords = {"for", "in", "loop", "while",
+                                         "if","then", "else",
+                                         "var", "is", "func",
                                          "true", "false",
-                                         "readInt", "readReal","readString",
-                                         "bool","int","real","string","empty" }; //Is empty a keyword??
+                                         "end", "return",
+                                         "print","readInt", "readReal","readString",
+                                         "bool","int","real","string","empty" };
 
     std::vector<std::string> operators = {"+","-","/","*",">","<","=",".","<=",">=","/=",":=","+=","=>", "not", "and", "or", "xor"};
     std::map<char,Token::typeEnum> specialCharMappings ={

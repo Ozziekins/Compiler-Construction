@@ -37,10 +37,10 @@ Token Lexer::getNextToken() {
 
         if (currentChar == 0)
             break;
-        else if (isalnum(currentChar))
+        else if (currentChar == '"' || isdigit(currentChar))
+            return readLiteral();
+        else if (isalpha(currentChar))
             return readIdentifier();
-        else if (currentChar == '"')
-            return readString();
         else
             return registerToken();
     }
@@ -48,24 +48,45 @@ Token Lexer::getNextToken() {
     return Token(Token::TOKEN_EOF, "NULL (END)", currentLine, currentPosOnLine); //This can only happen in the end?
 }
 
-Token Lexer::readString() {
-    //Skipping the current "
-    advance();
+Token Lexer::readLiteral() {
 
-    //Is finding the position of the next " really more efficient than reallocating several times?
-    unsigned int quotePosition = contents.find('"', currentIndex);
-    unsigned int stringLength = quotePosition - currentIndex;
+    std::string tokenValue;
+    Token finalToken;
 
-    //Getting a string value as substring
-    std::string resultingString = contents.substr(currentIndex, stringLength);
 
-    //Saving result now; so that we won't have problems because of moving forward in the source code
-    Token finalToken = Token(Token::TOKEN_LITERAL, resultingString, currentLine, currentPosOnLine - 1);
+    //Reading numbers
+    if (isdigit(currentChar)) {
 
-    //Move to the end of the string; after semicolon
-    this->currentIndex = quotePosition + 1;
-    this->currentChar = contents[currentIndex];
-    this->currentPosOnLine += stringLength + 1; //+1 is to account for the first quote
+        while (isdigit(currentChar) || //TODO check in fthis line can cause segfaults!!!!!!!!!!!!!!!!!!!!!!!!!
+                ( currentChar == '.' && isdigit(contents[currentIndex + 1]) && isdigit(contents[currentIndex - 1]) ) ) {
+            tokenValue += currentChar;
+            advance();
+        }
+
+        finalToken = Token(Token::TOKEN_LITERAL, tokenValue, currentLine, currentPosOnLine - 1); //TODO check -1
+    }
+
+    //For actual strings
+    else {
+        //Skipping the current "
+        advance();
+
+        //Is finding the position of the next " really more efficient than reallocating several times?
+        unsigned int quotePosition = contents.find('"', currentIndex);
+        unsigned int stringLength = quotePosition - currentIndex;
+
+        //Getting value as substring
+        tokenValue = contents.substr(currentIndex, stringLength);
+
+        //Saving result now; so that we won't have problems because of moving forward in the source code
+        finalToken = Token(Token::TOKEN_LITERAL, tokenValue, currentLine, currentPosOnLine - 1);
+
+        //Move to the end of the string; after semicolon
+        this->currentIndex = quotePosition + 1;
+        this->currentChar = contents[currentIndex];
+        this->currentPosOnLine += stringLength + 1; //+1 is to account for the first quote
+    }
+
 
     return finalToken;
 }
@@ -73,15 +94,14 @@ Token Lexer::readString() {
 Token Lexer::readIdentifier() {
     std::string identifierName;
 
-    while (isalnum(currentChar) ||
-            ( currentChar == '.' && isdigit(contents[currentIndex+1]) && isdigit(contents[currentIndex-1])) ) {
+    while (isalnum(currentChar)) {
         identifierName += currentChar;
         advance();
     }
 
-    if ( std::find( keywords.begin(), keywords.end(), identifierName) != keywords.end() )
+    if (std::find(keywords.begin(), keywords.end(), identifierName) != keywords.end())
         return Token(Token::TOKEN_KEYWORD, identifierName, currentLine, currentPosOnLine - identifierName.length());
-    else if ( std::find( operators.begin(), operators.end(), identifierName) != operators.end())
+    else if (std::find(operators.begin(), operators.end(), identifierName) != operators.end())
         return Token(Token::TOKEN_OPERATOR, identifierName, currentLine, currentPosOnLine - identifierName.length());
     else
         return Token(Token::TOKEN_IDENTIFIER, identifierName, currentLine, currentPosOnLine - identifierName.length());
@@ -108,24 +128,26 @@ Token Lexer::readUntilTokenDetected() {
     unsigned int tokenStart = currentPosOnLine;
 
     //Special case for single characters with identifiers
-    if (specialCharMappings.count(currentChar) != 0){
-        return Token(specialCharMappings[currentChar], std::string() + currentChar, currentLine, currentPosOnLine );
+    if (specialCharMappings.count(currentChar) != 0) {
+        return Token(specialCharMappings[currentChar], std::string() + currentChar, currentLine, currentPosOnLine);
     }
 
     //Going until its end if it is not a single char
-    while ( currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 && !isalnum(currentChar)) {
+    while (currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 &&
+           !isalnum(currentChar)) {
         unknownTokenValue += currentChar; //Concatenate
         //This is to complete reading some tokens without implementing going back
-        if ( contents[currentIndex+1] == ' ' || contents[currentIndex+1] == '\n' || contents[currentIndex+1] == '\0' || isalnum(contents[currentIndex+1]))
+        if (contents[currentIndex + 1] == ' ' || contents[currentIndex + 1] == '\n' ||
+            contents[currentIndex + 1] == '\0' || isalnum(contents[currentIndex + 1]))
             break;
         else
             advance();
     }
 
     //Check for operators
-    if ( std::find( operators.begin(), operators.end(), unknownTokenValue) != operators.end())
+    if (std::find(operators.begin(), operators.end(), unknownTokenValue) != operators.end())
         return Token(Token::TOKEN_OPERATOR, unknownTokenValue, currentLine, tokenStart);
-    else{
+    else {
         std::cout << "\n\n READ A STRANGE THING \n \n";
         return Token(Token::TOKEN_UNKNOWN, unknownTokenValue, currentLine, tokenStart);
     }

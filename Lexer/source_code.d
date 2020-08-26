@@ -1,28 +1,15 @@
-var this := 7;
-var that := 17.9.5.5;
-var those := "anything";
-var e;
+var testArray := [1];
+var weirdStruct := {testArray};
 
-func(64);=>is end;
+var test := 1.1.2;
+weirdStruct := weirdStruct + {test} ;// Now it should be like this { Array, Array size }
 
-var r := this is int;    //TRUE
-var s := that is real;      //TRUE
-var t := those is string;  //TRUE
-var u := e is empty;        //TRUE
+var i = (5-4);
+while ( i < 10/2 ) loop
+     test.1 := test.1 + test.1;
+     test.2 := test.2 + 1;
 
-var sas := empty;
-var syas := empty;
+     i += 1;
+end;
 
-print sas + syas;	//ERROR
-
-print r;
-print s;
-print t;
-print u;
-
-var a := true and true;
-var b := not true;
-var c := false xor false;
-var d := true or true;
-
-print "if " , a , " then not " , b , " but " + " if " , c , " then " , d;
+print "Array is" test.1, "While size is ", test.2; // Allow printing of arrays???
