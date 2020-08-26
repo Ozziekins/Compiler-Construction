@@ -314,7 +314,6 @@ token_T* get_next(lexer_T* lexer)
 	}
 
 	return (void*)0;
-	// return init_token(TOKEN_EOF, "\0", INF, INF);
 }
 
 token_T* get_string(lexer_T* lexer)
