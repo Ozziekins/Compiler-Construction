@@ -3,8 +3,6 @@
 #include <string.h>
 #include "include/lexer.h"
 
-#define INF 99999999
-
 int main(int argc, char const *argv[])
 {
 	char ch;
@@ -57,12 +55,17 @@ int main(int argc, char const *argv[])
 		"TOKEN_DOT",										// .
 		"TOKEN_EOF"};
 
+	int eof_line_num = 0;
+	int eof_tok_num = 0;
+
 	while ((token = get_next(lexer)) != (void*)0)
 	{
-		printf("%s, %s, %d, %d\n", type_arr[token->type], token->value, token->line_num, token->tok_num);
+		eof_line_num = token->line_num;
+		eof_tok_num = token->tok_num + 1;
+		printf("(%s, %s, %d, %d)\n", type_arr[token->type], token->value, token->line_num, token->tok_num);
 	}
 
-	token = init_token(TOKEN_EOF, "EOF", INF, INF);
-	printf("%s, %s, %d, %d\n", type_arr[token->type], token->value, token->line_num, token->tok_num);
+	token = init_token(TOKEN_EOF, "EOF", eof_line_num, eof_tok_num);
+	printf("(%s, %s, %d, %d)\n", type_arr[token->type], token->value, token->line_num, token->tok_num);
 	return 0;
 }

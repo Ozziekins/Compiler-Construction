@@ -4,8 +4,6 @@
 #include <ctype.h>
 #include <stdio.h>
 
-#define INF 99999999
-
 lexer_T* init_lexer(char* test_suite)
 {
 	lexer_T* lexer = calloc(1, sizeof(struct LEXER_STRUCT));
