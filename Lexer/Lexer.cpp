@@ -73,7 +73,8 @@ Token Lexer::readString() {
 Token Lexer::readIdentifier() {
     std::string identifierName;
 
-    while (isalnum(currentChar) || ( currentChar == '.' && isalnum(contents[currentIndex+1]))) {
+    while (isalnum(currentChar) ||
+            ( currentChar == '.' && isdigit(contents[currentIndex+1]) && isdigit(contents[currentIndex-1]))  ) {
         identifierName += currentChar;
         advance();
     }
@@ -90,7 +91,7 @@ Token Lexer::readIdentifier() {
 Token Lexer::registerToken() {
 
     //Just read the token to properly classify it later; it is UNKNOWN now
-    Token finalToken = readUntilWhitespace();
+    Token finalToken = readUntilEnd();
 
     if (currentChar != '\0') {
         advance();
@@ -99,7 +100,7 @@ Token Lexer::registerToken() {
     return finalToken;
 }
 
-Token Lexer::readUntilWhitespace() {
+Token Lexer::readUntilEnd() {
 
     std::string unknownTokenValue;
 
@@ -112,16 +113,20 @@ Token Lexer::readUntilWhitespace() {
     }
 
     //Going until its end if it is not a single char
-    while ( currentChar != ' ' && currentChar != '\n' && currentChar != '\0' && currentChar != 32 ) {
+    while ( currentChar != ' ' && currentChar != '\n'
+                && currentChar != '\0' && currentChar != 32 && !isalnum(currentChar)) {
         unknownTokenValue += currentChar;
-        advance();
+
+        if ( contents[currentIndex+1] == ' ' || contents[currentIndex+1] == '\n' //TODO IS THIS A KOSTIL???
+             || contents[currentIndex+1] == '\0' /*|| contents[currentIndex+1] == 32*/ || isalnum(contents[currentIndex+1]))
+            break;
+        else
+            advance();
     }
 
     //Check for operators
     if ( std::find( operators.begin(), operators.end(), unknownTokenValue) != operators.end())
         return Token(Token::TOKEN_OPERATOR, unknownTokenValue, currentLine, tokenStart);
-    else if (unknownTokenValue[0] == '+' || unknownTokenValue[0] == '-') //TODO IS THIS A KOSTIL???
-        Token(Token::TOKEN_UNARIZEDSMTH, unknownTokenValue, currentLine, tokenStart);
     else{
         std::cout << "\n\n READ A STRANGE THING \n \n";
         return Token(Token::TOKEN_UNKNOWN, unknownTokenValue, currentLine, tokenStart);

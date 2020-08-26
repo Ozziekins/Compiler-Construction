@@ -25,8 +25,6 @@ std::ostream &operator<<(std::ostream &lhs,const Token::typeEnum e) {
         case Token::TOKEN_UNKNOWN: lhs << "TOKEN_UNKNOWN"; break;
         case Token::TOKEN_KEYWORD: lhs << "TOKEN_KEYWORD"; break;
 
-        case Token::TOKEN_UNARIZEDSMTH: lhs << "TOKEN_UNARIZEDSMTH"; break;  //TODO PROBABLY KOSTIL
-
     }
     return lhs;
 }

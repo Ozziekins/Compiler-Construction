@@ -19,7 +19,7 @@ class Lexer {
     Token readString();
     Token readIdentifier();
     Token registerToken();
-    Token readUntilWhitespace(); //Is this how we are supposed to read some things???
+    Token readUntilEnd(); //Is this how we are supposed to read some things???
 
 public:
     explicit Lexer(const std::string& code) {
@@ -34,7 +34,7 @@ public:
         int found, endl;
         while ( ( found = contents.find("//") ) != std::string::npos){
             endl = contents.find('\n', found);
-            contents.replace(found, endl-found," ");
+            contents.replace(found, endl-found,"");
         }
 
 
@@ -43,7 +43,7 @@ public:
 
     //Mappings of tokens
     std::vector<std::string> keywords = {"for", "in", "loop", "end", "print", "var", "is", "then", "func", "return", "while", "else", "true", "false", "empty" }; //Is empty a keyword??
-    std::vector<std::string> operators = {"+","-","/","*",">","<","=",".","<=",">=","/=",":=","+=","=>","not", "and", "or", "xor",".."};
+    std::vector<std::string> operators = {"+","-","/","*",">","<","=",".","<=",">=","/=",":=","+=","=>","..","not", "and", "or", "xor"};
     std::map<char,Token::typeEnum> specialCharMappings ={
             {';', Token::TOKEN_SEMI},
             {'(', Token::TOKEN_LPAREN},

@@ -1,3 +1,0 @@
-"D:\Programming\Tools\CLion 2020.2\bin\cmake\win\bin\cmake.exe" -E rm -f CMakeFiles\Lexer_or_smth.dir/objects.a
-C:\temp\Mingw\bin\ar.exe cr CMakeFiles\Lexer_or_smth.dir/objects.a @CMakeFiles\Lexer_or_smth.dir\objects1.rsp
-C:\temp\Mingw\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\Lexer_or_smth.dir/objects.a -Wl,--no-whole-archive  -o Lexer_or_smth.exe -Wl,--out-implib,libLexer_or_smth.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\Lexer_or_smth.dir\linklibs.rsp

@@ -1,12 +1,26 @@
-var testArray := [1];
-var weirdStruct := {testArray};
+var this := 7;
+var that := 17.9;
+var those := "anything";
+var e;
 
-var test := 1;
-weirdStruct := weirdStruct + {test} ;// Now it should be like this { Array, Array size }
+var r := this is int;    //TRUE
+var s := that is real;      //TRUE
+var t := those is string;  //TRUE
+var u := e is empty;        //TRUE
 
-for i in (5-4) .. 10/2 loop // Go from 1 to 5, hotya hz chto vklyucheno: [1,5] or [1,5)
-     test.1 := test.1 + test.1;
-     test.2 := test.2 + 1;
-end;
+var sas := empty;
+var syas := empty;
 
-print "Array is" test.1, "While size is ", test.2; // Allow printing of arrays???
+print sas + syas;	//ERROR
+
+print r;
+print s;
+print t;
+print u;
+
+var a := true and true;
+var b := not true;
+var c := false xor false;
+var d := true or true;
+
+print "if " + a + " then not " + b + " but " + " if " + c + " then " + d;

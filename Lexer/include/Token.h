@@ -26,8 +26,6 @@ public:
 
         TOKEN_COMMA,
         TOKEN_EOF,
-
-        TOKEN_UNARIZEDSMTH //TODO PROBABLY KOSTIL
     } type;
 
 private:
