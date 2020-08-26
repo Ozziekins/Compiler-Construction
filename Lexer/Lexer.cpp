@@ -12,7 +12,7 @@ void Lexer::advance() {
     }
 
     //Going to the next character
-    if (currentChar != '\0' && currentIndex < contents.length()) {
+    if (currentChar != 0 && currentIndex < contents.length()) {
 
         if (currentChar == '\t')
             currentPosOnLine += 4;
@@ -29,14 +29,16 @@ void Lexer::advance() {
 }
 
 Token Lexer::getNextToken() {
-    while (currentChar != '\0' && currentIndex < contents.length()) {
+    while (currentChar != 0 && currentIndex < contents.length()) {
 
         //Will do nothing if there are no whitespaces
         while (currentChar == ' ' || currentChar == 10 || currentChar == '\t') {
             advance();
         }
 
-        if (isalnum(currentChar))
+        if (currentChar == 0)
+            break;
+        else if (isalnum(currentChar))
             return readIdentifier();
         else if (currentChar == '"')
             return readString();
@@ -113,9 +115,9 @@ Token Lexer::readUntilEnd() {
     }
 
     //Going until its end if it is not a single char
-    while ( currentChar != ' ' && currentChar != '\n'
-                && currentChar != '\0' && currentChar != 32 && !isalnum(currentChar)) {
-        unknownTokenValue += currentChar;
+    while ( currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 && !isalnum(currentChar)) {
+
+        unknownTokenValue += currentChar; //Concatenate
 
         //This is to complete reading some tokens without implementing going back
         if ( contents[currentIndex+1] == ' ' || contents[currentIndex+1] == '\n' //TODO IS THIS A KOSTIL???

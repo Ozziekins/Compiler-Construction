@@ -1,15 +1,20 @@
-var x := 15;
-var y := 36;
+var temp := [0, 0, 0]
+var new := []; // empty array declaration
+var array := temp + new
+print ("Array before insertion : ");
+for i in array
+    loop
+        print i;
+    end
 
-if x > y then
-    print x;
-else
-    print y;
-end
+// adding elements
+array[4] := 55.5;
+array[5] := 7*9;
+array[6] := "experience";
+array[7] := [5, 4];
 
-print "The max var from x and y is "; // 36
-
-var mult := x * y;
-
-print "x * y = ";
-print mult; //540
+print ("Array after insertion : ") ;
+for i in array
+    loop
+        print i;
+    end  
