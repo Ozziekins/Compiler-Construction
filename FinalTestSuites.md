@@ -29,10 +29,10 @@ var that := 17.9;
 var those := "anything";
 var e;
 
-var r := is this;    //INTEGER
-var s := is that;      //REAL
-var t := is those;  //STRING
-var u := is e;        //empty
+var r := this is int;    //TRUE
+var s := that is real;      //TRUE
+var t := those is string;  //TRUE
+var u := e is empty;        //TRUE
 
 var sas := empty;
 var syas := empty;
