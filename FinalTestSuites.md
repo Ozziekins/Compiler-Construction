@@ -58,19 +58,19 @@ print "if " + a + " then not " + b + " but " + " if " + c + " then " + d;
 var uninitialized;
 
 //Should not print
-if (not ( is uninitialized = empty ) ) then
+if (not ( uninitialized is empty ) ) then
 	print "Well, this is wrong.... \n It should be empty";
 end;
   
 //Should not print too
 uninitialized := true;
-if ( is uninitialized /= bool ) then
+if ( uninitialized is not bool ) then
 	print "Well, this is wrong as well.... \n It should be bool";
 end;
 
 // This one should print 
 uninitialized := "Everything is good?"
-if ( is uninitialized = string ) then
+if ( uninitialized is string ) then
 	print uninitialized;
 end;
 ````
@@ -98,7 +98,9 @@ else
     else 
         if z > x and z > y then
             if x > y then 
-                print y; // y is minimum
+                print y; // y 
+		
+		minimum
             else 
                 print x; // x is minimum
             end
