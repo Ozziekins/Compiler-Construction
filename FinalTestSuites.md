@@ -215,7 +215,7 @@ array[5] := 7*9;
 array[6] := "experience";
 array[7] := [5, 4];
   
-print ("Array after insertion : ") ;
+print "Array after insertion : ";
 for i in array
     loop
         print i;
