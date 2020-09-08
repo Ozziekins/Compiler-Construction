@@ -41,8 +41,8 @@ Relation : Factor '<' Factor
          | Factor '=' Factor
          | Factor not_equal Factor
          ;
-Factor : Term '+' Term
-       | Term '-' Term
+Factor : Term '+' Term Term
+       | Term '-' Term Term
        ;
 Term : Unary '*' Unary
      | Unary '/' Unary
@@ -57,7 +57,7 @@ Unary : '+' Primary
       | not Primary is TypeIndificator
       ;
 Primary : TOKEN_IDENTIFIER 
-        | TOKEN_IDENTIFIER Tail
+        | TOKEN_IDENTIFIER Tail Tail
         | readInt
         | readReal
         | readString
@@ -66,7 +66,7 @@ Tail : '.' IntegerLiteral
      | '.' TOKEN_IDENTIFIER
      | '[' Expression ']'
      | '(' Expression ')'
-     | '(' Expression ',' Expression ')'
+     | '(' Expression ',' Expression Expression ')'
      ;
 Statement : Assignment
           | Print
