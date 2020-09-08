@@ -10,7 +10,7 @@ public:
         TOKEN_IDENTIFIER,
         TOKEN_OPERATOR,
         TOKEN_KEYWORD,
-        TOKEN_LITERAL,
+        TOKEN_STRING_LITERAL,
         TOKEN_UNKNOWN,
         TOKEN_SEMI,
 
@@ -24,7 +24,48 @@ public:
         TOKEN_RCURLY,
 
         TOKEN_COMMA,
-        TOKEN_EOF
+        TOKEN_EOF,
+
+        TOKEN_ASSIGNMENT,
+        TOKEN_FUNCTOR,
+        TOKEN_NUMBER,
+        TOKEN_FUNC,
+        TOKEN_END,
+        TOKEN_IF,
+        TOKEN_THEN,
+        TOKEN_ELSE,
+        TOKEN_PRINT,
+        TOKEN_RETURN,
+        TOKEN_LOOP,
+        TOKEN_VAR,
+        TOKEN_WHILE,
+        TOKEN_FOR,
+        TOKEN_IN,
+        TOKEN_AND,
+        TOKEN_OR,
+        TOKEN_XOR,
+        TOKEN_NOT,
+        TOKEN_EMPTY,
+        TOKEN_INT,
+        TOKEN_REAL,
+        TOKEN_BOOL,
+        TOKEN_STRING,
+        TOKEN_TRUE,
+        TOKEN_FALSE,
+        TOKEN_IS,
+        TOKEN_DOT,
+        TOKEN_PLUS,
+        TOKEN_MINUS,
+        TOKEN_MULT,
+        TOKEN_DIV,
+        TOKEN_EQUAL,
+        TOKEN_NEQ,
+        TOKEN_LESS,
+        TOKEN_LEQ,
+        TOKEN_GREAT,
+        TOKEN_GEQ,
+
+
     } type;
 
 private:
