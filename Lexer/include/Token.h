@@ -13,22 +13,18 @@ public:
         TOKEN_STRING_LITERAL,
         TOKEN_UNKNOWN,
         TOKEN_SEMI,
-
         TOKEN_LPAREN,
         TOKEN_RPAREN,
-
         TOKEN_LSQUARE,
         TOKEN_RSQUARE,
-
         TOKEN_LCURLY,
         TOKEN_RCURLY,
-
         TOKEN_COMMA,
         TOKEN_EOF,
-
         TOKEN_ASSIGNMENT,
         TOKEN_FUNCTOR,
-        TOKEN_NUMBER,
+        TOKEN_INT_LITERAL,
+        TOKEN_REAL_LITERAL,
         TOKEN_FUNC,
         TOKEN_END,
         TOKEN_IF,
@@ -64,7 +60,10 @@ public:
         TOKEN_LEQ,
         TOKEN_GREAT,
         TOKEN_GEQ,
-
+        TOKEN_INCREMENT,
+        TOKEN_READINT,
+        TOKEN_READREAL,
+        TOKEN_READSTRING
 
     } type;
 

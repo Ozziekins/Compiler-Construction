@@ -20,7 +20,8 @@ std::ostream &operator<<(std::ostream &lhs,const Token::typeEnum e) {
         case Token::TOKEN_EOF: lhs << "TOKEN_EOF"; break;
         case Token::TOKEN_ASSIGNMENT: lhs << "TOKEN_ASSIGNMENT"; break;
         case Token::TOKEN_FUNCTOR: lhs << "TOKEN_FUNCTOR"; break;
-        case Token::TOKEN_NUMBER: lhs << "TOKEN_NUMBER"; break;
+        case Token::TOKEN_INT_LITERAL: lhs << "TOKEN_INT_LITERAL"; break;
+        case Token::TOKEN_REAL_LITERAL: lhs << "TOKEN_REAL_LITERAL"; break;
         case Token::TOKEN_FUNC: lhs << "TOKEN_FUNC"; break;
         case Token::TOKEN_END: lhs << "TOKEN_END"; break;
         case Token::TOKEN_IF: lhs << "TOKEN_IF"; break;
@@ -56,7 +57,10 @@ std::ostream &operator<<(std::ostream &lhs,const Token::typeEnum e) {
         case Token::TOKEN_LEQ: lhs << "TOKEN_LEQ"; break;
         case Token::TOKEN_GREAT: lhs << "TOKEN_GREAT"; break;
         case Token::TOKEN_GEQ: lhs << "TOKEN_GEQ"; break;
-
+        case Token::TOKEN_INCREMENT: lhs << "TOKEN_INCREMENT"; break;
+        case Token::TOKEN_READINT: lhs << "TOKEN_READINT"; break;
+        case Token::TOKEN_READREAL: lhs << "TOKEN_READREAL"; break;
+        case Token::TOKEN_READSTRING: lhs << "TOKEN_READSTRING"; break;
     }
     return lhs;
 }

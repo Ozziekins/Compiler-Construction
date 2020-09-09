@@ -42,11 +42,6 @@ public:
     Token getNextToken();
 
 private:
-
-//TODO ADD THOSE
-//    std::vector<std::string> keywords = { "readInt", "readReal","readString"};
-//    std::vector<std::string> operators = {"+="};
-
     std::map<std::string ,Token::typeEnum> specialCharMappings ={
             {";", Token::TOKEN_SEMI},
             {"(", Token::TOKEN_LPAREN},
@@ -93,6 +88,10 @@ private:
             {"<=",Token::TOKEN_LEQ},
             {">",Token::TOKEN_GREAT},
             {"=>",Token::TOKEN_GEQ},
+            {"+=",Token::TOKEN_INCREMENT},
+            {"readString",Token::TOKEN_READSTRING},
+            {"readReal",Token::TOKEN_READINT},
+            {"readInt",Token::TOKEN_READREAL}
     };
 };
 

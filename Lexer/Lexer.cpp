@@ -56,7 +56,6 @@ Token Lexer::readLiteral() {
 
     //Reading numbers
     if (isdigit(currentChar)) {
-
         bool dot_encountered = false;
 
         while (isdigit(currentChar) || //TODO check in fthis line can cause segfaults!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -70,7 +69,12 @@ Token Lexer::readLiteral() {
             advance();
         }
 
-        finalToken = Token(Token::TOKEN_NUMBER, tokenValue, currentLine, currentPosOnLine - 1); //TODO check -1
+
+
+        if (dot_encountered)
+            finalToken = Token(Token::TOKEN_REAL_LITERAL, tokenValue, currentLine, currentPosOnLine - tokenValue.length());
+        else
+            finalToken = Token(Token::TOKEN_INT_LITERAL, tokenValue, currentLine, currentPosOnLine - tokenValue.length()); //TODO check -1
     }
     //For actual strings
     else {
