@@ -2,6 +2,8 @@ Build Grammar with (make sure you have bison version >= 3.0)
 ```
 ~$ bison -d grammar.yy
 ```
+This creates two files ``grammar.tab.cc`` and ``grammar.tab.hh``
+
 
 create executable using 
 ```
