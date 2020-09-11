@@ -88,95 +88,7 @@
 #  endif
 # endif
 
-
-/* Debug traces.  */
-#ifndef YYDEBUG
-# define YYDEBUG 0
-#endif
-#if YYDEBUG
-extern int yydebug;
-#endif
-
-/* Token kinds.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-  enum yytokentype
-  {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    TOKEN_ASSIGNMENT = 258,        /* TOKEN_ASSIGNMENT  */
-    TOKEN_FUNCTOR = 259,           /* TOKEN_FUNCTOR  */
-    TOKEN_EOF = 260,               /* TOKEN_EOF  */
-    TOKEN_UNKNOWN = 261,           /* TOKEN_UNKNOWN  */
-    TOKEN_IDENTIFIER = 262,        /* TOKEN_IDENTIFIER  */
-    TOKEN_INT_LITERAL = 263,       /* TOKEN_INT_LITERAL  */
-    TOKEN_REAL_LITERAL = 264,      /* TOKEN_REAL_LITERAL  */
-    TOKEN_STRING_LITERAL = 265,    /* TOKEN_STRING_LITERAL  */
-    TOKEN_TRUE = 266,              /* TOKEN_TRUE  */
-    TOKEN_FALSE = 267,             /* TOKEN_FALSE  */
-    TOKEN_FUNC = 268,              /* TOKEN_FUNC  */
-    TOKEN_END = 269,               /* TOKEN_END  */
-    TOKEN_IF = 270,                /* TOKEN_IF  */
-    TOKEN_THEN = 271,              /* TOKEN_THEN  */
-    TOKEN_ELSE = 272,              /* TOKEN_ELSE  */
-    TOKEN_PRINT = 273,             /* TOKEN_PRINT  */
-    TOKEN_RETURN = 274,            /* TOKEN_RETURN  */
-    TOKEN_LOOP = 275,              /* TOKEN_LOOP  */
-    TOKEN_VAR = 276,               /* TOKEN_VAR  */
-    TOKEN_WHILE = 277,             /* TOKEN_WHILE  */
-    TOKEN_FOR = 278,               /* TOKEN_FOR  */
-    TOKEN_IN = 279,                /* TOKEN_IN  */
-    TOKEN_AND = 280,               /* TOKEN_AND  */
-    TOKEN_OR = 281,                /* TOKEN_OR  */
-    TOKEN_XOR = 282,               /* TOKEN_XOR  */
-    TOKEN_NOT = 283,               /* TOKEN_NOT  */
-    TOKEN_IS = 284,                /* TOKEN_IS  */
-    TOKEN_EMPTY = 285,             /* TOKEN_EMPTY  */
-    TOKEN_INT = 286,               /* TOKEN_INT  */
-    TOKEN_REAL = 287,              /* TOKEN_REAL  */
-    TOKEN_BOOL = 288,              /* TOKEN_BOOL  */
-    TOKEN_STRING = 289,            /* TOKEN_STRING  */
-    TOKEN_LPAREN = 290,            /* TOKEN_LPAREN  */
-    TOKEN_RPAREN = 291,            /* TOKEN_RPAREN  */
-    TOKEN_LSQUARE = 292,           /* TOKEN_LSQUARE  */
-    TOKEN_RSQUARE = 293,           /* TOKEN_RSQUARE  */
-    TOKEN_LCURLY = 294,            /* TOKEN_LCURLY  */
-    TOKEN_RCURLY = 295,            /* TOKEN_RCURLY  */
-    TOKEN_SEMI = 296,              /* TOKEN_SEMI  */
-    TOKEN_COMMA = 297,             /* TOKEN_COMMA  */
-    TOKEN_DOT = 298,               /* TOKEN_DOT  */
-    TOKEN_PLUS = 299,              /* TOKEN_PLUS  */
-    TOKEN_MINUS = 300,             /* TOKEN_MINUS  */
-    TOKEN_MULT = 301,              /* TOKEN_MULT  */
-    TOKEN_DIV = 302,               /* TOKEN_DIV  */
-    TOKEN_EQUAL = 303,             /* TOKEN_EQUAL  */
-    TOKEN_NEQ = 304,               /* TOKEN_NEQ  */
-    TOKEN_LESS = 305,              /* TOKEN_LESS  */
-    TOKEN_LEQ = 306,               /* TOKEN_LEQ  */
-    TOKEN_GREAT = 307,             /* TOKEN_GREAT  */
-    TOKEN_GEQ = 308,               /* TOKEN_GEQ  */
-    TOKEN_INCREMENT = 309,         /* TOKEN_INCREMENT  */
-    TOKEN_READINT = 310,           /* TOKEN_READINT  */
-    TOKEN_READREAL = 311,          /* TOKEN_READREAL  */
-    TOKEN_READSTRING = 312         /* TOKEN_READSTRING  */
-  };
-  typedef enum yytokentype yytoken_kind_t;
-#endif
-
-/* Value type.  */
-#if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
-# define YYSTYPE_IS_TRIVIAL 1
-# define YYSTYPE_IS_DECLARED 1
-#endif
-
-
-
-int yyparse (void);
-
-
+#include "grammar.tab.hh"
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -283,7 +195,7 @@ typedef enum yysymbol_kind_t yysymbol_kind_t;
     int yylex (YYSTYPE *lvalp);
     void yyerror(const char *error);
 
-#line 287 "grammar.tab.cc"
+#line 199 "grammar.tab.cc"
 
 #ifdef short
 # undef short
@@ -1374,7 +1286,7 @@ yyreduce:
   switch (yyn)
     {
 
-#line 1378 "grammar.tab.cc"
+#line 1290 "grammar.tab.cc"
 
       default: break;
     }
