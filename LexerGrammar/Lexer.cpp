@@ -159,7 +159,7 @@ Token Lexer::readUntilTokenDetected() {
 
         //This is to complete reading some tokens without implementing going back
         if (nextChar == ' ' || nextChar == '\n' || nextChar == '\0' || isalnum(nextChar) || nextChar == ';'
-            || nextChar == ']' || nextChar == '}' || nextChar == ')')
+            || nextChar == ']' || nextChar == '}' || nextChar == ')' || nextChar == '"')
             break;
         else
             advance();
