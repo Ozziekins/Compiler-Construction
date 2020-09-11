@@ -125,8 +125,7 @@ Unary : Primary
       | TOKEN_NOT Primary TOKEN_IS TypeIndicator            
       | Primary TOKEN_IS TypeIndicator                      
       ;
-Primary : TOKEN_IDENTIFIER Tails                
-        | Literal
+Primary : TOKEN_IDENTIFIER Tails
         | TOKEN_READINT
         | TOKEN_READREAL
         | TOKEN_READSTRING
@@ -153,7 +152,7 @@ Expressions : Expression
             | Expression TOKEN_COMMA Expressions      
             ;
 Return : TOKEN_RETURN Expression TOKEN_SEMI               
-       | TOKEN_RETURN                           
+       | TOKEN_RETURN TOKEN_SEMI                          
        ;
 If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END        
    | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      
