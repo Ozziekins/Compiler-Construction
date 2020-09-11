@@ -1,20 +1,10 @@
-var temp := [0, 0, 0]
-var new := []; // empty array declaration 
-var array := temp + new 
-print ("Array before insertion : ");
-for i in array
-    loop
-        print i;
-    end 
-  
-// adding elements
-array[4] := 55.5;
-array[5] := 7*9;
-array[6] := "experience";
-array[7] := [5, 4];
-  
-print "Array after insertion : ";
-for i in array
-    loop
-        print i;
-    end  
+var factorial := func (n) is 
+    if n = 0 then		// Brackets are omitted intentionally
+    	return 1;
+    else
+        return n * factorial(n - 1);
+    end
+end;
+var lambdafunc := func( x ) => x/1.4;
+
+print  lambdafunc( factorial( 4 ) ) , " The output should be 24/1.4 ~= 17,142";

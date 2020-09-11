@@ -31,14 +31,12 @@ public:
 
         this->currentLine = 1;
         this->currentPosOnLine = 1;
-        std::cout << contents;
         //Deleting all comments in advance
         int found, endl;
         while ( ( found = contents.find("//") ) != std::string::npos){
             endl = contents.find('\n', found);
             contents.replace(found, endl-found,"");
         }
-        std::cout << contents;
         
     }
     Token getNextToken();

@@ -83,9 +83,9 @@
 %token TOKEN_READSTRING
 
 %%
-Program : Body                              //{$$}
+Program : Body                              
         ;
-Body : /* empty */                              //{$$ = null; }
+Body : /* empty */                              
      | Declaration Body                         
      | Statement Body                           
      | Expression Body                          
@@ -93,96 +93,96 @@ Body : /* empty */                              //{$$ = null; }
 Declaration : TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI                                 
             | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI     
             ;
-Expression : Relation                           //{$$}
-           | Relation TOKEN_AND Relation        //{$$ = $1 && $3; }
-           | Relation TOKEN_OR Relation         //{$$ = $1 || $3; }
-           | Relation TOKEN_XOR Relation        //{$$ = xor($1, $3); }
+Expression : Relation                           
+           | Relation TOKEN_AND Relation        
+           | Relation TOKEN_OR Relation         
+           | Relation TOKEN_XOR Relation         
            ;
-Relation : Factor                               //{$$}
-         | Factor TOKEN_LESS Factor             //{$$ = $1 < $3; }
-         | Factor TOKEN_LEQ Factor              //{$$ = $1 <= $3; }
-         | Factor TOKEN_GREAT Factor            //{$$ = $1 > $3; }
-         | Factor TOKEN_GEQ Factor              //{$$ = $1 >= $3; }
-         | Factor TOKEN_EQUAL Factor            //{$$ = $1 == $3; }
-         | Factor TOKEN_NEQ Factor              //{$$ = $1 != $3; }
+Relation : Factor                               
+         | Factor TOKEN_LESS Factor             
+         | Factor TOKEN_LEQ Factor              
+         | Factor TOKEN_GREAT Factor            
+         | Factor TOKEN_GEQ Factor              
+         | Factor TOKEN_EQUAL Factor            
+         | Factor TOKEN_NEQ Factor              
          ;
-Factor : Term                                   //{$$}
-       | Term TOKEN_PLUS Factor                 //{$$ = $1 + $3; }
-       | Term TOKEN_MINUS Factor                //{$$ = $1 - $3; }
+Factor : Term                                   
+       | Term TOKEN_PLUS Factor                 
+       | Term TOKEN_MINUS Factor                
        ;
-Term : Unary                                    //{$$}
-     | Unary TOKEN_MULT Term                    //{$$ = $1 * $3; }
-     | Unary TOKEN_DIV Term                     //{$$ = $1 / $3; }
+Term : Unary                                    
+     | Unary TOKEN_MULT Term                    
+     | Unary TOKEN_DIV Term                     
      ;
-Unary : Primary                                 //{$$}
-      | TOKEN_PLUS Primary                      //{$$ = + $2; }
-      | TOKEN_MINUS Primary                     //{$$ = - $2; }
-      | TOKEN_NOT Primary                       //{$$ = ! $2; }
-      | Literal                                 //{$$}
-      | TOKEN_LPAREN Expression TOKEN_RPAREN    //{( $2 ); }
-      | TOKEN_PLUS Primary TOKEN_IS TypeIndicator           //{type(+$2); }
-      | TOKEN_MINUS Primary TOKEN_IS TypeIndicator          //{type(-$2); }
-      | TOKEN_NOT Primary TOKEN_IS TypeIndicator            //{!type($2); }
-      | Primary TOKEN_IS TypeIndicator                      //{type($2); }
+Unary : Primary                                 
+      | TOKEN_PLUS Primary                      
+      | TOKEN_MINUS Primary                     
+      | TOKEN_NOT Primary                       
+      | Literal                                 
+      | TOKEN_LPAREN Expression TOKEN_RPAREN    
+      | TOKEN_PLUS Primary TOKEN_IS TypeIndicator           
+      | TOKEN_MINUS Primary TOKEN_IS TypeIndicator          
+      | TOKEN_NOT Primary TOKEN_IS TypeIndicator            
+      | Primary TOKEN_IS TypeIndicator                      
       ;
-Primary : TOKEN_IDENTIFIER Tails                //{$$ = $1 $2; }
+Primary : TOKEN_IDENTIFIER Tails                
         | Literal
         | TOKEN_READINT
         | TOKEN_READREAL
         | TOKEN_READSTRING
         ;
-Tails : /* empty */                             //{$$ = null; }
-        | Tail Tails                           //{$$ = $1 $2; }
+Tails : /* empty */                             
+        | Tail Tails                           
         ;
-Tail : TOKEN_DOT TOKEN_INT_LITERAL                   //{$$ = $1 $2; }
-     | TOKEN_DOT TOKEN_IDENTIFIER               //{$$ = $1 $2; }
-     | TOKEN_LSQUARE Expression TOKEN_RSQUARE   //{$$ = [ $2 ]; }
-     | TOKEN_LPAREN Expressions TOKEN_RPAREN    //{$$ = ( $2 ); }//Add support for tuples
+Tail : TOKEN_DOT TOKEN_INT_LITERAL                   
+     | TOKEN_DOT TOKEN_IDENTIFIER               
+     | TOKEN_LSQUARE Expression TOKEN_RSQUARE   
+     | TOKEN_LPAREN Expressions TOKEN_RPAREN    
      ;
-Statement : Assignment                         //{$$}
-          | Print                              //{$$}
-          | Return                             //{$$}
-          | If                                 //{$$}
-          | Loop                               //{$$}
+Statement : Assignment                         
+          | Print                              
+          | Return                             
+          | If                                 
+          | Loop                               
           ;
-Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI      //{$$ = $1 = $3; }
+Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI      
            ;
-Print : TOKEN_PRINT Expressions TOKEN_SEMI                //{$$ = printf("%s", $2); }
+Print : TOKEN_PRINT Expressions TOKEN_SEMI                
       ;
-Expressions : Expression                        //{$$}
-            | Expression TOKEN_COMMA Expressions      //{$$ = $1, $3; }
+Expressions : Expression                        
+            | Expression TOKEN_COMMA Expressions      
             ;
-Return : TOKEN_RETURN Expression TOKEN_SEMI               //{$$ = return $2; }
-       | TOKEN_RETURN                           //{$$ = return; }
+Return : TOKEN_RETURN Expression TOKEN_SEMI               
+       | TOKEN_RETURN                           
        ;
-If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END        //{$$ = if($2) {$4}; }
-   | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      //{$$ = if($2) {$4} else {$6}; }
+If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END        
+   | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      
    ;
-Loop : TOKEN_WHILE Expression LoopBody          //{$$ = while_loop($2, $3); }
-     | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody             //{$$ = for_loop($2, $4, $5); }
+Loop : TOKEN_WHILE Expression LoopBody          
+     | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody             
      ;
-LoopBody : TOKEN_LOOP Body TOKEN_END            //{$$ = $1 $2 $3; }
+LoopBody : TOKEN_LOOP Body TOKEN_END            
          ;
-TypeIndicator : TOKEN_INT                       //{$$}
-              | TOKEN_REAL                      //{$$}
-              | TOKEN_BOOL                      //{$$}
-              | TOKEN_STRING                    //{$$}
-              | TOKEN_EMPTY                     //{$$}
-              | ArrayLiteral                    //{$$}
-              | TupleLiteral                    //{$$}
-              | TOKEN_FUNC                      //{$$}
+TypeIndicator : TOKEN_INT                       
+              | TOKEN_REAL                      
+              | TOKEN_BOOL                      
+              | TOKEN_STRING                    
+              | TOKEN_EMPTY                     
+              | ArrayLiteral                    
+              | TupleLiteral                    
+              | TOKEN_FUNC                      
               ;
-Literal : TOKEN_INT_LITERAL                     //{$$}
-        | TOKEN_REAL_LITERAL                    //{$$}
-        | TOKEN_TRUE                            //{$$}
-        | TOKEN_FALSE                           //{$$}
-        | TOKEN_STRING_LITERAL                  //{$$}
-        | ArrayLiteral                          //{$$}
+Literal : TOKEN_INT_LITERAL                     
+        | TOKEN_REAL_LITERAL                    
+        | TOKEN_TRUE                            
+        | TOKEN_FALSE                           
+        | TOKEN_STRING_LITERAL                  
+        | ArrayLiteral                          
         | TupleLiteral
-        | FunctionLiteral                          //{$$}
+        | FunctionLiteral                          
         ;
-ArrayLiteral : TOKEN_LSQUARE TOKEN_RSQUARE      //{$$ = [ ]; }
-             | TOKEN_LSQUARE Expressions TOKEN_RSQUARE      //{$$ = [ $2 ]; }
+ArrayLiteral : TOKEN_LSQUARE TOKEN_RSQUARE      
+             | TOKEN_LSQUARE Expressions TOKEN_RSQUARE      
              ;
 TupleLiteral : TOKEN_LCURLY TOKEN_RCURLY
              | TOKEN_LCURLY TOKEN_IDENTIFIER TupleTail
@@ -195,12 +195,12 @@ TupleTail : TOKEN_RCURLY
 FunctionLiteral : TOKEN_FUNC FunBody            
                 | TOKEN_FUNC Parameters FunBody 
                 ;
-Parameters : TOKEN_LPAREN Identifiers TOKEN_RPAREN        //{$$ = ( $2 ); }
+Parameters : TOKEN_LPAREN Identifiers TOKEN_RPAREN        
            ;
-Identifiers : TOKEN_IDENTIFIER                  //{$$}
-            | TOKEN_IDENTIFIER TOKEN_COMMA Identifiers            //{$$ = $1, $3; }
-FunBody : TOKEN_IS Body TOKEN_END               //{$$ = { $2 }; }
-        | TOKEN_FUNCTOR Expression              //{$$ = {return $2;}; }
+Identifiers : TOKEN_IDENTIFIER                  
+            | TOKEN_IDENTIFIER TOKEN_COMMA Identifiers            
+FunBody : TOKEN_IS Body TOKEN_END               
+        | TOKEN_FUNCTOR Expression              
         ;
 
 %%
@@ -210,7 +210,7 @@ std::vector<Token>::iterator it;
 int main(int argc, char *argv[]) {
     
     if(argc==1) {
-        printf("\nRun with filename: ./a.out <source_file>");
+        printf("\nRun with source file: ./a.out <source_file>");
         exit(0);
     } else if(argc==2) { 
         srcInput = argv[1];
