@@ -1,15 +1,20 @@
-var testArray := [1];
-var weirdStruct := {testArray};
-
-var test := 122222.12222222222.2;
-weirdStruct := weirdStruct + {test} ;// Now it should be like this { Array, Array size }
-
-var i = (50000-4000);
-while ( i < 10/2 ) loop
-     test.1 := test.1 + test.1;
-     test.2 := test.2 + 1;
-
-     i += 1;
-end;
-
-print "Array is" test.1, "While size is ", test.2; // Allow printing of arrays???
+var temp := [0, 0, 0]
+var new := []; // empty array declaration 
+var array := temp + new 
+print ("Array before insertion : ");
+for i in array
+    loop
+        print i;
+    end 
+  
+// adding elements
+array[4] := 55.5;
+array[5] := 7*9;
+array[6] := "experience";
+array[7] := [5, 4];
+  
+print "Array after insertion : ";
+for i in array
+    loop
+        print i;
+    end  

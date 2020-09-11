@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Token.h"
+#include <iostream>
 
 class Lexer {
     //List of various tokens
@@ -30,69 +31,70 @@ public:
 
         this->currentLine = 1;
         this->currentPosOnLine = 1;
-
+        std::cout << contents;
         //Deleting all comments in advance
         int found, endl;
         while ( ( found = contents.find("//") ) != std::string::npos){
             endl = contents.find('\n', found);
             contents.replace(found, endl-found,"");
         }
-
+        std::cout << contents;
+        
     }
     Token getNextToken();
     std::vector<Token> getTokenList();
 
 private:
-    std::map<std::string ,Token::typeEnum> specialCharMappings = {
-            {";", Token::TOKEN_SEMI},
-            {"(", Token::TOKEN_LPAREN},
-            {")", Token::TOKEN_RPAREN},
-            {"[", Token::TOKEN_LSQUARE},
-            {"]", Token::TOKEN_RSQUARE},
-            {"{", Token::TOKEN_LCURLY},
-            {"}", Token::TOKEN_RCURLY},
-            {",", Token::TOKEN_COMMA},
-            {":=",Token::TOKEN_ASSIGNMENT},
-            {"=>",Token::TOKEN_FUNCTOR},
-            {"func",Token::TOKEN_FUNC},
-            {"end",Token::TOKEN_END},
-            {"if",Token::TOKEN_IF},
-            {"then",Token::TOKEN_THEN},
-            {"else",Token::TOKEN_ELSE},
-            {"print",Token::TOKEN_PRINT},
-            {"return",Token::TOKEN_RETURN},
-            {"loop",Token::TOKEN_LOOP},
-            {"var",Token::TOKEN_VAR},
-            {"while",Token::TOKEN_WHILE},
-            {"for",Token::TOKEN_FOR},
-            {"in",Token::TOKEN_IN},
-            {"and",Token::TOKEN_AND},
-            {"or",Token::TOKEN_OR},
-            {"xor",Token::TOKEN_XOR},
-            {"not",Token::TOKEN_NOT},
-            {"empty",Token::TOKEN_EMPTY},
-            {"int",Token::TOKEN_INT},
-            {"real",Token::TOKEN_REAL},
-            {"bool",Token::TOKEN_BOOL},
-            {"string",Token::TOKEN_STRING},
-            {"true",Token::TOKEN_TRUE},
-            {"false",Token::TOKEN_FALSE},
-            {"is",Token::TOKEN_IS},
-            {".",Token::TOKEN_DOT},
-            {"+",Token::TOKEN_PLUS},
-            {"-",Token::TOKEN_MINUS},
-            {"*",Token::TOKEN_MULT},
-            {"/",Token::TOKEN_DIV},
-            {"=",Token::TOKEN_EQUAL},
-            {"/=",Token::TOKEN_NEQ},
-            {"<",Token::TOKEN_LESS},
-            {"<=",Token::TOKEN_LEQ},
-            {">",Token::TOKEN_GREAT},
-            {"=>",Token::TOKEN_GEQ},
-            {"+=",Token::TOKEN_INCREMENT},
-            {"readString",Token::TOKEN_READSTRING},
-            {"readReal",Token::TOKEN_READINT},
-            {"readInt",Token::TOKEN_READREAL}
+    std::map<std::string ,yytoken_kind_t> specialCharMappings = {
+            {";", TOKEN_SEMI},
+            {"(", TOKEN_LPAREN},
+            {")", TOKEN_RPAREN},
+            {"[", TOKEN_LSQUARE},
+            {"]", TOKEN_RSQUARE},
+            {"{", TOKEN_LCURLY},
+            {"}", TOKEN_RCURLY},
+            {",", TOKEN_COMMA},
+            {":=",TOKEN_ASSIGNMENT},
+            {"=>",TOKEN_FUNCTOR},
+            {"func",TOKEN_FUNC},
+            {"end",TOKEN_END},
+            {"if",TOKEN_IF},
+            {"then",TOKEN_THEN},
+            {"else",TOKEN_ELSE},
+            {"print",TOKEN_PRINT},
+            {"return",TOKEN_RETURN},
+            {"loop",TOKEN_LOOP},
+            {"var",TOKEN_VAR},
+            {"while",TOKEN_WHILE},
+            {"for",TOKEN_FOR},
+            {"in",TOKEN_IN},
+            {"and",TOKEN_AND},
+            {"or",TOKEN_OR},
+            {"xor",TOKEN_XOR},
+            {"not",TOKEN_NOT},
+            {"empty",TOKEN_EMPTY},
+            {"int",TOKEN_INT},
+            {"real",TOKEN_REAL},
+            {"bool",TOKEN_BOOL},
+            {"string",TOKEN_STRING},
+            {"true",TOKEN_TRUE},
+            {"false",TOKEN_FALSE},
+            {"is",TOKEN_IS},
+            {".",TOKEN_DOT},
+            {"+",TOKEN_PLUS},
+            {"-",TOKEN_MINUS},
+            {"*",TOKEN_MULT},
+            {"/",TOKEN_DIV},
+            {"=",TOKEN_EQUAL},
+            {"/=",TOKEN_NEQ},
+            {"<",TOKEN_LESS},
+            {"<=",TOKEN_LEQ},
+            {">",TOKEN_GREAT},
+            {"=>",TOKEN_GEQ},
+            {"+=",TOKEN_INCREMENT},
+            {"readString",TOKEN_READSTRING},
+            {"readReal",TOKEN_READINT},
+            {"readInt",TOKEN_READREAL}
     };
 };
 

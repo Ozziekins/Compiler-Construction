@@ -126,6 +126,10 @@ Unary : Primary                                 //{$$}
       | Primary TOKEN_IS TypeIndicator                      //{type($2); }
       ;
 Primary : TOKEN_IDENTIFIER Tails                //{$$ = $1 $2; }
+        | Literal
+        | TOKEN_READINT
+        | TOKEN_READREAL
+        | TOKEN_READSTRING
         ;
 Tails : /* empty */                             //{$$ = null; }
         | Tail Tails                           //{$$ = $1 $2; }
@@ -141,17 +145,17 @@ Statement : Assignment                         //{$$}
           | If                                 //{$$}
           | Loop                               //{$$}
           ;
-Assignment : Primary TOKEN_ASSIGNMENT Expression      //{$$ = $1 = $3; }
+Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI      //{$$ = $1 = $3; }
            ;
-Print : TOKEN_PRINT Expressions                 //{$$ = printf("%s", $2); }
+Print : TOKEN_PRINT Expressions TOKEN_SEMI                //{$$ = printf("%s", $2); }
       ;
 Expressions : Expression                        //{$$}
             | Expression TOKEN_COMMA Expressions      //{$$ = $1, $3; }
             ;
-Return : TOKEN_RETURN Expression                //{$$ = return $2; }
+Return : TOKEN_RETURN Expression TOKEN_SEMI               //{$$ = return $2; }
        | TOKEN_RETURN                           //{$$ = return; }
        ;
-If : TOKEN_IF Expression TOKEN_THEN Body        //{$$ = if($2) {$4}; }
+If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END        //{$$ = if($2) {$4}; }
    | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      //{$$ = if($2) {$4} else {$6}; }
    ;
 Loop : TOKEN_WHILE Expression LoopBody          //{$$ = while_loop($2, $3); }
@@ -219,12 +223,13 @@ int main(int argc, char *argv[]) {
     std::string str;
 
     while(getline(sourceFile, str)){
-        sourceCode += str; // reading data
+        sourceCode += (str + "\n"); // reading data
     }
     sourceFile.close();
-
+    
     Lexer sas = Lexer(sourceCode);
-    while (sas.getNextToken().type != Token::TOKEN_EOF);
+    
+    while (sas.getNextToken().type != YYEOF);
     list = sas.getTokenList();
     return yyparse();
 }
@@ -233,9 +238,22 @@ void yyerror(const char *error){
     std::cout << error << std::endl;
 }
 
+
+
 int yylex (YYSTYPE *lvalp) {
   it = list.begin();
   unsigned int _type = (*it).type;
+  std::string _value = (*it).value;
+  unsigned int _lineNo = (*it).line;
+  unsigned int _column = (*it).position;
+  if (_type == YYEOF) {
+    return YYEOF;
+  }
+  if (_type == YYUNDEF) {
+    std::cout << _type << " Undefined token " << _value << std::endl;
+    return _type;
+  }
   list.erase(it);
+  std::cout << _type << " - " << _value << " [ " << _lineNo << ", " << _column << " ] " << std::endl;
   return _type;
 }

@@ -1,12 +1,13 @@
 #include "Lexer.h"
 #include "iostream"
 #include <algorithm>
+extern void yyerror(const char *);
 
 //Advance one character
 void Lexer::advance() {
 
     //To properly display new line and position on it
-    if (currentChar == '\n') {
+    if (currentChar == '\n' || currentChar == 10) {
         currentPosOnLine = 0;
         currentLine++;
     }
@@ -23,7 +24,7 @@ void Lexer::advance() {
         currentChar = contents[currentIndex];
 
     } else {
-        std::cout << "Something is wrong when advancing!??\n";
+        yyerror("Something went wrong while advancing.\n");
     }
 }
 
@@ -44,7 +45,7 @@ Token Lexer::getNextToken() {
         else
             return registerToken();
     }
-    Token token_null = Token(Token::TOKEN_EOF, "NULL (END)", currentLine, currentPosOnLine);
+    Token token_null = Token(YYEOF, "NULL (END)", currentLine, currentPosOnLine);
     tokenList.push_back(token_null);
     return token_null; //This can only happen in the end?
 }
@@ -73,12 +74,12 @@ Token Lexer::readLiteral() {
 
 
         if (dot_encountered){
-            Token token = Token(Token::TOKEN_REAL_LITERAL, tokenValue, currentLine, currentPosOnLine - tokenValue.length());
+            Token token = Token(TOKEN_REAL_LITERAL, tokenValue, currentLine, currentPosOnLine - tokenValue.length());
             tokenList.push_back(token);
             finalToken = token;
         }
         else{
-            Token token = Token(Token::TOKEN_INT_LITERAL, tokenValue, currentLine, currentPosOnLine - tokenValue.length());
+            Token token = Token(TOKEN_INT_LITERAL, tokenValue, currentLine, currentPosOnLine - tokenValue.length());
             tokenList.push_back(token);
             finalToken = token; //TODO check -1
         }
@@ -96,7 +97,7 @@ Token Lexer::readLiteral() {
         tokenValue = contents.substr(currentIndex, stringLength);
 
         //Saving result now; so that we won't have problems because of moving forward in the source code
-        Token token = Token(Token::TOKEN_STRING_LITERAL, tokenValue, currentLine, currentPosOnLine - 1);
+        Token token = Token(TOKEN_STRING_LITERAL, tokenValue, currentLine, currentPosOnLine - 1);
         tokenList.push_back(token);
         finalToken = token;
 
@@ -124,7 +125,7 @@ Token Lexer::readIdentifier() {
         return token;
     }
     else {
-        Token token = Token(Token::TOKEN_IDENTIFIER, unknownTokenValue, currentLine, currentPosOnLine - unknownTokenValue.length());
+        Token token = Token(TOKEN_IDENTIFIER, unknownTokenValue, currentLine, currentPosOnLine - unknownTokenValue.length());
         tokenList.push_back(token);
         return token;
     }
@@ -169,8 +170,8 @@ Token Lexer::readUntilTokenDetected() {
         return token;
     }
     else {
-        std::cout << "\n\n READ A STRANGE THING \n \n";
-        Token token = Token(Token::TOKEN_UNKNOWN, unknownTokenValue, currentLine, tokenStart);
+        yyerror("\nREAD SOMETHING STRANGE\n");
+        Token token = Token(YYUNDEF, unknownTokenValue, currentLine, tokenStart);
         tokenList.push_back(token);
         return token;
     }
