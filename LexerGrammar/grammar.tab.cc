@@ -1285,8 +1285,92 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 10: /* Expression: Relation TOKEN_AND Relation  */
+#line 97 "grammar.yy"
+                                                          {yyval = yyvsp[-2] && yyvsp[0]; }
+#line 1292 "grammar.tab.cc"
+    break;
 
-#line 1290 "grammar.tab.cc"
+  case 11: /* Expression: Relation TOKEN_OR Relation  */
+#line 98 "grammar.yy"
+                                                          {yyval = yyvsp[-2] || yyvsp[0]; }
+#line 1298 "grammar.tab.cc"
+    break;
+
+  case 14: /* Relation: Factor TOKEN_LESS Factor  */
+#line 102 "grammar.yy"
+                                                          {yyval = yyvsp[-2] < yyvsp[0]; }
+#line 1304 "grammar.tab.cc"
+    break;
+
+  case 15: /* Relation: Factor TOKEN_LEQ Factor  */
+#line 103 "grammar.yy"
+                                                          {yyval = yyvsp[-2] <= yyvsp[0]; }
+#line 1310 "grammar.tab.cc"
+    break;
+
+  case 16: /* Relation: Factor TOKEN_GREAT Factor  */
+#line 104 "grammar.yy"
+                                                          {yyval = yyvsp[-2] > yyvsp[0]; }
+#line 1316 "grammar.tab.cc"
+    break;
+
+  case 17: /* Relation: Factor TOKEN_GEQ Factor  */
+#line 105 "grammar.yy"
+                                                          {yyval = yyvsp[-2] >= yyvsp[0]; }
+#line 1322 "grammar.tab.cc"
+    break;
+
+  case 18: /* Relation: Factor TOKEN_EQUAL Factor  */
+#line 106 "grammar.yy"
+                                                          {yyval = yyvsp[-2] == yyvsp[0]; }
+#line 1328 "grammar.tab.cc"
+    break;
+
+  case 19: /* Relation: Factor TOKEN_NEQ Factor  */
+#line 107 "grammar.yy"
+                                                          {yyval = yyvsp[-2] != yyvsp[0]; }
+#line 1334 "grammar.tab.cc"
+    break;
+
+  case 21: /* Factor: Term TOKEN_PLUS Factor  */
+#line 110 "grammar.yy"
+                                                          {yyval = yyvsp[-2] + yyvsp[0]; }
+#line 1340 "grammar.tab.cc"
+    break;
+
+  case 22: /* Factor: Term TOKEN_MINUS Factor  */
+#line 111 "grammar.yy"
+                                                          {yyval = yyvsp[-2] - yyvsp[0]; }
+#line 1346 "grammar.tab.cc"
+    break;
+
+  case 24: /* Term: Unary TOKEN_MULT Term  */
+#line 114 "grammar.yy"
+                                                          {yyval = yyvsp[-2] * yyvsp[0]; }
+#line 1352 "grammar.tab.cc"
+    break;
+
+  case 25: /* Term: Unary TOKEN_DIV Term  */
+#line 115 "grammar.yy"
+                                                          {yyval = yyvsp[-2] / yyvsp[0]; }
+#line 1358 "grammar.tab.cc"
+    break;
+
+  case 37: /* Primary: TOKEN_READINT  */
+#line 129 "grammar.yy"
+                                                            {scanf("%d", &yyvsp[0]); yyval = yyvsp[0]; }
+#line 1364 "grammar.tab.cc"
+    break;
+
+  case 51: /* Assignment: Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI  */
+#line 147 "grammar.yy"
+                                                              {yyval = yyvsp[-3] = yyvsp[-1]; }
+#line 1370 "grammar.tab.cc"
+    break;
+
+
+#line 1374 "grammar.tab.cc"
 
       default: break;
     }
@@ -1485,6 +1569,11 @@ yyreturn:
 std::string srcInput;
 std::vector<Token> list;
 std::vector<Token>::iterator it;
+typedef struct {
+  std::string value;
+  unsigned int line, column;
+} errorfeedback;
+errorfeedback feedback;
 int main(int argc, char *argv[]) {
     
     if(argc==1) {
@@ -1513,7 +1602,9 @@ int main(int argc, char *argv[]) {
 }
 
 void yyerror(const char *error){
-    std::cout << error << std::endl;
+    std::cout << "\n";
+    std::cout << error << " \'"<< feedback.value <<"\' on [" << feedback.line 
+    << ":" << feedback.column << "]\n\n";
 }
 
 
@@ -1524,6 +1615,11 @@ int yylex (YYSTYPE *lvalp) {
   std::string _value = (*it).value;
   unsigned int _lineNo = (*it).line;
   unsigned int _column = (*it).position;
+
+  feedback.value = _value;
+  feedback.line = _lineNo;
+  feedback.column = _column;
+
   if (_type == YYEOF) {
     return YYEOF;
   }
@@ -1532,6 +1628,5 @@ int yylex (YYSTYPE *lvalp) {
     return _type;
   }
   list.erase(it);
-  std::cout << _type << " - " << _value << " [ " << _lineNo << ", " << _column << " ] " << std::endl;
   return _type;
 }

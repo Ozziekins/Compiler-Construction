@@ -85,7 +85,7 @@
 %%
 Program : Body                              
         ;
-Body : /* empty */                              
+Body : /* empty */                                        //{$$ = NULL; }
      | Declaration Body                         
      | Statement Body                           
      | Expression Body                          
@@ -94,25 +94,25 @@ Declaration : TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI
             | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI     
             ;
 Expression : Relation                           
-           | Relation TOKEN_AND Relation        
-           | Relation TOKEN_OR Relation         
-           | Relation TOKEN_XOR Relation         
+           | Relation TOKEN_AND Relation                  {$$ = $1 && $3; }
+           | Relation TOKEN_OR Relation                   {$$ = $1 || $3; }
+           | Relation TOKEN_XOR Relation                  {$$ = ($1 || $3)&&(!$1 || !$3); }
            ;
 Relation : Factor                               
-         | Factor TOKEN_LESS Factor             
-         | Factor TOKEN_LEQ Factor              
-         | Factor TOKEN_GREAT Factor            
-         | Factor TOKEN_GEQ Factor              
-         | Factor TOKEN_EQUAL Factor            
-         | Factor TOKEN_NEQ Factor              
+         | Factor TOKEN_LESS Factor                       {$$ = $1 < $3; }
+         | Factor TOKEN_LEQ Factor                        {$$ = $1 <= $3; }
+         | Factor TOKEN_GREAT Factor                      {$$ = $1 > $3; }
+         | Factor TOKEN_GEQ Factor                        {$$ = $1 >= $3; }
+         | Factor TOKEN_EQUAL Factor                      {$$ = $1 == $3; }
+         | Factor TOKEN_NEQ Factor                        {$$ = $1 != $3; }
          ;
 Factor : Term                                   
-       | Term TOKEN_PLUS Factor                 
-       | Term TOKEN_MINUS Factor                
+       | Term TOKEN_PLUS Factor                           {$$ = $1 + $3; }
+       | Term TOKEN_MINUS Factor                          {$$ = $1 - $3; }
        ;
 Term : Unary                                    
-     | Unary TOKEN_MULT Term                    
-     | Unary TOKEN_DIV Term                     
+     | Unary TOKEN_MULT Term                              {$$ = $1 * $3; }
+     | Unary TOKEN_DIV Term                               {$$ = $1 / $3; }
      ;
 Unary : Primary                                 
       | TOKEN_PLUS Primary                      
@@ -126,11 +126,11 @@ Unary : Primary
       | Primary TOKEN_IS TypeIndicator                      
       ;
 Primary : TOKEN_IDENTIFIER Tails
-        | TOKEN_READINT
-        | TOKEN_READREAL
-        | TOKEN_READSTRING
+        | TOKEN_READINT                                     {scanf("%d", &$1); $$ = $1; }
+        | TOKEN_READREAL                                    //{scanf("%f", &$1); $$ = $1; }
+        | TOKEN_READSTRING                                  //{scanf("%s", $1); $$ = $1; }
         ;
-Tails : /* empty */                             
+Tails : /* empty */                                         //{$$ = NULL; }
         | Tail Tails                           
         ;
 Tail : TOKEN_DOT TOKEN_INT_LITERAL                   
@@ -144,29 +144,29 @@ Statement : Assignment
           | If                                 
           | Loop                               
           ;
-Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI      
+Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI   {$$ = $1 = $3; }   
            ;
 Print : TOKEN_PRINT Expressions TOKEN_SEMI                
       ;
 Expressions : Expression                        
             | Expression TOKEN_COMMA Expressions      
             ;
-Return : TOKEN_RETURN Expression TOKEN_SEMI               
-       | TOKEN_RETURN TOKEN_SEMI                          
+Return : TOKEN_RETURN Expression TOKEN_SEMI                   //{$$ = return $2; }             
+       | TOKEN_RETURN TOKEN_SEMI                              //{$$ = NULL; }  
        ;
-If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END        
-   | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      
+If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END            //{$$ = if_statement($2, $4, NULL); }
+   | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      //{$$ = if_statement($2, $4, $6); }
    ;
-Loop : TOKEN_WHILE Expression LoopBody          
+Loop : TOKEN_WHILE Expression LoopBody                        
      | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody             
      ;
 LoopBody : TOKEN_LOOP Body TOKEN_END            
          ;
-TypeIndicator : TOKEN_INT                       
-              | TOKEN_REAL                      
-              | TOKEN_BOOL                      
-              | TOKEN_STRING                    
-              | TOKEN_EMPTY                     
+TypeIndicator : TOKEN_INT                                     //{$$ = "int";}                   
+              | TOKEN_REAL                                    //{$$ = "float";}
+              | TOKEN_BOOL                                    //{$$ = "bool";}
+              | TOKEN_STRING                                  //{$$ = "string";}
+              | TOKEN_EMPTY                                   //{$$ = "empty";}
               | ArrayLiteral                    
               | TupleLiteral                    
               | TOKEN_FUNC                      
@@ -206,6 +206,11 @@ FunBody : TOKEN_IS Body TOKEN_END
 std::string srcInput;
 std::vector<Token> list;
 std::vector<Token>::iterator it;
+typedef struct {
+  std::string value;
+  unsigned int line, column;
+} errorfeedback;
+errorfeedback feedback;
 int main(int argc, char *argv[]) {
     
     if(argc==1) {
@@ -234,7 +239,9 @@ int main(int argc, char *argv[]) {
 }
 
 void yyerror(const char *error){
-    std::cout << error << std::endl;
+    std::cout << "\n";
+    std::cout << error << " \'"<< feedback.value <<"\' on [" << feedback.line 
+    << ":" << feedback.column << "]\n\n";
 }
 
 
@@ -245,6 +252,11 @@ int yylex (YYSTYPE *lvalp) {
   std::string _value = (*it).value;
   unsigned int _lineNo = (*it).line;
   unsigned int _column = (*it).position;
+
+  feedback.value = _value;
+  feedback.line = _lineNo;
+  feedback.column = _column;
+
   if (_type == YYEOF) {
     return YYEOF;
   }
@@ -253,6 +265,5 @@ int yylex (YYSTYPE *lvalp) {
     return _type;
   }
   list.erase(it);
-  std::cout << _type << " - " << _value << " [ " << _lineNo << ", " << _column << " ] " << std::endl;
   return _type;
 }

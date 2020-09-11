@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     sourceFile.close();
 
     Lexer sas = Lexer(sourceCode);
-    while (sas.getNextToken().type != Token::TOKEN_EOF);
+    while (sas.getNextToken().type != TOKEN_EOF);
 
     std::vector<Token> list = sas.getTokenList();
     for (auto i = list.begin(); i != list.end(); ++i) 

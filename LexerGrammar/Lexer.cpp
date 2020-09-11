@@ -157,7 +157,11 @@ Token Lexer::readUntilTokenDetected() {
         currentChar != '<' && currentChar != '/' && currentChar != '+') {
 
         unknownTokenValue = std::string() + currentChar;
-        return Token(specialCharMappings[unknownTokenValue], unknownTokenValue, currentLine, tokenStart);
+
+        Token token = Token(specialCharMappings[unknownTokenValue], unknownTokenValue, currentLine, tokenStart);
+
+        tokenList.push_back(token);
+        return token;
     }
     //Going until its end if it is not a single char
     else
@@ -181,7 +185,7 @@ Token Lexer::readUntilTokenDetected() {
     } else {
 
 
-        std::cout << "\n\n READ A STRANGE THING \n \n";
+        std::cout << " READ A STRANGE THING\n";
         Token token = Token(TOKEN_UNKNOWN, unknownTokenValue, currentLine, tokenStart);
         tokenList.push_back(token);
         return token;
