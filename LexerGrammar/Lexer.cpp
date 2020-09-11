@@ -155,9 +155,11 @@ Token Lexer::readUntilTokenDetected() {
     while (currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 && !isalnum(currentChar)) {
 
         unknownTokenValue += currentChar; //Concatenate
+        char nextChar = contents[currentIndex + 1];
+
         //This is to complete reading some tokens without implementing going back
-        if (contents[currentIndex + 1] == ' ' || contents[currentIndex + 1] == '\n' ||
-            contents[currentIndex + 1] == '\0' || isalnum(contents[currentIndex + 1]) || contents[currentIndex + 1] == ';')
+        if (nextChar == ' ' || nextChar == '\n' || nextChar == '\0' || isalnum(nextChar) || nextChar == ';'
+            || nextChar == ']' || nextChar == '}' || nextChar == ')')
             break;
         else
             advance();
