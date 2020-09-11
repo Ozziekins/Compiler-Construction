@@ -151,19 +151,26 @@ Token Lexer::readUntilTokenDetected() {
 
     unsigned int tokenStart = currentPosOnLine;
 
-    //Going until its end if it is not a single char
-    while (currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 && !isalnum(currentChar)) {
-
-        unknownTokenValue += currentChar; //Concatenate
-        char nextChar = contents[currentIndex + 1];
-
-        //This is to complete reading some tokens without implementing going back
-        if (nextChar == ' ' || nextChar == '\n' || nextChar == '\0' || isalnum(nextChar) || nextChar == ';'
-            || nextChar == ']' || nextChar == '}' || nextChar == ')' || nextChar == '"')
-            break;
-        else
-            advance();
+    // Collecting PURELY single character tokens
+    if (specialCharMappings.count(std::string() + currentChar) != 0 && currentChar != '+' && currentChar != '=' &&
+        currentChar != '<' && currentChar != '/' && currentChar != '+') {
+        
+        unknownTokenValue = std::string() + currentChar;
+        return Token(specialCharMappings[unknownTokenValue], unknownTokenValue, currentLine, tokenStart);
     }
+    //Going until its end if it is not a single char
+    else
+        while (currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 && !isalnum(currentChar)) {
+
+            unknownTokenValue += currentChar; //Concatenate
+            char nextChar = contents[currentIndex + 1];
+
+            //This is to complete reading some tokens without implementing going back
+            if (nextChar == ' ' || nextChar == '\n' || nextChar == '\0' || isalnum(nextChar) || nextChar == '"')
+                break;
+            else
+                advance();
+        }
 
     //Special case for single characters with identifiers
     if (specialCharMappings.count(std::string() + unknownTokenValue) != 0) {
