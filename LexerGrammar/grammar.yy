@@ -1,5 +1,7 @@
 %require "3.0"
 %define api.pure full
+%define parse.lac full
+%define parse.error verbose
 
 %code {
     #include <fstream>
@@ -10,6 +12,13 @@
     void yyerror(const char *error);
 }
 
+// %union {
+//   std::string string_t;
+//   int integer_t;
+//   float float_t;
+//   unsigned int bool_t;
+//   std::string dataType;
+// }
 
 // Miscellaneous
 %token TOKEN_ASSIGNMENT      //:=
@@ -52,6 +61,8 @@
 %token TOKEN_REAL
 %token TOKEN_BOOL
 %token TOKEN_STRING
+//%token<array_t> TOKEN_ARRAY
+//%token<tuple_t> TOKEN_TUPLE
 
 // Delimiters
 %token TOKEN_LPAREN          // (
@@ -81,6 +92,32 @@
 %token TOKEN_READINT
 %token TOKEN_READREAL
 %token TOKEN_READSTRING
+
+//%type Expression
+// Type declaration
+// %type<integer_t> Expression Relation Factor Term Unary 
+// %type<float_t> Unary
+// %type<string_t> Unary 
+// %type<bool_t> Expression Relation Unary
+//%type <array_t> ArrayLiteral
+//%type <tuple_t> TupleLiteral
+//%type <func_t> FunctionLiteral
+
+// Precedence
+%left TOKEN_COMMA
+%left TOKEN_ASSIGNMENT
+%left TOKEN_OR
+%left TOKEN_AND
+%left TOKEN_XOR
+%left TOKEN_EQUAL TOKEN_NEQ
+%left TOKEN_LEQ TOKEN_LESS TOKEN_GREAT TOKEN_GEQ
+%left TOKEN_PLUS TOKEN_MINUS
+%left TOKEN_MULT TOKEN_DIV
+%right TOKEN_NOT
+%left TOKEN_LPAREN TOKEN_LSQUARE TOKEN_LCURLY TOKEN_DOT
+
+
+%start Program
 
 %%
 Program : Body                              
@@ -144,7 +181,7 @@ Statement : Assignment
           | If                                 
           | Loop                               
           ;
-Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI   {$$ = $1 = $3; }   
+Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI   //{$$ = $1 = $3; }   
            ;
 Print : TOKEN_PRINT Expressions TOKEN_SEMI                
       ;
@@ -235,7 +272,9 @@ int main(int argc, char *argv[]) {
     
     while (sas.getNextToken().type != YYEOF);
     list = sas.getTokenList();
-    return yyparse();
+    yyparse();
+    std::cout << "No Syntax Errors\n";
+    return 0;
 }
 
 void yyerror(const char *error){
