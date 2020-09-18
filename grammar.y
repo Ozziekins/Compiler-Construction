@@ -20,6 +20,27 @@
 %token print
 %token return
 
+
+
+
+%token TOKEN_IDENTIFIER
+%token TOKEN_OPERATOR
+%token TOKEN_LITERAL
+%token TOKEN_LPAREN
+%token TOKEN_RPAREN
+%token TOKEN_LSQUARE
+%token TOKEN_RSQUARE
+%token TOKEN_LCURLY
+%token TOKEN_RCURLY
+%token TOKEN_SEMI
+%token TOKEN_COMMA
+%token TOKEN_EOF
+%token TOKEN_UNKNOWN
+%token TOKEN_KEYWORD
+
+
+
+
 %%
 Program : Program Declaration ';'
         | Program Declaration
