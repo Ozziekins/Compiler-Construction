@@ -98,9 +98,7 @@ else
     else 
         if z > x and z > y then
             if x > y then 
-                print y; // y 
-		
-		minimum
+                print y; // y is minimum
             else 
                 print x; // x is minimum
             end
