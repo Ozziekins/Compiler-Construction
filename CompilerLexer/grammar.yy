@@ -1,14 +1,14 @@
 %require "3.0"
-%define api.pure full
 %define parse.lac full
 %define parse.error verbose
 
 %{
     #include <fstream>
+    #include <stdlib.h>
     #include "Lexer.h"
     #include <sstream>
     #include <iostream>
-    int yylex (YYSTYPE *lvalp);
+    int yylex ();
     void yyerror(const char *error);
     NBlock *programBlock;
 %}
@@ -29,7 +29,7 @@
   int token;
 
   // std::string string_t;
-  // int integer_t;
+  // int integer_t; 
   // float float_t;
   // unsigned int bool_t;
   // std::string dataType;
@@ -134,7 +134,9 @@ Unary : Primary                                 { $$ = $1; }
       | TOKEN_NOT Primary TOKEN_IS TypeIndicator            { $$ = new NTypeCheck($1, *$2, *$4); }
       | Primary TOKEN_IS TypeIndicator                      { $$ = new NTypeCheck(*$1, *$3); }
       ;
-Primary : TOKEN_IDENTIFIER Tail                             { $$ = new NIdentifier(*$1); }
+Primary : //Literal                                           {;}// $$ = $1;} // Had to actually add this one
+        //| TOKEN_LPAREN Expressions TOKEN_RPAREN             {;}// $$ = $2;} // This one as well 
+          TOKEN_IDENTIFIER Tail                             { $$ = new NIdentifier(*$1); }
         | TOKEN_READINT                                     { $$ = new NReadInput(); }
         | TOKEN_READREAL                                    { $$ = new NReadInput(); }
         | TOKEN_READSTRING                                  { $$ = new NReadInput(); }
@@ -177,8 +179,8 @@ TypeIndicator : TOKEN_INT                                     { $$ = $1; }
               | TOKEN_ARRAY                                   { $$ = $1; }
               | TOKEN_TUPLE                                   { $$ = $1; }
               ;
-Literal : TOKEN_INT_LITERAL                                   { $$ = new NInteger(atol($1->c_str())); }
-        | TOKEN_REAL_LITERAL                                  { $$ = new NReal(atof($1->c_str())); }
+Literal : TOKEN_INT_LITERAL                                   { $$ = new NInteger(atol($1->c_str()));}
+        | TOKEN_REAL_LITERAL                                  { $$ = new NReal(atof($1->c_str()));}
         | TOKEN_TRUE                                          { $$ = new NBool(*$1); }
         | TOKEN_FALSE                                         { $$ = new NBool(*$1); }
         | TOKEN_STRING_LITERAL                                { $$ = new NString(*$1); }
@@ -219,6 +221,7 @@ typedef struct {
 errorfeedback feedback;
 int main(int argc, char *argv[]) {
     
+    
     if(argc==1) {
         printf("\nRun with source file: ./a.out <source_file>");
         exit(0);
@@ -226,6 +229,8 @@ int main(int argc, char *argv[]) {
         srcInput = argv[1];
     } 
     
+
+
     //Reading the source code
     std::ifstream sourceFile;
     std::string sourceCode;
@@ -243,7 +248,7 @@ int main(int argc, char *argv[]) {
     list = sas.getTokenList();
     yyparse();
     std::cout << "No Syntax Errors\n";
-    std::cout << programBlock << std::endl;
+    std::cout << "Tree start address: "<<programBlock << std::endl;
     return 0;
 }
 
@@ -255,7 +260,7 @@ void yyerror(const char *error){
 
 
 
-int yylex (YYSTYPE *lvalp) {
+int yylex () {
   it = list.begin();
   unsigned int _type = (*it).type;
   std::string _value = (*it).value;
@@ -265,6 +270,8 @@ int yylex (YYSTYPE *lvalp) {
   feedback.value = _value;
   feedback.line = _lineNo;
   feedback.column = _column;
+
+  yylval.string = new std::string( (*it).value );
 
   if (_type == YYEOF) {
     return YYEOF;

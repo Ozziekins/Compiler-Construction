@@ -119,7 +119,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 17 "grammar.yy"
+#line 16 "grammar.yy"
 
   Node *node;
   NBlock *block;
@@ -136,7 +136,7 @@ union YYSTYPE
   int token;
 
   // std::string string_t;
-  // int integer_t;
+  // int integer_t; 
   // float float_t;
   // unsigned int bool_t;
   // std::string dataType;
@@ -150,6 +150,7 @@ typedef union YYSTYPE YYSTYPE;
 #endif
 
 
+extern YYSTYPE yylval;
 
 int yyparse (void);
 

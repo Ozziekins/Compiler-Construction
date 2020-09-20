@@ -1,1 +1,1 @@
-var name := "name";
+var sas := 1337.22

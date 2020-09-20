@@ -55,7 +55,7 @@
 #define YYSKELETON_NAME "yacc.c"
 
 /* Pure parsers.  */
-#define YYPURE 2
+#define YYPURE 0
 
 /* Push parsers.  */
 #define YYPUSH 0
@@ -67,14 +67,14 @@
 
 
 /* First part of user prologue.  */
-#line 6 "grammar.yy"
+#line 5 "grammar.yy"
 
-    #include "ast_nodes.h"
     #include <fstream>
+    #include <stdlib.h>
     #include "Lexer.h"
     #include <sstream>
     #include <iostream>
-    int yylex (YYSTYPE *lvalp);
+    int yylex ();
     void yyerror(const char *error);
     NBlock *programBlock;
 
@@ -544,16 +544,16 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    93,    93,    95,    96,    97,    99,   100,   101,   103,
-     104,   106,   107,   108,   109,   111,   112,   113,   114,   115,
-     116,   117,   119,   120,   121,   123,   124,   125,   127,   128,
-     129,   130,   131,   132,   133,   134,   135,   136,   138,   139,
-     140,   141,   143,   144,   145,   146,   147,   149,   150,   151,
-     152,   153,   155,   157,   159,   160,   162,   163,   165,   166,
-     168,   169,   171,   173,   174,   175,   176,   177,   178,   179,
-     181,   182,   183,   184,   185,   186,   187,   188,   190,   191,
-     193,   194,   195,   197,   198,   199,   201,   202,   203,   204,
-     206,   208,   209
+       0,    92,    92,    94,    95,    96,    98,    99,   100,   102,
+     103,   105,   106,   107,   108,   110,   111,   112,   113,   114,
+     115,   116,   118,   119,   120,   122,   123,   124,   126,   127,
+     128,   129,   130,   131,   132,   133,   134,   135,   139,   140,
+     141,   142,   144,   145,   146,   147,   148,   150,   151,   152,
+     153,   154,   156,   158,   160,   161,   163,   164,   166,   167,
+     169,   170,   172,   174,   175,   176,   177,   178,   179,   180,
+     182,   183,   184,   185,   186,   187,   188,   189,   191,   192,
+     194,   195,   196,   198,   199,   200,   202,   203,   204,   205,
+     207,   209,   210
 };
 #endif
 
@@ -1515,6 +1515,13 @@ yydestruct (const char *yymsg,
 }
 
 
+/* Lookahead token kind.  */
+int yychar;
+
+/* The semantic value of the lookahead symbol.  */
+YYSTYPE yylval;
+/* Number of syntax errors so far.  */
+int yynerrs;
 
 
 
@@ -1526,19 +1533,6 @@ yydestruct (const char *yymsg,
 int
 yyparse (void)
 {
-/* Lookahead token kind.  */
-int yychar;
-
-
-/* The semantic value of the lookahead symbol.  */
-/* Default value used for initialization, for pacifying older GCCs
-   or non-GCC compilers.  */
-YY_INITIAL_VALUE (static YYSTYPE yyval_default;)
-YYSTYPE yylval YY_INITIAL_VALUE (= yyval_default);
-
-    /* Number of syntax errors so far.  */
-    int yynerrs = 0;
-
     yy_state_fast_t yystate = 0;
     /* Number of tokens to shift before error messages enabled.  */
     int yyerrstatus = 0;
@@ -1698,7 +1692,7 @@ yybackup:
   if (yychar == YYEMPTY)
     {
       YYDPRINTF ((stderr, "Reading a token\n"));
-      yychar = yylex (&yylval);
+      yychar = yylex ();
     }
 
   if (yychar <= YYEOF)
@@ -1793,475 +1787,475 @@ yyreduce:
     switch (yyn)
       {
   case 2: /* Program: Body  */
-#line 93 "grammar.yy"
+#line 92 "grammar.yy"
                                                                  { programBlock = (yyvsp[0].block); }
-#line 1799 "grammar.tab.cc"
+#line 1793 "grammar.tab.cc"
     break;
 
   case 3: /* Body: %empty  */
-#line 95 "grammar.yy"
+#line 94 "grammar.yy"
                                                                  { (yyval.block) = NULL; }
-#line 1805 "grammar.tab.cc"
+#line 1799 "grammar.tab.cc"
     break;
 
   case 4: /* Body: Declaration ProgramBody  */
-#line 96 "grammar.yy"
+#line 95 "grammar.yy"
                                                                  { (yyval.block) = new NBlock(); (yyval.block)->declarations.push_back((yyvsp[-1].declaration)); }
-#line 1811 "grammar.tab.cc"
+#line 1805 "grammar.tab.cc"
     break;
 
   case 5: /* Body: Statement ProgramBody  */
-#line 97 "grammar.yy"
+#line 96 "grammar.yy"
                                                                  { (yyval.block) = new NBlock(); (yyval.block)->statements.push_back((yyvsp[-1].statement)); }
-#line 1817 "grammar.tab.cc"
+#line 1811 "grammar.tab.cc"
     break;
 
   case 6: /* ProgramBody: %empty  */
-#line 99 "grammar.yy"
+#line 98 "grammar.yy"
                                                                  { (yyval.block) = NULL; }
-#line 1823 "grammar.tab.cc"
+#line 1817 "grammar.tab.cc"
     break;
 
   case 7: /* ProgramBody: Declaration ProgramBody  */
-#line 100 "grammar.yy"
+#line 99 "grammar.yy"
                                                                  { (yyval.block)->declarations.push_back((yyvsp[-1].declaration)); }
-#line 1829 "grammar.tab.cc"
+#line 1823 "grammar.tab.cc"
     break;
 
   case 8: /* ProgramBody: Statement ProgramBody  */
-#line 101 "grammar.yy"
+#line 100 "grammar.yy"
                                                                  { (yyval.block)->statements.push_back((yyvsp[-1].statement)); }
-#line 1835 "grammar.tab.cc"
+#line 1829 "grammar.tab.cc"
     break;
 
   case 9: /* Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI  */
-#line 103 "grammar.yy"
+#line 102 "grammar.yy"
                                                                                           { (yyval.declaration) = new NDeclaration(*(yyvsp[-1].string)); }
-#line 1841 "grammar.tab.cc"
+#line 1835 "grammar.tab.cc"
     break;
 
   case 10: /* Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI  */
-#line 104 "grammar.yy"
+#line 103 "grammar.yy"
                                                                                           { (yyval.declaration) = new NDeclaration(*(yyvsp[-3].string), (yyvsp[-1].expression)); }
-#line 1847 "grammar.tab.cc"
+#line 1841 "grammar.tab.cc"
     break;
 
   case 11: /* Expression: Relation  */
-#line 106 "grammar.yy"
+#line 105 "grammar.yy"
                                                           { (yyval.expression) = (yyvsp[0].expression); }
-#line 1853 "grammar.tab.cc"
+#line 1847 "grammar.tab.cc"
     break;
 
   case 12: /* Expression: Relation TOKEN_AND Relation  */
+#line 106 "grammar.yy"
+                                                          { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
+#line 1853 "grammar.tab.cc"
+    break;
+
+  case 13: /* Expression: Relation TOKEN_OR Relation  */
 #line 107 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1859 "grammar.tab.cc"
     break;
 
-  case 13: /* Expression: Relation TOKEN_OR Relation  */
+  case 14: /* Expression: Relation TOKEN_XOR Relation  */
 #line 108 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1865 "grammar.tab.cc"
     break;
 
-  case 14: /* Expression: Relation TOKEN_XOR Relation  */
-#line 109 "grammar.yy"
-                                                          { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
+  case 15: /* Relation: Factor  */
+#line 110 "grammar.yy"
+                                                          { (yyval.expression) = (yyvsp[0].expression); }
 #line 1871 "grammar.tab.cc"
     break;
 
-  case 15: /* Relation: Factor  */
+  case 16: /* Relation: Factor TOKEN_LESS Factor  */
 #line 111 "grammar.yy"
-                                                          { (yyval.expression) = (yyvsp[0].expression); }
+                                                          { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1877 "grammar.tab.cc"
     break;
 
-  case 16: /* Relation: Factor TOKEN_LESS Factor  */
+  case 17: /* Relation: Factor TOKEN_LEQ Factor  */
 #line 112 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1883 "grammar.tab.cc"
     break;
 
-  case 17: /* Relation: Factor TOKEN_LEQ Factor  */
+  case 18: /* Relation: Factor TOKEN_GREAT Factor  */
 #line 113 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1889 "grammar.tab.cc"
     break;
 
-  case 18: /* Relation: Factor TOKEN_GREAT Factor  */
+  case 19: /* Relation: Factor TOKEN_GEQ Factor  */
 #line 114 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1895 "grammar.tab.cc"
     break;
 
-  case 19: /* Relation: Factor TOKEN_GEQ Factor  */
+  case 20: /* Relation: Factor TOKEN_EQUAL Factor  */
 #line 115 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1901 "grammar.tab.cc"
     break;
 
-  case 20: /* Relation: Factor TOKEN_EQUAL Factor  */
+  case 21: /* Relation: Factor TOKEN_NEQ Factor  */
 #line 116 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1907 "grammar.tab.cc"
     break;
 
-  case 21: /* Relation: Factor TOKEN_NEQ Factor  */
-#line 117 "grammar.yy"
-                                                          { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
+  case 22: /* Factor: Term  */
+#line 118 "grammar.yy"
+                                                          { (yyval.expression) = (yyvsp[0].expression); }
 #line 1913 "grammar.tab.cc"
     break;
 
-  case 22: /* Factor: Term  */
+  case 23: /* Factor: Term TOKEN_PLUS Factor  */
 #line 119 "grammar.yy"
-                                                          { (yyval.expression) = (yyvsp[0].expression); }
+                                                          { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1919 "grammar.tab.cc"
     break;
 
-  case 23: /* Factor: Term TOKEN_PLUS Factor  */
+  case 24: /* Factor: Term TOKEN_MINUS Factor  */
 #line 120 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1925 "grammar.tab.cc"
     break;
 
-  case 24: /* Factor: Term TOKEN_MINUS Factor  */
-#line 121 "grammar.yy"
-                                                          { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
+  case 25: /* Term: Unary  */
+#line 122 "grammar.yy"
+                                                          { (yyval.expression) = (yyvsp[0].expression); }
 #line 1931 "grammar.tab.cc"
     break;
 
-  case 25: /* Term: Unary  */
+  case 26: /* Term: Unary TOKEN_MULT Term  */
 #line 123 "grammar.yy"
-                                                          { (yyval.expression) = (yyvsp[0].expression); }
+                                                          { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1937 "grammar.tab.cc"
     break;
 
-  case 26: /* Term: Unary TOKEN_MULT Term  */
+  case 27: /* Term: Unary TOKEN_DIV Term  */
 #line 124 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1943 "grammar.tab.cc"
     break;
 
-  case 27: /* Term: Unary TOKEN_DIV Term  */
-#line 125 "grammar.yy"
-                                                          { (yyval.expression) = new NBinaryOperator(*(yyvsp[-2].expression), (yyvsp[-1].token), *(yyvsp[0].expression)); }
+  case 28: /* Unary: Primary  */
+#line 126 "grammar.yy"
+                                                { (yyval.expression) = (yyvsp[0].expression); }
 #line 1949 "grammar.tab.cc"
     break;
 
-  case 28: /* Unary: Primary  */
+  case 29: /* Unary: TOKEN_PLUS Primary  */
 #line 127 "grammar.yy"
-                                                { (yyval.expression) = (yyvsp[0].expression); }
+                                                { (yyval.expression) = new NUnary((yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1955 "grammar.tab.cc"
     break;
 
-  case 29: /* Unary: TOKEN_PLUS Primary  */
+  case 30: /* Unary: TOKEN_MINUS Primary  */
 #line 128 "grammar.yy"
                                                 { (yyval.expression) = new NUnary((yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1961 "grammar.tab.cc"
     break;
 
-  case 30: /* Unary: TOKEN_MINUS Primary  */
+  case 31: /* Unary: TOKEN_NOT Primary  */
 #line 129 "grammar.yy"
                                                 { (yyval.expression) = new NUnary((yyvsp[-1].token), *(yyvsp[0].expression)); }
 #line 1967 "grammar.tab.cc"
     break;
 
-  case 31: /* Unary: TOKEN_NOT Primary  */
+  case 32: /* Unary: Literal  */
 #line 130 "grammar.yy"
-                                                { (yyval.expression) = new NUnary((yyvsp[-1].token), *(yyvsp[0].expression)); }
+                                                { (yyval.expression) = (yyvsp[0].expression); }
 #line 1973 "grammar.tab.cc"
     break;
 
-  case 32: /* Unary: Literal  */
+  case 33: /* Unary: TOKEN_LPAREN Expression TOKEN_RPAREN  */
 #line 131 "grammar.yy"
-                                                { (yyval.expression) = (yyvsp[0].expression); }
+                                                { (yyval.expression) = (yyvsp[-1].expression); }
 #line 1979 "grammar.tab.cc"
     break;
 
-  case 33: /* Unary: TOKEN_LPAREN Expression TOKEN_RPAREN  */
+  case 34: /* Unary: TOKEN_PLUS Primary TOKEN_IS TypeIndicator  */
 #line 132 "grammar.yy"
-                                                { (yyval.expression) = (yyvsp[-1].expression); }
+                                                            { (yyval.expression) = new NTypeCheck((yyvsp[-3].token), *(yyvsp[-2].expression), *(yyvsp[0].string)); }
 #line 1985 "grammar.tab.cc"
     break;
 
-  case 34: /* Unary: TOKEN_PLUS Primary TOKEN_IS TypeIndicator  */
+  case 35: /* Unary: TOKEN_MINUS Primary TOKEN_IS TypeIndicator  */
 #line 133 "grammar.yy"
                                                             { (yyval.expression) = new NTypeCheck((yyvsp[-3].token), *(yyvsp[-2].expression), *(yyvsp[0].string)); }
 #line 1991 "grammar.tab.cc"
     break;
 
-  case 35: /* Unary: TOKEN_MINUS Primary TOKEN_IS TypeIndicator  */
+  case 36: /* Unary: TOKEN_NOT Primary TOKEN_IS TypeIndicator  */
 #line 134 "grammar.yy"
                                                             { (yyval.expression) = new NTypeCheck((yyvsp[-3].token), *(yyvsp[-2].expression), *(yyvsp[0].string)); }
 #line 1997 "grammar.tab.cc"
     break;
 
-  case 36: /* Unary: TOKEN_NOT Primary TOKEN_IS TypeIndicator  */
+  case 37: /* Unary: Primary TOKEN_IS TypeIndicator  */
 #line 135 "grammar.yy"
-                                                            { (yyval.expression) = new NTypeCheck((yyvsp[-3].token), *(yyvsp[-2].expression), *(yyvsp[0].string)); }
+                                                            { (yyval.expression) = new NTypeCheck(*(yyvsp[-2].expression), *(yyvsp[0].string)); }
 #line 2003 "grammar.tab.cc"
     break;
 
-  case 37: /* Unary: Primary TOKEN_IS TypeIndicator  */
-#line 136 "grammar.yy"
-                                                            { (yyval.expression) = new NTypeCheck(*(yyvsp[-2].expression), *(yyvsp[0].string)); }
+  case 38: /* Primary: TOKEN_IDENTIFIER Tail  */
+#line 139 "grammar.yy"
+                                                            { (yyval.expression) = new NIdentifier(*(yyvsp[-1].string)); }
 #line 2009 "grammar.tab.cc"
     break;
 
-  case 38: /* Primary: TOKEN_IDENTIFIER Tail  */
-#line 138 "grammar.yy"
-                                                            { (yyval.expression) = new NIdentifier(*(yyvsp[-1].string)); }
+  case 39: /* Primary: TOKEN_READINT  */
+#line 140 "grammar.yy"
+                                                            { (yyval.expression) = new NReadInput(); }
 #line 2015 "grammar.tab.cc"
     break;
 
-  case 39: /* Primary: TOKEN_READINT  */
-#line 139 "grammar.yy"
+  case 40: /* Primary: TOKEN_READREAL  */
+#line 141 "grammar.yy"
                                                             { (yyval.expression) = new NReadInput(); }
 #line 2021 "grammar.tab.cc"
     break;
 
-  case 40: /* Primary: TOKEN_READREAL  */
-#line 140 "grammar.yy"
+  case 41: /* Primary: TOKEN_READSTRING  */
+#line 142 "grammar.yy"
                                                             { (yyval.expression) = new NReadInput(); }
 #line 2027 "grammar.tab.cc"
     break;
 
-  case 41: /* Primary: TOKEN_READSTRING  */
-#line 141 "grammar.yy"
-                                                            { (yyval.expression) = new NReadInput(); }
+  case 52: /* Assignment: Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI  */
+#line 156 "grammar.yy"
+                                                              { (yyval.statement) = new NAssignment(*(yyvsp[-3].expression), *(yyvsp[-1].expression)); }
 #line 2033 "grammar.tab.cc"
     break;
 
-  case 52: /* Assignment: Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI  */
-#line 155 "grammar.yy"
-                                                              { (yyval.statement) = new NAssignment(*(yyvsp[-3].expression), *(yyvsp[-1].expression)); }
+  case 53: /* Print: TOKEN_PRINT Expressions TOKEN_SEMI  */
+#line 158 "grammar.yy"
+                                                              { (yyval.statement) = new NPrint(*(yyvsp[-1].expressionVector)); }
 #line 2039 "grammar.tab.cc"
     break;
 
-  case 53: /* Print: TOKEN_PRINT Expressions TOKEN_SEMI  */
-#line 157 "grammar.yy"
-                                                              { (yyval.statement) = new NPrint(*(yyvsp[-1].expressionVector)); }
+  case 54: /* Expressions: Expression  */
+#line 160 "grammar.yy"
+                                                              { (yyvsp[0].expression) = new NExpression(); (yyval.expressionVector)->push_back((yyvsp[0].expression)); }
 #line 2045 "grammar.tab.cc"
     break;
 
-  case 54: /* Expressions: Expression  */
-#line 159 "grammar.yy"
-                                                              { (yyvsp[0].expression) = new NExpression(); (yyval.expressionVector)->push_back((yyvsp[0].expression)); }
+  case 55: /* Expressions: Expression TOKEN_COMMA Expressions  */
+#line 161 "grammar.yy"
+                                                              { (yyvsp[0].expressionVector)->push_back((yyvsp[-2].expression)); }
 #line 2051 "grammar.tab.cc"
     break;
 
-  case 55: /* Expressions: Expression TOKEN_COMMA Expressions  */
-#line 160 "grammar.yy"
-                                                              { (yyvsp[0].expressionVector)->push_back((yyvsp[-2].expression)); }
+  case 56: /* Return: TOKEN_RETURN Expression TOKEN_SEMI  */
+#line 163 "grammar.yy"
+                                                              { (yyval.statement) = new NReturn(*(yyvsp[-1].expression)); }
 #line 2057 "grammar.tab.cc"
     break;
 
-  case 56: /* Return: TOKEN_RETURN Expression TOKEN_SEMI  */
-#line 162 "grammar.yy"
-                                                              { (yyval.statement) = new NReturn(*(yyvsp[-1].expression)); }
+  case 57: /* Return: TOKEN_RETURN TOKEN_SEMI  */
+#line 164 "grammar.yy"
+                                                              { (yyval.statement) = new NReturn(); }
 #line 2063 "grammar.tab.cc"
     break;
 
-  case 57: /* Return: TOKEN_RETURN TOKEN_SEMI  */
-#line 163 "grammar.yy"
-                                                              { (yyval.statement) = new NReturn(); }
+  case 58: /* If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_END  */
+#line 166 "grammar.yy"
+                                                              { (yyval.statement) = new NIf(*(yyvsp[-3].expression), *(yyvsp[-1].block)); }
 #line 2069 "grammar.tab.cc"
     break;
 
-  case 58: /* If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_END  */
-#line 165 "grammar.yy"
-                                                              { (yyval.statement) = new NIf(*(yyvsp[-3].expression), *(yyvsp[-1].block)); }
+  case 59: /* If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END  */
+#line 167 "grammar.yy"
+                                                                        { (yyval.statement) = new NIf(*(yyvsp[-5].expression), *(yyvsp[-3].block), *(yyvsp[-1].block)); }
 #line 2075 "grammar.tab.cc"
     break;
 
-  case 59: /* If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END  */
-#line 166 "grammar.yy"
-                                                                        { (yyval.statement) = new NIf(*(yyvsp[-5].expression), *(yyvsp[-3].block), *(yyvsp[-1].block)); }
+  case 60: /* Loop: TOKEN_WHILE Expression LoopBody  */
+#line 169 "grammar.yy"
+                                                              { (yyval.statement) = new NLoop(*(yyvsp[-1].expression), *(yyvsp[0].block)); }
 #line 2081 "grammar.tab.cc"
     break;
 
-  case 60: /* Loop: TOKEN_WHILE Expression LoopBody  */
-#line 168 "grammar.yy"
-                                                              { (yyval.statement) = new NLoop(*(yyvsp[-1].expression), *(yyvsp[0].block)); }
+  case 61: /* Loop: TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody  */
+#line 170 "grammar.yy"
+                                                                              { (yyval.statement) = NULL; }
 #line 2087 "grammar.tab.cc"
     break;
 
-  case 61: /* Loop: TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody  */
-#line 169 "grammar.yy"
-                                                                              { (yyval.statement) = NULL; }
+  case 62: /* LoopBody: TOKEN_LOOP Body TOKEN_END  */
+#line 172 "grammar.yy"
+                                                              { (yyval.block) = (yyvsp[-1].block); }
 #line 2093 "grammar.tab.cc"
     break;
 
-  case 62: /* LoopBody: TOKEN_LOOP Body TOKEN_END  */
-#line 171 "grammar.yy"
-                                                              { (yyval.block) = (yyvsp[-1].block); }
+  case 63: /* TypeIndicator: TOKEN_INT  */
+#line 174 "grammar.yy"
+                                                              { (yyval.string) = (yyvsp[0].string); }
 #line 2099 "grammar.tab.cc"
     break;
 
-  case 63: /* TypeIndicator: TOKEN_INT  */
-#line 173 "grammar.yy"
+  case 64: /* TypeIndicator: TOKEN_REAL  */
+#line 175 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
 #line 2105 "grammar.tab.cc"
     break;
 
-  case 64: /* TypeIndicator: TOKEN_REAL  */
-#line 174 "grammar.yy"
+  case 65: /* TypeIndicator: TOKEN_BOOL  */
+#line 176 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
 #line 2111 "grammar.tab.cc"
     break;
 
-  case 65: /* TypeIndicator: TOKEN_BOOL  */
-#line 175 "grammar.yy"
+  case 66: /* TypeIndicator: TOKEN_STRING  */
+#line 177 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
 #line 2117 "grammar.tab.cc"
     break;
 
-  case 66: /* TypeIndicator: TOKEN_STRING  */
-#line 176 "grammar.yy"
+  case 67: /* TypeIndicator: TOKEN_EMPTY  */
+#line 178 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
 #line 2123 "grammar.tab.cc"
     break;
 
-  case 67: /* TypeIndicator: TOKEN_EMPTY  */
-#line 177 "grammar.yy"
+  case 68: /* TypeIndicator: TOKEN_ARRAY  */
+#line 179 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
 #line 2129 "grammar.tab.cc"
     break;
 
-  case 68: /* TypeIndicator: TOKEN_ARRAY  */
-#line 178 "grammar.yy"
+  case 69: /* TypeIndicator: TOKEN_TUPLE  */
+#line 180 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
 #line 2135 "grammar.tab.cc"
     break;
 
-  case 69: /* TypeIndicator: TOKEN_TUPLE  */
-#line 179 "grammar.yy"
-                                                              { (yyval.string) = (yyvsp[0].string); }
+  case 70: /* Literal: TOKEN_INT_LITERAL  */
+#line 182 "grammar.yy"
+                                                              { (yyval.expression) = new NInteger(atol((yyvsp[0].string)->c_str()));}
 #line 2141 "grammar.tab.cc"
     break;
 
-  case 70: /* Literal: TOKEN_INT_LITERAL  */
-#line 181 "grammar.yy"
-                                                              { (yyval.expression) = new NInteger(atol((yyvsp[0].string)->c_str())); }
+  case 71: /* Literal: TOKEN_REAL_LITERAL  */
+#line 183 "grammar.yy"
+                                                              { (yyval.expression) = new NReal(atof((yyvsp[0].string)->c_str()));}
 #line 2147 "grammar.tab.cc"
     break;
 
-  case 71: /* Literal: TOKEN_REAL_LITERAL  */
-#line 182 "grammar.yy"
-                                                              { (yyval.expression) = new NReal(atof((yyvsp[0].string)->c_str())); }
+  case 72: /* Literal: TOKEN_TRUE  */
+#line 184 "grammar.yy"
+                                                              { (yyval.expression) = new NBool(*(yyvsp[0].string)); }
 #line 2153 "grammar.tab.cc"
     break;
 
-  case 72: /* Literal: TOKEN_TRUE  */
-#line 183 "grammar.yy"
+  case 73: /* Literal: TOKEN_FALSE  */
+#line 185 "grammar.yy"
                                                               { (yyval.expression) = new NBool(*(yyvsp[0].string)); }
 #line 2159 "grammar.tab.cc"
     break;
 
-  case 73: /* Literal: TOKEN_FALSE  */
-#line 184 "grammar.yy"
-                                                              { (yyval.expression) = new NBool(*(yyvsp[0].string)); }
+  case 74: /* Literal: TOKEN_STRING_LITERAL  */
+#line 186 "grammar.yy"
+                                                              { (yyval.expression) = new NString(*(yyvsp[0].string)); }
 #line 2165 "grammar.tab.cc"
     break;
 
-  case 74: /* Literal: TOKEN_STRING_LITERAL  */
-#line 185 "grammar.yy"
-                                                              { (yyval.expression) = new NString(*(yyvsp[0].string)); }
+  case 75: /* Literal: ArrayLiteral  */
+#line 187 "grammar.yy"
+                                                              { (yyval.expression) = NULL; }
 #line 2171 "grammar.tab.cc"
     break;
 
-  case 75: /* Literal: ArrayLiteral  */
-#line 186 "grammar.yy"
+  case 76: /* Literal: TupleLiteral  */
+#line 188 "grammar.yy"
                                                               { (yyval.expression) = NULL; }
 #line 2177 "grammar.tab.cc"
     break;
 
-  case 76: /* Literal: TupleLiteral  */
-#line 187 "grammar.yy"
+  case 77: /* Literal: FunctionLiteral  */
+#line 189 "grammar.yy"
                                                               { (yyval.expression) = NULL; }
 #line 2183 "grammar.tab.cc"
     break;
 
-  case 77: /* Literal: FunctionLiteral  */
-#line 188 "grammar.yy"
-                                                              { (yyval.expression) = NULL; }
+  case 78: /* ArrayLiteral: TOKEN_LSQUARE TOKEN_RSQUARE  */
+#line 191 "grammar.yy"
+                                                              { (yyval.expression) = new NArray(); }
 #line 2189 "grammar.tab.cc"
     break;
 
-  case 78: /* ArrayLiteral: TOKEN_LSQUARE TOKEN_RSQUARE  */
-#line 190 "grammar.yy"
+  case 79: /* ArrayLiteral: TOKEN_LSQUARE Expressions TOKEN_RSQUARE  */
+#line 192 "grammar.yy"
                                                               { (yyval.expression) = new NArray(); }
 #line 2195 "grammar.tab.cc"
     break;
 
-  case 79: /* ArrayLiteral: TOKEN_LSQUARE Expressions TOKEN_RSQUARE  */
-#line 191 "grammar.yy"
-                                                              { (yyval.expression) = new NArray(); }
+  case 80: /* TupleLiteral: TOKEN_LCURLY TOKEN_RCURLY  */
+#line 194 "grammar.yy"
+                                                              { (yyval.expression) = new NTuple(); }
 #line 2201 "grammar.tab.cc"
     break;
 
-  case 80: /* TupleLiteral: TOKEN_LCURLY TOKEN_RCURLY  */
-#line 193 "grammar.yy"
+  case 81: /* TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TupleTail  */
+#line 195 "grammar.yy"
                                                               { (yyval.expression) = new NTuple(); }
 #line 2207 "grammar.tab.cc"
     break;
 
-  case 81: /* TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TupleTail  */
-#line 194 "grammar.yy"
-                                                              { (yyval.expression) = new NTuple(); }
+  case 82: /* TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail  */
+#line 196 "grammar.yy"
+                                                                                        { (yyval.expression) = new NTuple(); }
 #line 2213 "grammar.tab.cc"
     break;
 
-  case 82: /* TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail  */
-#line 195 "grammar.yy"
-                                                                                        { (yyval.expression) = new NTuple(); }
+  case 86: /* FunctionLiteral: TOKEN_FUNC TOKEN_IS Body TOKEN_END  */
+#line 202 "grammar.yy"
+                                                                              { (yyval.expression) = new NFunctionDefinition(*(yyvsp[-1].block)); }
 #line 2219 "grammar.tab.cc"
     break;
 
-  case 86: /* FunctionLiteral: TOKEN_FUNC TOKEN_IS Body TOKEN_END  */
-#line 201 "grammar.yy"
-                                                                              { (yyval.expression) = new NFunctionDefinition(*(yyvsp[-1].block)); }
+  case 87: /* FunctionLiteral: TOKEN_FUNC TOKEN_FUNCTOR Expression  */
+#line 203 "grammar.yy"
+                                                                              { (yyval.expression) = new NFunctionDefinition(*(yyvsp[0].expression)); }
 #line 2225 "grammar.tab.cc"
     break;
 
-  case 87: /* FunctionLiteral: TOKEN_FUNC TOKEN_FUNCTOR Expression  */
-#line 202 "grammar.yy"
-                                                                              { (yyval.expression) = new NFunctionDefinition(*(yyvsp[0].expression)); }
+  case 88: /* FunctionLiteral: TOKEN_FUNC Parameters TOKEN_IS Body TOKEN_END  */
+#line 204 "grammar.yy"
+                                                                              { (yyval.expression) = new NFunctionDefinition(*(yyvsp[-3].paramVector), *(yyvsp[-1].block)); }
 #line 2231 "grammar.tab.cc"
     break;
 
-  case 88: /* FunctionLiteral: TOKEN_FUNC Parameters TOKEN_IS Body TOKEN_END  */
-#line 203 "grammar.yy"
-                                                                              { (yyval.expression) = new NFunctionDefinition(*(yyvsp[-3].paramVector), *(yyvsp[-1].block)); }
+  case 89: /* FunctionLiteral: TOKEN_FUNC Parameters TOKEN_FUNCTOR Expression  */
+#line 205 "grammar.yy"
+                                                                              { (yyval.expression) = new NFunctionDefinition(*(yyvsp[-2].paramVector), *(yyvsp[0].expression)); }
 #line 2237 "grammar.tab.cc"
     break;
 
-  case 89: /* FunctionLiteral: TOKEN_FUNC Parameters TOKEN_FUNCTOR Expression  */
-#line 204 "grammar.yy"
-                                                                              { (yyval.expression) = new NFunctionDefinition(*(yyvsp[-2].paramVector), *(yyvsp[0].expression)); }
+  case 90: /* Parameters: TOKEN_LPAREN Identifiers TOKEN_RPAREN  */
+#line 207 "grammar.yy"
+                                                                              { (yyval.paramVector) = (yyvsp[-1].paramVector); }
 #line 2243 "grammar.tab.cc"
     break;
 
-  case 90: /* Parameters: TOKEN_LPAREN Identifiers TOKEN_RPAREN  */
-#line 206 "grammar.yy"
-                                                                              { (yyval.paramVector) = (yyvsp[-1].paramVector); }
+  case 91: /* Identifiers: TOKEN_IDENTIFIER  */
+#line 209 "grammar.yy"
+                                                                              { (yyval.paramVector)->push_back(new NIdentifier(*(yyvsp[0].string))); }
 #line 2249 "grammar.tab.cc"
     break;
 
-  case 91: /* Identifiers: TOKEN_IDENTIFIER  */
-#line 208 "grammar.yy"
-                                                                              { (yyval.paramVector)->push_back(new NIdentifier(*(yyvsp[0].string))); }
+  case 92: /* Identifiers: TOKEN_IDENTIFIER TOKEN_COMMA Identifiers  */
+#line 210 "grammar.yy"
+                                                                              { (yyvsp[0].paramVector)->push_back(new NIdentifier(*(yyvsp[-2].string))); }
 #line 2255 "grammar.tab.cc"
     break;
 
-  case 92: /* Identifiers: TOKEN_IDENTIFIER TOKEN_COMMA Identifiers  */
-#line 209 "grammar.yy"
-                                                                              { (yyvsp[0].paramVector)->push_back(new NIdentifier(*(yyvsp[-2].string))); }
-#line 2261 "grammar.tab.cc"
-    break;
 
-
-#line 2265 "grammar.tab.cc"
+#line 2259 "grammar.tab.cc"
 
         default: break;
       }
@@ -2497,7 +2491,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 212 "grammar.yy"
+#line 213 "grammar.yy"
 
 std::string srcInput;
 std::vector<Token> list;
@@ -2509,6 +2503,7 @@ typedef struct {
 errorfeedback feedback;
 int main(int argc, char *argv[]) {
     
+    
     if(argc==1) {
         printf("\nRun with source file: ./a.out <source_file>");
         exit(0);
@@ -2516,6 +2511,8 @@ int main(int argc, char *argv[]) {
         srcInput = argv[1];
     } 
     
+
+
     //Reading the source code
     std::ifstream sourceFile;
     std::string sourceCode;
@@ -2533,7 +2530,7 @@ int main(int argc, char *argv[]) {
     list = sas.getTokenList();
     yyparse();
     std::cout << "No Syntax Errors\n";
-    std::cout << programBlock << std::endl;
+    std::cout << "Tree start address: "<<programBlock << std::endl;
     return 0;
 }
 
@@ -2545,7 +2542,7 @@ void yyerror(const char *error){
 
 
 
-int yylex (YYSTYPE *lvalp) {
+int yylex () {
   it = list.begin();
   unsigned int _type = (*it).type;
   std::string _value = (*it).value;
@@ -2555,6 +2552,8 @@ int yylex (YYSTYPE *lvalp) {
   feedback.value = _value;
   feedback.line = _lineNo;
   feedback.column = _column;
+
+  yylval.string = new std::string( (*it).value );
 
   if (_type == YYEOF) {
     return YYEOF;
