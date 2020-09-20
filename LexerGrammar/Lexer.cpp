@@ -1,6 +1,7 @@
 #include "Lexer.h"
 #include "iostream"
 #include <algorithm>
+
 extern void yyerror(const char *);
 
 //Advance one character
@@ -90,7 +91,11 @@ Token Lexer::readLiteral() {
         advance();
 
         //Is finding the position of the next " really more efficient than reallocating several times?
-        unsigned int quotePosition = contents.find('"', currentIndex);
+        std::size_t quotePosition = contents.find('"', currentIndex);
+        if ( quotePosition == std::string::npos){
+            std::cout << "Syntax error:\nYou forgot to close a string on " << currentLine <<':' << currentPosOnLine - 1<< std::endl;
+            exit(228);
+        }
         unsigned int stringLength = quotePosition - currentIndex;
 
         //Getting value as substring
@@ -151,10 +156,19 @@ Token Lexer::readUntilTokenDetected() {
 
     unsigned int tokenStart = currentPosOnLine;
 
+    //Kostil for +=
+    if (currentChar == '+' && contents[currentIndex + 1] == '='){
+        Token token = Token(specialCharMappings["+="], "+=" , currentLine, tokenStart);
+
+        advance(); // Will it break stuff????; Hope not
+
+        tokenList.push_back(token); 
+        return token;
+    }
 
     // Collecting PURELY single character tokens
-    if (specialCharMappings.count(std::string() + currentChar) != 0 && currentChar != '+' && currentChar != '=' &&
-        currentChar != '<' && currentChar != '/' && currentChar != '+') {
+    if (specialCharMappings.count(std::string() + currentChar) != 0  && currentChar != '=' &&
+        currentChar != '<' && currentChar != '/') {
 
         unknownTokenValue = std::string() + currentChar;
 
@@ -163,6 +177,7 @@ Token Lexer::readUntilTokenDetected() {
         tokenList.push_back(token);
         return token;
     }
+
     //Going until its end if it is not a single char
     else
         while (currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 && !isalnum(currentChar)) {
@@ -171,7 +186,8 @@ Token Lexer::readUntilTokenDetected() {
             char nextChar = contents[currentIndex + 1];
 
             //This is to complete reading some tokens without implementing going back
-            if (nextChar == ' ' || nextChar == '\n' || nextChar == '\0' || isalnum(nextChar) || nextChar == '"')
+            if (nextChar == ' ' || nextChar == '\n' || nextChar == '\0' || isalnum(nextChar) 
+                || nextChar == '"')
                 break;
             else
                 advance();

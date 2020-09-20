@@ -115,12 +115,27 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 16 "grammar.yy"
+
+ // std::string string_t;
+  int integer_t;
+  double real_t;
+  unsigned int bool_t;
+  char string_t[500];
+  //std::string dataType;
+
+#line 130 "grammar.tab.hh"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
 
+extern YYSTYPE yylval;
 
 int yyparse (void);
 

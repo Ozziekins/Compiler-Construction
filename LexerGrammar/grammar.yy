@@ -1,5 +1,4 @@
 %require "3.0"
-%define api.pure full
 %define parse.lac full
 %define parse.error verbose
 
@@ -8,17 +7,20 @@
     #include "Lexer.h"
     #include <sstream>
     #include <iostream>
-    int yylex (YYSTYPE *lvalp);
+    #include <cstring>
+    int yylex ();
     void yyerror(const char *error);
+    
 }
 
-// %union {
-//   std::string string_t;
-//   int integer_t;
-//   float float_t;
-//   unsigned int bool_t;
-//   std::string dataType;
-// }
+%union {
+ // std::string string_t;
+  int integer_t;
+  double real_t;
+  unsigned int bool_t;
+  char string_t[500];
+  //std::string dataType;
+}
 
 // Miscellaneous
 %token TOKEN_ASSIGNMENT      //:=
@@ -30,11 +32,12 @@
 %token TOKEN_IDENTIFIER
 
 // Literals
-%token TOKEN_INT_LITERAL
-%token TOKEN_REAL_LITERAL
-%token TOKEN_STRING_LITERAL   // note that this string is different from type string which is a keyword
-%token TOKEN_TRUE
-%token TOKEN_FALSE
+%nterm<integer_t> Literal
+%token<integer_t> TOKEN_INT_LITERAL
+%token<real_t> TOKEN_REAL_LITERAL
+%token<string_t> TOKEN_STRING_LITERAL   // note that this string is different from type string which is a keyword
+%token TOKEN_TRUE //TODO add
+%token TOKEN_FALSE //TODO add
 
 // Keywords
 %token TOKEN_FUNC
@@ -93,15 +96,17 @@
 %token TOKEN_READREAL
 %token TOKEN_READSTRING
 
-//%type Expression
+
 // Type declaration
-// %type<integer_t> Expression Relation Factor Term Unary 
+%type<integer_t> Expressions Expression Relation Factor Term Unary  Primary TOKEN_IDENTIFIER
 // %type<float_t> Unary
 // %type<string_t> Unary 
 // %type<bool_t> Expression Relation Unary
 //%type <array_t> ArrayLiteral
 //%type <tuple_t> TupleLiteral
 //%type <func_t> FunctionLiteral
+
+
 
 // Precedence
 %left TOKEN_COMMA
@@ -123,56 +128,58 @@
 Program : Body                              
         ;
 Body : /* empty */                                        //{$$ = NULL; }
-     | Declaration Body                         
-     | Statement Body                           
-     | Expression Body                          
+     | Declaration Body                                   {;}
+     | Statement Body                                     {;}
+     | Expression Body                                    {;}     
      ;
-Declaration : TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI                                 
-            | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI     
+Declaration : TOKEN_VAR TOKEN_IDENTIFIER LineEnd          {printf(" Declared Identifier '%d'", $2);} // SYMBOL_TABLE                     
+            | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression LineEnd  {printf(" Initialized Identifier '%d' with %d", $2, $4);}  // SYMBOL_TABLE   
             ;
-Expression : Relation                           
-           | Relation TOKEN_AND Relation                  {$$ = $1 && $3; }
-           | Relation TOKEN_OR Relation                   {$$ = $1 || $3; }
-           | Relation TOKEN_XOR Relation                  {$$ = ($1 || $3)&&(!$1 || !$3); }
+Expression : Relation                                     { $$ = $1;}
+           | Relation TOKEN_AND Relation                  { $$ = $1 && $3; }
+           | Relation TOKEN_OR Relation                   { $$ = $1 || $3; }
+           | Relation TOKEN_XOR Relation                  { $$ = ($1 || $3)&&(!$1 || !$3); }
            ;
-Relation : Factor                               
-         | Factor TOKEN_LESS Factor                       {$$ = $1 < $3; }
-         | Factor TOKEN_LEQ Factor                        {$$ = $1 <= $3; }
-         | Factor TOKEN_GREAT Factor                      {$$ = $1 > $3; }
-         | Factor TOKEN_GEQ Factor                        {$$ = $1 >= $3; }
-         | Factor TOKEN_EQUAL Factor                      {$$ = $1 == $3; }
-         | Factor TOKEN_NEQ Factor                        {$$ = $1 != $3; }
-         ;
-Factor : Term                                   
-       | Term TOKEN_PLUS Factor                           {$$ = $1 + $3; }
-       | Term TOKEN_MINUS Factor                          {$$ = $1 - $3; }
+Relation : Factor                                         { $$ = $1;}
+         | Factor TOKEN_LESS Factor                       { $$ = $1 < $3; }
+         | Factor TOKEN_LEQ Factor                        { $$ = $1 <= $3; }
+         | Factor TOKEN_GREAT Factor                      { $$ = $1 > $3; }
+         | Factor TOKEN_GEQ Factor                        { $$ = $1 >= $3; }
+         | Factor TOKEN_EQUAL Factor                      { $$ = $1 == $3; }
+         | Factor TOKEN_NEQ Factor                        { $$ = $1 != $3; }
+         ;  
+Factor : Term                                             { $$ = $1;}
+       | Term TOKEN_PLUS Factor                           {;}//$$ = $1 + $3;}
+       | Term TOKEN_MINUS Factor                          {;}//$$ = $1 - $3; }
        ;
-Term : Unary                                    
-     | Unary TOKEN_MULT Term                              {$$ = $1 * $3; }
-     | Unary TOKEN_DIV Term                               {$$ = $1 / $3; }
+Term : Unary                                              { $$ = $1;}    
+     | Unary TOKEN_MULT Term                              { $$ = $1;}//$$ = $1 * $3; }
+     | Unary TOKEN_DIV Term                               { $$ = $1;}//$$ = $1 / $3; }
      ;
-Unary : Primary                                 
-      | TOKEN_PLUS Primary                      
-      | TOKEN_MINUS Primary                     
-      | TOKEN_NOT Primary                       
-      | Literal                                 
-      | TOKEN_LPAREN Expression TOKEN_RPAREN    
-      | TOKEN_PLUS Primary TOKEN_IS TypeIndicator           
-      | TOKEN_MINUS Primary TOKEN_IS TypeIndicator          
-      | TOKEN_NOT Primary TOKEN_IS TypeIndicator            
-      | Primary TOKEN_IS TypeIndicator                      
+Unary : Primary                                           { $$ = $1;}    
+      | TOKEN_PLUS Primary                                { $$ = $2; }
+      | TOKEN_MINUS Primary                               { $$ = -$2;}
+      | TOKEN_NOT Primary                                 { $$ = !$2;}
+      | Literal                                           { $$ = $1;}               
+      | TOKEN_LPAREN Expression TOKEN_RPAREN              { $$ = $2;} //Do something with Precedence??
+      | TOKEN_PLUS Primary TOKEN_IS TypeIndicator         {;}       
+      | TOKEN_MINUS Primary TOKEN_IS TypeIndicator        {;}        
+      | TOKEN_NOT Primary TOKEN_IS TypeIndicator          {;}         
+      | Primary TOKEN_IS TypeIndicator                    {;}          
       ;
-Primary : TOKEN_IDENTIFIER Tails
-        | TOKEN_READINT                                     {scanf("%d", &$1); $$ = $1; }
-        | TOKEN_READREAL                                    //{scanf("%f", &$1); $$ = $1; }
-        | TOKEN_READSTRING                                  //{scanf("%s", $1); $$ = $1; }
+Primary : Literal                                         { $$ = $1;} // Had to actually add this one
+        | TOKEN_LPAREN Expressions TOKEN_RPAREN           { $$ = $2;} // This one as well 
+        | TOKEN_IDENTIFIER Tails  
+        | TOKEN_READINT                                     //{scanf("%d", &$1); $$ = $1; } // SYMBOL_TABLE
+        | TOKEN_READREAL                                    //{scanf("%f", &$1); $$ = $1; } // SYMBOL_TABLE
+        | TOKEN_READSTRING                                  //{scanf("%s", $1); $$ = $1; }  // SYMBOL_TABLE
         ;
 Tails : /* empty */                                         //{$$ = NULL; }
         | Tail Tails                           
         ;
 Tail : TOKEN_DOT TOKEN_INT_LITERAL                   
      | TOKEN_DOT TOKEN_IDENTIFIER               
-     | TOKEN_LSQUARE Expression TOKEN_RSQUARE   
+     | TOKEN_LSQUARE Expression TOKEN_RSQUARE                  
      | TOKEN_LPAREN Expressions TOKEN_RPAREN    
      ;
 Statement : Assignment                         
@@ -181,15 +188,26 @@ Statement : Assignment
           | If                                 
           | Loop                               
           ;
-Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI   //{$$ = $1 = $3; }   
+Assignment : Primary TOKEN_ASSIGNMENT Expression LineEnd   //{$$ = $1 = $3; }   
            ;
-Print : TOKEN_PRINT Expressions TOKEN_SEMI                
+Print : TOKEN_PRINT Expressions LineEnd                    {std::cout << "(Strings do not work yet) printed: " << $2 << std::endl;}            
       ;
-Expressions : Expression                        
-            | Expression TOKEN_COMMA Expressions      
+Expressions : Expression                                           //{
+                                                                   // integer_t number = $1;
+                                                                   // $$ = std::vector<integer_t>();
+                                                                   // $$.push_back(number);
+                                                                   // std::cout << "first arg"  << number << std::endl;
+                                                                  //}   
+            | Expression TOKEN_COMMA Expressions                  //{
+                                                                 // integer_t number = $1;
+                                                                 // std::vector<integer_t> &args = $3;
+                                                                 // args.push_back(number);
+                                                                 // $$ = args;
+                                                                 // std::cout << "next argmnt" << number << ", arg list size = " << args.size() << std::endl;
+                                                                 // }
             ;
-Return : TOKEN_RETURN Expression TOKEN_SEMI                   //{$$ = return $2; }             
-       | TOKEN_RETURN TOKEN_SEMI                              //{$$ = NULL; }  
+Return : TOKEN_RETURN Expression LineEnd                   //{$$ = return $2; }             
+       | TOKEN_RETURN LineEnd                              //{$$ = NULL; }  
        ;
 If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END            //{$$ = if_statement($2, $4, NULL); }
    | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      //{$$ = if_statement($2, $4, $6); }
@@ -208,17 +226,17 @@ TypeIndicator : TOKEN_INT                                     //{$$ = "int";}
               | TupleLiteral                    
               | TOKEN_FUNC                      
               ;
-Literal : TOKEN_INT_LITERAL                     
-        | TOKEN_REAL_LITERAL                    
-        | TOKEN_TRUE                            
-        | TOKEN_FALSE                           
-        | TOKEN_STRING_LITERAL                  
+Literal : TOKEN_INT_LITERAL                                  { $$ = $1; std::cout << "\n Found Int literal: " << $$ << std::endl;}
+        | TOKEN_REAL_LITERAL                                 { $$ = $1; std::cout << "\n Found Real literal(dont mind the rounding): " << $$ << std::endl;}                 
+        | TOKEN_TRUE                                         { $$ = 1; std::cout <<  "\n Found True " << std::endl;}
+        | TOKEN_FALSE                                        { $$ = 0; std::cout <<  "\n Found False " << std::endl;}
+        | TOKEN_STRING_LITERAL                               { printf("\n There are problems, so not declared string literal %s\n", $1);}
         | ArrayLiteral                          
         | TupleLiteral
-        | FunctionLiteral                          
+        | FunctionLiteral                                    { ;}
         ;
-ArrayLiteral : TOKEN_LSQUARE TOKEN_RSQUARE      
-             | TOKEN_LSQUARE Expressions TOKEN_RSQUARE      
+ArrayLiteral : TOKEN_LSQUARE TOKEN_RSQUARE                  
+             | TOKEN_LSQUARE Expressions TOKEN_RSQUARE      // USe std::variant
              ;
 TupleLiteral : TOKEN_LCURLY TOKEN_RCURLY
              | TOKEN_LCURLY TOKEN_IDENTIFIER TupleTail
@@ -233,10 +251,13 @@ FunctionLiteral : TOKEN_FUNC FunBody
                 ;
 Parameters : TOKEN_LPAREN Identifiers TOKEN_RPAREN        
            ;
-Identifiers : TOKEN_IDENTIFIER                  
+Identifiers : TOKEN_IDENTIFIER                            
             | TOKEN_IDENTIFIER TOKEN_COMMA Identifiers            
 FunBody : TOKEN_IS Body TOKEN_END               
         | TOKEN_FUNCTOR Expression              
+        ;
+LineEnd : /* empty */
+        |TOKEN_SEMI //Causes a lot of conflicts :(
         ;
 
 %%
@@ -273,7 +294,7 @@ int main(int argc, char *argv[]) {
     while (sas.getNextToken().type != YYEOF);
     list = sas.getTokenList();
     yyparse();
-    std::cout << "No Syntax Errors\n";
+    std::cout << "\nNo Syntax Errors\n";
     return 0;
 }
 
@@ -285,7 +306,7 @@ void yyerror(const char *error){
 
 
 
-int yylex (YYSTYPE *lvalp) {
+int yylex () {
   it = list.begin();
   unsigned int _type = (*it).type;
   std::string _value = (*it).value;
@@ -295,6 +316,16 @@ int yylex (YYSTYPE *lvalp) {
   feedback.value = _value;
   feedback.line = _lineNo;
   feedback.column = _column;
+
+  
+  if (_type == TOKEN_INT_LITERAL)
+    yylval.integer_t  = atoi( _value.c_str() );
+  else if ( _type == TOKEN_REAL_LITERAL)
+    yylval.real_t = atof (_value.c_str());
+  else{
+    char* kostil = (char*)_value.c_str();
+    strcpy(yylval.string_t, kostil);
+  }
 
   if (_type == YYEOF) {
     return YYEOF;
