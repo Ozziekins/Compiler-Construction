@@ -1,0 +1,2581 @@
+Terminals unused in grammar
+
+    TOKEN_EOF
+    TOKEN_UNKNOWN
+    TOKEN_INCREMENT
+
+
+State 38 conflicts: 3 shift/reduce
+State 39 conflicts: 6 shift/reduce
+State 40 conflicts: 2 shift/reduce
+State 41 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: Body
+
+    2 Body: %empty
+    3     | Declaration ProgramBody
+    4     | Statement ProgramBody
+
+    5 ProgramBody: %empty
+    6            | Declaration ProgramBody
+    7            | Statement ProgramBody
+
+    8 Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI
+    9            | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI
+
+   10 Expression: Relation
+   11           | Relation TOKEN_AND Relation
+   12           | Relation TOKEN_OR Relation
+   13           | Relation TOKEN_XOR Relation
+
+   14 Relation: Factor
+   15         | Factor TOKEN_LESS Factor
+   16         | Factor TOKEN_LEQ Factor
+   17         | Factor TOKEN_GREAT Factor
+   18         | Factor TOKEN_GEQ Factor
+   19         | Factor TOKEN_EQUAL Factor
+   20         | Factor TOKEN_NEQ Factor
+
+   21 Factor: Term
+   22       | Term TOKEN_PLUS Factor
+   23       | Term TOKEN_MINUS Factor
+
+   24 Term: Unary
+   25     | Unary TOKEN_MULT Term
+   26     | Unary TOKEN_DIV Term
+
+   27 Unary: Primary
+   28      | TOKEN_PLUS Primary
+   29      | TOKEN_MINUS Primary
+   30      | TOKEN_NOT Primary
+   31      | Literal
+   32      | TOKEN_LPAREN Expression TOKEN_RPAREN
+   33      | TOKEN_PLUS Primary TOKEN_IS TypeIndicator
+   34      | TOKEN_MINUS Primary TOKEN_IS TypeIndicator
+   35      | TOKEN_NOT Primary TOKEN_IS TypeIndicator
+   36      | Primary TOKEN_IS TypeIndicator
+
+   37 Primary: TOKEN_IDENTIFIER Tail
+   38        | TOKEN_READINT
+   39        | TOKEN_READREAL
+   40        | TOKEN_READSTRING
+
+   41 Tail: %empty
+   42     | TOKEN_DOT TOKEN_INT_LITERAL
+   43     | TOKEN_DOT TOKEN_IDENTIFIER
+   44     | TOKEN_LSQUARE Expression TOKEN_RSQUARE
+   45     | TOKEN_LPAREN Expressions TOKEN_RPAREN
+
+   46 Statement: Assignment
+   47          | Print
+   48          | Return
+   49          | If
+   50          | Loop
+
+   51 Assignment: Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI
+
+   52 Print: TOKEN_PRINT Expressions TOKEN_SEMI
+
+   53 Expressions: Expression
+   54            | Expression TOKEN_COMMA Expressions
+
+   55 Return: TOKEN_RETURN Expression TOKEN_SEMI
+   56       | TOKEN_RETURN TOKEN_SEMI
+
+   57 If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_END
+   58   | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END
+
+   59 Loop: TOKEN_WHILE Expression LoopBody
+   60     | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody
+
+   61 LoopBody: TOKEN_LOOP Body TOKEN_END
+
+   62 TypeIndicator: TOKEN_INT
+   63              | TOKEN_REAL
+   64              | TOKEN_BOOL
+   65              | TOKEN_STRING
+   66              | TOKEN_EMPTY
+   67              | TOKEN_ARRAY
+   68              | TOKEN_TUPLE
+   69              | TOKEN_FUNC
+
+   70 Literal: TOKEN_INT_LITERAL
+   71        | TOKEN_REAL_LITERAL
+   72        | TOKEN_TRUE
+   73        | TOKEN_FALSE
+   74        | TOKEN_STRING_LITERAL
+   75        | ArrayLiteral
+   76        | TupleLiteral
+   77        | FunctionLiteral
+
+   78 ArrayLiteral: TOKEN_LSQUARE TOKEN_RSQUARE
+   79             | TOKEN_LSQUARE Expressions TOKEN_RSQUARE
+
+   80 TupleLiteral: TOKEN_LCURLY TOKEN_RCURLY
+   81             | TOKEN_LCURLY TOKEN_IDENTIFIER TupleTail
+   82             | TOKEN_LCURLY TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail
+
+   83 TupleTail: TOKEN_RCURLY
+   84          | TOKEN_COMMA TOKEN_IDENTIFIER TupleTail
+   85          | TOKEN_COMMA TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail
+
+   86 FunctionLiteral: TOKEN_FUNC TOKEN_IS Body TOKEN_END
+   87                | TOKEN_FUNC TOKEN_FUNCTOR Expression
+   88                | TOKEN_FUNC Parameters TOKEN_IS Body TOKEN_END
+   89                | TOKEN_FUNC Parameters TOKEN_FUNCTOR Expression
+
+   90 Parameters: TOKEN_LPAREN Identifiers TOKEN_RPAREN
+
+   91 Identifiers: TOKEN_IDENTIFIER
+   92            | TOKEN_IDENTIFIER TOKEN_COMMA Identifiers
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    TOKEN_ASSIGNMENT <token> (258) 9 51 82 85
+    TOKEN_FUNCTOR <token> (259) 87 89
+    TOKEN_EOF <token> (260)
+    TOKEN_UNKNOWN <token> (261)
+    TOKEN_IDENTIFIER <string> (262) 8 9 37 43 60 81 82 84 85 91 92
+    TOKEN_INT_LITERAL <string> (263) 42 70
+    TOKEN_REAL_LITERAL <string> (264) 71
+    TOKEN_STRING_LITERAL <string> (265) 74
+    TOKEN_TRUE <string> (266) 72
+    TOKEN_FALSE <string> (267) 73
+    TOKEN_FUNC <token> (268) 69 86 87 88 89
+    TOKEN_END <token> (269) 57 58 61 86 88
+    TOKEN_IF <token> (270) 57 58
+    TOKEN_THEN <token> (271) 57 58
+    TOKEN_ELSE <token> (272) 58
+    TOKEN_PRINT <token> (273) 52
+    TOKEN_RETURN <token> (274) 55 56
+    TOKEN_LOOP <token> (275) 61
+    TOKEN_VAR <token> (276) 8 9
+    TOKEN_WHILE <token> (277) 59
+    TOKEN_FOR <token> (278) 60
+    TOKEN_IN <token> (279) 60
+    TOKEN_AND <token> (280) 11
+    TOKEN_OR <token> (281) 12
+    TOKEN_XOR <token> (282) 13
+    TOKEN_NOT <token> (283) 30 35
+    TOKEN_IS <token> (284) 33 34 35 36 86 88
+    TOKEN_EMPTY <string> (285) 66
+    TOKEN_INT <string> (286) 62
+    TOKEN_REAL <string> (287) 63
+    TOKEN_BOOL <string> (288) 64
+    TOKEN_STRING <string> (289) 65
+    TOKEN_ARRAY <string> (290) 67
+    TOKEN_TUPLE <string> (291) 68
+    TOKEN_LPAREN <token> (292) 32 45 90
+    TOKEN_RPAREN <token> (293) 32 45 90
+    TOKEN_LSQUARE <token> (294) 44 78 79
+    TOKEN_RSQUARE <token> (295) 44 78 79
+    TOKEN_LCURLY <token> (296) 80 81 82
+    TOKEN_RCURLY <token> (297) 80 83
+    TOKEN_SEMI <token> (298) 8 9 51 52 55 56
+    TOKEN_COMMA <token> (299) 54 84 85 92
+    TOKEN_DOT <token> (300) 42 43
+    TOKEN_PLUS <token> (301) 22 28 33
+    TOKEN_MINUS <token> (302) 23 29 34
+    TOKEN_MULT <token> (303) 25
+    TOKEN_DIV <token> (304) 26
+    TOKEN_EQUAL <token> (305) 19
+    TOKEN_NEQ <token> (306) 20
+    TOKEN_LESS <token> (307) 15
+    TOKEN_LEQ <token> (308) 16
+    TOKEN_GREAT <token> (309) 17
+    TOKEN_GEQ <token> (310) 18
+    TOKEN_INCREMENT <token> (311)
+    TOKEN_READINT <string> (312) 38
+    TOKEN_READREAL <string> (313) 39
+    TOKEN_READSTRING <string> (314) 40
+
+
+Nonterminals, with rules where they appear
+
+    $accept (60)
+        on left: 0
+    Program (61)
+        on left: 1
+        on right: 0
+    Body <NBlock> (62)
+        on left: 2 3 4
+        on right: 1 57 58 61 86 88
+    ProgramBody <NBlock> (63)
+        on left: 5 6 7
+        on right: 3 4 6 7
+    Declaration <declaration> (64)
+        on left: 8 9
+        on right: 3 6
+    Expression <expression> (65)
+        on left: 10 11 12 13
+        on right: 9 32 44 51 53 54 55 57 58 59 82 85 87 89
+    Relation <expression> (66)
+        on left: 14 15 16 17 18 19 20
+        on right: 10 11 12 13
+    Factor <expression> (67)
+        on left: 21 22 23
+        on right: 14 15 16 17 18 19 20 22 23
+    Term <expression> (68)
+        on left: 24 25 26
+        on right: 21 22 23 25 26
+    Unary <expression> (69)
+        on left: 27 28 29 30 31 32 33 34 35 36
+        on right: 24 25 26
+    Primary <expression> (70)
+        on left: 37 38 39 40
+        on right: 27 28 29 30 33 34 35 36 51
+    Tail (71)
+        on left: 41 42 43 44 45
+        on right: 37
+    Statement <statement> (72)
+        on left: 46 47 48 49 50
+        on right: 4 7
+    Assignment <statement> (73)
+        on left: 51
+        on right: 46
+    Print <statement> (74)
+        on left: 52
+        on right: 47
+    Expressions <expressionVector> (75)
+        on left: 53 54
+        on right: 45 52 54 79
+    Return <statement> (76)
+        on left: 55 56
+        on right: 48
+    If <statement> (77)
+        on left: 57 58
+        on right: 49
+    Loop <statement> (78)
+        on left: 59 60
+        on right: 50
+    LoopBody <NBlock> (79)
+        on left: 61
+        on right: 59 60
+    TypeIndicator <string> (80)
+        on left: 62 63 64 65 66 67 68 69
+        on right: 33 34 35 36 60
+    Literal <expression> (81)
+        on left: 70 71 72 73 74 75 76 77
+        on right: 31
+    ArrayLiteral <expression> (82)
+        on left: 78 79
+        on right: 75
+    TupleLiteral <expression> (83)
+        on left: 80 81 82
+        on right: 76
+    TupleTail (84)
+        on left: 83 84 85
+        on right: 81 82 84 85
+    FunctionLiteral <expression> (85)
+        on left: 86 87 88 89
+        on right: 77
+    Parameters <paramVector> (86)
+        on left: 90
+        on right: 88 89
+    Identifiers <paramVector> (87)
+        on left: 91 92
+        on right: 90 92
+
+
+State 0
+
+    0 $accept: • Program $end
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 2 (Body)
+
+    Program      go to state 11
+    Body         go to state 12
+    Declaration  go to state 13
+    Primary      go to state 14
+    Statement    go to state 15
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 1
+
+   37 Primary: TOKEN_IDENTIFIER • Tail
+
+    TOKEN_LPAREN   shift, and go to state 21
+    TOKEN_LSQUARE  shift, and go to state 22
+    TOKEN_DOT      shift, and go to state 23
+
+    $default  reduce using rule 41 (Tail)
+
+    Tail  go to state 24
+
+
+State 2
+
+   57 If: TOKEN_IF • Expression TOKEN_THEN Body TOKEN_END
+   58   | TOKEN_IF • Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 37
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 3
+
+   52 Print: TOKEN_PRINT • Expressions TOKEN_SEMI
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 47
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Expressions      go to state 48
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 4
+
+   55 Return: TOKEN_RETURN • Expression TOKEN_SEMI
+   56       | TOKEN_RETURN • TOKEN_SEMI
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_SEMI            shift, and go to state 49
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 50
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 5
+
+    8 Declaration: TOKEN_VAR • TOKEN_IDENTIFIER TOKEN_SEMI
+    9            | TOKEN_VAR • TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI
+
+    TOKEN_IDENTIFIER  shift, and go to state 51
+
+
+State 6
+
+   59 Loop: TOKEN_WHILE • Expression LoopBody
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 52
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 7
+
+   60 Loop: TOKEN_FOR • TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody
+
+    TOKEN_IDENTIFIER  shift, and go to state 53
+
+
+State 8
+
+   38 Primary: TOKEN_READINT •
+
+    $default  reduce using rule 38 (Primary)
+
+
+State 9
+
+   39 Primary: TOKEN_READREAL •
+
+    $default  reduce using rule 39 (Primary)
+
+
+State 10
+
+   40 Primary: TOKEN_READSTRING •
+
+    $default  reduce using rule 40 (Primary)
+
+
+State 11
+
+    0 $accept: Program • $end
+
+    $end  shift, and go to state 54
+
+
+State 12
+
+    1 Program: Body •
+
+    $default  reduce using rule 1 (Program)
+
+
+State 13
+
+    3 Body: Declaration • ProgramBody
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 5 (ProgramBody)
+
+    ProgramBody  go to state 55
+    Declaration  go to state 56
+    Primary      go to state 14
+    Statement    go to state 57
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 14
+
+   51 Assignment: Primary • TOKEN_ASSIGNMENT Expression TOKEN_SEMI
+
+    TOKEN_ASSIGNMENT  shift, and go to state 58
+
+
+State 15
+
+    4 Body: Statement • ProgramBody
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 5 (ProgramBody)
+
+    ProgramBody  go to state 59
+    Declaration  go to state 56
+    Primary      go to state 14
+    Statement    go to state 57
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 16
+
+   46 Statement: Assignment •
+
+    $default  reduce using rule 46 (Statement)
+
+
+State 17
+
+   47 Statement: Print •
+
+    $default  reduce using rule 47 (Statement)
+
+
+State 18
+
+   48 Statement: Return •
+
+    $default  reduce using rule 48 (Statement)
+
+
+State 19
+
+   49 Statement: If •
+
+    $default  reduce using rule 49 (Statement)
+
+
+State 20
+
+   50 Statement: Loop •
+
+    $default  reduce using rule 50 (Statement)
+
+
+State 21
+
+   45 Tail: TOKEN_LPAREN • Expressions TOKEN_RPAREN
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 47
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Expressions      go to state 60
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 22
+
+   44 Tail: TOKEN_LSQUARE • Expression TOKEN_RSQUARE
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 61
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 23
+
+   42 Tail: TOKEN_DOT • TOKEN_INT_LITERAL
+   43     | TOKEN_DOT • TOKEN_IDENTIFIER
+
+    TOKEN_IDENTIFIER   shift, and go to state 62
+    TOKEN_INT_LITERAL  shift, and go to state 63
+
+
+State 24
+
+   37 Primary: TOKEN_IDENTIFIER Tail •
+
+    $default  reduce using rule 37 (Primary)
+
+
+State 25
+
+   70 Literal: TOKEN_INT_LITERAL •
+
+    $default  reduce using rule 70 (Literal)
+
+
+State 26
+
+   71 Literal: TOKEN_REAL_LITERAL •
+
+    $default  reduce using rule 71 (Literal)
+
+
+State 27
+
+   74 Literal: TOKEN_STRING_LITERAL •
+
+    $default  reduce using rule 74 (Literal)
+
+
+State 28
+
+   72 Literal: TOKEN_TRUE •
+
+    $default  reduce using rule 72 (Literal)
+
+
+State 29
+
+   73 Literal: TOKEN_FALSE •
+
+    $default  reduce using rule 73 (Literal)
+
+
+State 30
+
+   86 FunctionLiteral: TOKEN_FUNC • TOKEN_IS Body TOKEN_END
+   87                | TOKEN_FUNC • TOKEN_FUNCTOR Expression
+   88                | TOKEN_FUNC • Parameters TOKEN_IS Body TOKEN_END
+   89                | TOKEN_FUNC • Parameters TOKEN_FUNCTOR Expression
+
+    TOKEN_FUNCTOR  shift, and go to state 64
+    TOKEN_IS       shift, and go to state 65
+    TOKEN_LPAREN   shift, and go to state 66
+
+    Parameters  go to state 67
+
+
+State 31
+
+   30 Unary: TOKEN_NOT • Primary
+   35      | TOKEN_NOT • Primary TOKEN_IS TypeIndicator
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    Primary  go to state 68
+
+
+State 32
+
+   32 Unary: TOKEN_LPAREN • Expression TOKEN_RPAREN
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 69
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 33
+
+   78 ArrayLiteral: TOKEN_LSQUARE • TOKEN_RSQUARE
+   79             | TOKEN_LSQUARE • Expressions TOKEN_RSQUARE
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_RSQUARE         shift, and go to state 70
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 47
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Expressions      go to state 71
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 34
+
+   80 TupleLiteral: TOKEN_LCURLY • TOKEN_RCURLY
+   81             | TOKEN_LCURLY • TOKEN_IDENTIFIER TupleTail
+   82             | TOKEN_LCURLY • TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail
+
+    TOKEN_IDENTIFIER  shift, and go to state 72
+    TOKEN_RCURLY      shift, and go to state 73
+
+
+State 35
+
+   28 Unary: TOKEN_PLUS • Primary
+   33      | TOKEN_PLUS • Primary TOKEN_IS TypeIndicator
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    Primary  go to state 74
+
+
+State 36
+
+   29 Unary: TOKEN_MINUS • Primary
+   34      | TOKEN_MINUS • Primary TOKEN_IS TypeIndicator
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    Primary  go to state 75
+
+
+State 37
+
+   57 If: TOKEN_IF Expression • TOKEN_THEN Body TOKEN_END
+   58   | TOKEN_IF Expression • TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END
+
+    TOKEN_THEN  shift, and go to state 76
+
+
+State 38
+
+   10 Expression: Relation •
+   11           | Relation • TOKEN_AND Relation
+   12           | Relation • TOKEN_OR Relation
+   13           | Relation • TOKEN_XOR Relation
+
+    TOKEN_AND  shift, and go to state 77
+    TOKEN_OR   shift, and go to state 78
+    TOKEN_XOR  shift, and go to state 79
+
+    TOKEN_AND  [reduce using rule 10 (Expression)]
+    TOKEN_OR   [reduce using rule 10 (Expression)]
+    TOKEN_XOR  [reduce using rule 10 (Expression)]
+    $default   reduce using rule 10 (Expression)
+
+
+State 39
+
+   14 Relation: Factor •
+   15         | Factor • TOKEN_LESS Factor
+   16         | Factor • TOKEN_LEQ Factor
+   17         | Factor • TOKEN_GREAT Factor
+   18         | Factor • TOKEN_GEQ Factor
+   19         | Factor • TOKEN_EQUAL Factor
+   20         | Factor • TOKEN_NEQ Factor
+
+    TOKEN_EQUAL  shift, and go to state 80
+    TOKEN_NEQ    shift, and go to state 81
+    TOKEN_LESS   shift, and go to state 82
+    TOKEN_LEQ    shift, and go to state 83
+    TOKEN_GREAT  shift, and go to state 84
+    TOKEN_GEQ    shift, and go to state 85
+
+    TOKEN_EQUAL  [reduce using rule 14 (Relation)]
+    TOKEN_NEQ    [reduce using rule 14 (Relation)]
+    TOKEN_LESS   [reduce using rule 14 (Relation)]
+    TOKEN_LEQ    [reduce using rule 14 (Relation)]
+    TOKEN_GREAT  [reduce using rule 14 (Relation)]
+    TOKEN_GEQ    [reduce using rule 14 (Relation)]
+    $default     reduce using rule 14 (Relation)
+
+
+State 40
+
+   21 Factor: Term •
+   22       | Term • TOKEN_PLUS Factor
+   23       | Term • TOKEN_MINUS Factor
+
+    TOKEN_PLUS   shift, and go to state 86
+    TOKEN_MINUS  shift, and go to state 87
+
+    TOKEN_PLUS   [reduce using rule 21 (Factor)]
+    TOKEN_MINUS  [reduce using rule 21 (Factor)]
+    $default     reduce using rule 21 (Factor)
+
+
+State 41
+
+   24 Term: Unary •
+   25     | Unary • TOKEN_MULT Term
+   26     | Unary • TOKEN_DIV Term
+
+    TOKEN_MULT  shift, and go to state 88
+    TOKEN_DIV   shift, and go to state 89
+
+    TOKEN_MULT  [reduce using rule 24 (Term)]
+    TOKEN_DIV   [reduce using rule 24 (Term)]
+    $default    reduce using rule 24 (Term)
+
+
+State 42
+
+   27 Unary: Primary •
+   36      | Primary • TOKEN_IS TypeIndicator
+
+    TOKEN_IS  shift, and go to state 90
+
+    $default  reduce using rule 27 (Unary)
+
+
+State 43
+
+   31 Unary: Literal •
+
+    $default  reduce using rule 31 (Unary)
+
+
+State 44
+
+   75 Literal: ArrayLiteral •
+
+    $default  reduce using rule 75 (Literal)
+
+
+State 45
+
+   76 Literal: TupleLiteral •
+
+    $default  reduce using rule 76 (Literal)
+
+
+State 46
+
+   77 Literal: FunctionLiteral •
+
+    $default  reduce using rule 77 (Literal)
+
+
+State 47
+
+   53 Expressions: Expression •
+   54            | Expression • TOKEN_COMMA Expressions
+
+    TOKEN_COMMA  shift, and go to state 91
+
+    $default  reduce using rule 53 (Expressions)
+
+
+State 48
+
+   52 Print: TOKEN_PRINT Expressions • TOKEN_SEMI
+
+    TOKEN_SEMI  shift, and go to state 92
+
+
+State 49
+
+   56 Return: TOKEN_RETURN TOKEN_SEMI •
+
+    $default  reduce using rule 56 (Return)
+
+
+State 50
+
+   55 Return: TOKEN_RETURN Expression • TOKEN_SEMI
+
+    TOKEN_SEMI  shift, and go to state 93
+
+
+State 51
+
+    8 Declaration: TOKEN_VAR TOKEN_IDENTIFIER • TOKEN_SEMI
+    9            | TOKEN_VAR TOKEN_IDENTIFIER • TOKEN_ASSIGNMENT Expression TOKEN_SEMI
+
+    TOKEN_ASSIGNMENT  shift, and go to state 94
+    TOKEN_SEMI        shift, and go to state 95
+
+
+State 52
+
+   59 Loop: TOKEN_WHILE Expression • LoopBody
+
+    TOKEN_LOOP  shift, and go to state 96
+
+    LoopBody  go to state 97
+
+
+State 53
+
+   60 Loop: TOKEN_FOR TOKEN_IDENTIFIER • TOKEN_IN TypeIndicator LoopBody
+
+    TOKEN_IN  shift, and go to state 98
+
+
+State 54
+
+    0 $accept: Program $end •
+
+    $default  accept
+
+
+State 55
+
+    3 Body: Declaration ProgramBody •
+
+    $default  reduce using rule 3 (Body)
+
+
+State 56
+
+    6 ProgramBody: Declaration • ProgramBody
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 5 (ProgramBody)
+
+    ProgramBody  go to state 99
+    Declaration  go to state 56
+    Primary      go to state 14
+    Statement    go to state 57
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 57
+
+    7 ProgramBody: Statement • ProgramBody
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 5 (ProgramBody)
+
+    ProgramBody  go to state 100
+    Declaration  go to state 56
+    Primary      go to state 14
+    Statement    go to state 57
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 58
+
+   51 Assignment: Primary TOKEN_ASSIGNMENT • Expression TOKEN_SEMI
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 101
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 59
+
+    4 Body: Statement ProgramBody •
+
+    $default  reduce using rule 4 (Body)
+
+
+State 60
+
+   45 Tail: TOKEN_LPAREN Expressions • TOKEN_RPAREN
+
+    TOKEN_RPAREN  shift, and go to state 102
+
+
+State 61
+
+   44 Tail: TOKEN_LSQUARE Expression • TOKEN_RSQUARE
+
+    TOKEN_RSQUARE  shift, and go to state 103
+
+
+State 62
+
+   43 Tail: TOKEN_DOT TOKEN_IDENTIFIER •
+
+    $default  reduce using rule 43 (Tail)
+
+
+State 63
+
+   42 Tail: TOKEN_DOT TOKEN_INT_LITERAL •
+
+    $default  reduce using rule 42 (Tail)
+
+
+State 64
+
+   87 FunctionLiteral: TOKEN_FUNC TOKEN_FUNCTOR • Expression
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 104
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 65
+
+   86 FunctionLiteral: TOKEN_FUNC TOKEN_IS • Body TOKEN_END
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 2 (Body)
+
+    Body         go to state 105
+    Declaration  go to state 13
+    Primary      go to state 14
+    Statement    go to state 15
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 66
+
+   90 Parameters: TOKEN_LPAREN • Identifiers TOKEN_RPAREN
+
+    TOKEN_IDENTIFIER  shift, and go to state 106
+
+    Identifiers  go to state 107
+
+
+State 67
+
+   88 FunctionLiteral: TOKEN_FUNC Parameters • TOKEN_IS Body TOKEN_END
+   89                | TOKEN_FUNC Parameters • TOKEN_FUNCTOR Expression
+
+    TOKEN_FUNCTOR  shift, and go to state 108
+    TOKEN_IS       shift, and go to state 109
+
+
+State 68
+
+   30 Unary: TOKEN_NOT Primary •
+   35      | TOKEN_NOT Primary • TOKEN_IS TypeIndicator
+
+    TOKEN_IS  shift, and go to state 110
+
+    $default  reduce using rule 30 (Unary)
+
+
+State 69
+
+   32 Unary: TOKEN_LPAREN Expression • TOKEN_RPAREN
+
+    TOKEN_RPAREN  shift, and go to state 111
+
+
+State 70
+
+   78 ArrayLiteral: TOKEN_LSQUARE TOKEN_RSQUARE •
+
+    $default  reduce using rule 78 (ArrayLiteral)
+
+
+State 71
+
+   79 ArrayLiteral: TOKEN_LSQUARE Expressions • TOKEN_RSQUARE
+
+    TOKEN_RSQUARE  shift, and go to state 112
+
+
+State 72
+
+   81 TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER • TupleTail
+   82             | TOKEN_LCURLY TOKEN_IDENTIFIER • TOKEN_ASSIGNMENT Expression TupleTail
+
+    TOKEN_ASSIGNMENT  shift, and go to state 113
+    TOKEN_RCURLY      shift, and go to state 114
+    TOKEN_COMMA       shift, and go to state 115
+
+    TupleTail  go to state 116
+
+
+State 73
+
+   80 TupleLiteral: TOKEN_LCURLY TOKEN_RCURLY •
+
+    $default  reduce using rule 80 (TupleLiteral)
+
+
+State 74
+
+   28 Unary: TOKEN_PLUS Primary •
+   33      | TOKEN_PLUS Primary • TOKEN_IS TypeIndicator
+
+    TOKEN_IS  shift, and go to state 117
+
+    $default  reduce using rule 28 (Unary)
+
+
+State 75
+
+   29 Unary: TOKEN_MINUS Primary •
+   34      | TOKEN_MINUS Primary • TOKEN_IS TypeIndicator
+
+    TOKEN_IS  shift, and go to state 118
+
+    $default  reduce using rule 29 (Unary)
+
+
+State 76
+
+   57 If: TOKEN_IF Expression TOKEN_THEN • Body TOKEN_END
+   58   | TOKEN_IF Expression TOKEN_THEN • Body TOKEN_ELSE Body TOKEN_END
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 2 (Body)
+
+    Body         go to state 119
+    Declaration  go to state 13
+    Primary      go to state 14
+    Statement    go to state 15
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 77
+
+   11 Expression: Relation TOKEN_AND • Relation
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Relation         go to state 120
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 78
+
+   12 Expression: Relation TOKEN_OR • Relation
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Relation         go to state 121
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 79
+
+   13 Expression: Relation TOKEN_XOR • Relation
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Relation         go to state 122
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 80
+
+   19 Relation: Factor TOKEN_EQUAL • Factor
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Factor           go to state 123
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 81
+
+   20 Relation: Factor TOKEN_NEQ • Factor
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Factor           go to state 124
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 82
+
+   15 Relation: Factor TOKEN_LESS • Factor
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Factor           go to state 125
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 83
+
+   16 Relation: Factor TOKEN_LEQ • Factor
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Factor           go to state 126
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 84
+
+   17 Relation: Factor TOKEN_GREAT • Factor
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Factor           go to state 127
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 85
+
+   18 Relation: Factor TOKEN_GEQ • Factor
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Factor           go to state 128
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 86
+
+   22 Factor: Term TOKEN_PLUS • Factor
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Factor           go to state 129
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 87
+
+   23 Factor: Term TOKEN_MINUS • Factor
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Factor           go to state 130
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 88
+
+   25 Term: Unary TOKEN_MULT • Term
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Term             go to state 131
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 89
+
+   26 Term: Unary TOKEN_DIV • Term
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Term             go to state 132
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 90
+
+   36 Unary: Primary TOKEN_IS • TypeIndicator
+
+    TOKEN_FUNC    shift, and go to state 133
+    TOKEN_EMPTY   shift, and go to state 134
+    TOKEN_INT     shift, and go to state 135
+    TOKEN_REAL    shift, and go to state 136
+    TOKEN_BOOL    shift, and go to state 137
+    TOKEN_STRING  shift, and go to state 138
+    TOKEN_ARRAY   shift, and go to state 139
+    TOKEN_TUPLE   shift, and go to state 140
+
+    TypeIndicator  go to state 141
+
+
+State 91
+
+   54 Expressions: Expression TOKEN_COMMA • Expressions
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 47
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Expressions      go to state 142
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 92
+
+   52 Print: TOKEN_PRINT Expressions TOKEN_SEMI •
+
+    $default  reduce using rule 52 (Print)
+
+
+State 93
+
+   55 Return: TOKEN_RETURN Expression TOKEN_SEMI •
+
+    $default  reduce using rule 55 (Return)
+
+
+State 94
+
+    9 Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT • Expression TOKEN_SEMI
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 143
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 95
+
+    8 Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI •
+
+    $default  reduce using rule 8 (Declaration)
+
+
+State 96
+
+   61 LoopBody: TOKEN_LOOP • Body TOKEN_END
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 2 (Body)
+
+    Body         go to state 144
+    Declaration  go to state 13
+    Primary      go to state 14
+    Statement    go to state 15
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 97
+
+   59 Loop: TOKEN_WHILE Expression LoopBody •
+
+    $default  reduce using rule 59 (Loop)
+
+
+State 98
+
+   60 Loop: TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN • TypeIndicator LoopBody
+
+    TOKEN_FUNC    shift, and go to state 133
+    TOKEN_EMPTY   shift, and go to state 134
+    TOKEN_INT     shift, and go to state 135
+    TOKEN_REAL    shift, and go to state 136
+    TOKEN_BOOL    shift, and go to state 137
+    TOKEN_STRING  shift, and go to state 138
+    TOKEN_ARRAY   shift, and go to state 139
+    TOKEN_TUPLE   shift, and go to state 140
+
+    TypeIndicator  go to state 145
+
+
+State 99
+
+    6 ProgramBody: Declaration ProgramBody •
+
+    $default  reduce using rule 6 (ProgramBody)
+
+
+State 100
+
+    7 ProgramBody: Statement ProgramBody •
+
+    $default  reduce using rule 7 (ProgramBody)
+
+
+State 101
+
+   51 Assignment: Primary TOKEN_ASSIGNMENT Expression • TOKEN_SEMI
+
+    TOKEN_SEMI  shift, and go to state 146
+
+
+State 102
+
+   45 Tail: TOKEN_LPAREN Expressions TOKEN_RPAREN •
+
+    $default  reduce using rule 45 (Tail)
+
+
+State 103
+
+   44 Tail: TOKEN_LSQUARE Expression TOKEN_RSQUARE •
+
+    $default  reduce using rule 44 (Tail)
+
+
+State 104
+
+   87 FunctionLiteral: TOKEN_FUNC TOKEN_FUNCTOR Expression •
+
+    $default  reduce using rule 87 (FunctionLiteral)
+
+
+State 105
+
+   86 FunctionLiteral: TOKEN_FUNC TOKEN_IS Body • TOKEN_END
+
+    TOKEN_END  shift, and go to state 147
+
+
+State 106
+
+   91 Identifiers: TOKEN_IDENTIFIER •
+   92            | TOKEN_IDENTIFIER • TOKEN_COMMA Identifiers
+
+    TOKEN_COMMA  shift, and go to state 148
+
+    $default  reduce using rule 91 (Identifiers)
+
+
+State 107
+
+   90 Parameters: TOKEN_LPAREN Identifiers • TOKEN_RPAREN
+
+    TOKEN_RPAREN  shift, and go to state 149
+
+
+State 108
+
+   89 FunctionLiteral: TOKEN_FUNC Parameters TOKEN_FUNCTOR • Expression
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 150
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 109
+
+   88 FunctionLiteral: TOKEN_FUNC Parameters TOKEN_IS • Body TOKEN_END
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 2 (Body)
+
+    Body         go to state 151
+    Declaration  go to state 13
+    Primary      go to state 14
+    Statement    go to state 15
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 110
+
+   35 Unary: TOKEN_NOT Primary TOKEN_IS • TypeIndicator
+
+    TOKEN_FUNC    shift, and go to state 133
+    TOKEN_EMPTY   shift, and go to state 134
+    TOKEN_INT     shift, and go to state 135
+    TOKEN_REAL    shift, and go to state 136
+    TOKEN_BOOL    shift, and go to state 137
+    TOKEN_STRING  shift, and go to state 138
+    TOKEN_ARRAY   shift, and go to state 139
+    TOKEN_TUPLE   shift, and go to state 140
+
+    TypeIndicator  go to state 152
+
+
+State 111
+
+   32 Unary: TOKEN_LPAREN Expression TOKEN_RPAREN •
+
+    $default  reduce using rule 32 (Unary)
+
+
+State 112
+
+   79 ArrayLiteral: TOKEN_LSQUARE Expressions TOKEN_RSQUARE •
+
+    $default  reduce using rule 79 (ArrayLiteral)
+
+
+State 113
+
+   82 TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TOKEN_ASSIGNMENT • Expression TupleTail
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 153
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 114
+
+   83 TupleTail: TOKEN_RCURLY •
+
+    $default  reduce using rule 83 (TupleTail)
+
+
+State 115
+
+   84 TupleTail: TOKEN_COMMA • TOKEN_IDENTIFIER TupleTail
+   85          | TOKEN_COMMA • TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail
+
+    TOKEN_IDENTIFIER  shift, and go to state 154
+
+
+State 116
+
+   81 TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TupleTail •
+
+    $default  reduce using rule 81 (TupleLiteral)
+
+
+State 117
+
+   33 Unary: TOKEN_PLUS Primary TOKEN_IS • TypeIndicator
+
+    TOKEN_FUNC    shift, and go to state 133
+    TOKEN_EMPTY   shift, and go to state 134
+    TOKEN_INT     shift, and go to state 135
+    TOKEN_REAL    shift, and go to state 136
+    TOKEN_BOOL    shift, and go to state 137
+    TOKEN_STRING  shift, and go to state 138
+    TOKEN_ARRAY   shift, and go to state 139
+    TOKEN_TUPLE   shift, and go to state 140
+
+    TypeIndicator  go to state 155
+
+
+State 118
+
+   34 Unary: TOKEN_MINUS Primary TOKEN_IS • TypeIndicator
+
+    TOKEN_FUNC    shift, and go to state 133
+    TOKEN_EMPTY   shift, and go to state 134
+    TOKEN_INT     shift, and go to state 135
+    TOKEN_REAL    shift, and go to state 136
+    TOKEN_BOOL    shift, and go to state 137
+    TOKEN_STRING  shift, and go to state 138
+    TOKEN_ARRAY   shift, and go to state 139
+    TOKEN_TUPLE   shift, and go to state 140
+
+    TypeIndicator  go to state 156
+
+
+State 119
+
+   57 If: TOKEN_IF Expression TOKEN_THEN Body • TOKEN_END
+   58   | TOKEN_IF Expression TOKEN_THEN Body • TOKEN_ELSE Body TOKEN_END
+
+    TOKEN_END   shift, and go to state 157
+    TOKEN_ELSE  shift, and go to state 158
+
+
+State 120
+
+   11 Expression: Relation TOKEN_AND Relation •
+
+    $default  reduce using rule 11 (Expression)
+
+
+State 121
+
+   12 Expression: Relation TOKEN_OR Relation •
+
+    $default  reduce using rule 12 (Expression)
+
+
+State 122
+
+   13 Expression: Relation TOKEN_XOR Relation •
+
+    $default  reduce using rule 13 (Expression)
+
+
+State 123
+
+   19 Relation: Factor TOKEN_EQUAL Factor •
+
+    $default  reduce using rule 19 (Relation)
+
+
+State 124
+
+   20 Relation: Factor TOKEN_NEQ Factor •
+
+    $default  reduce using rule 20 (Relation)
+
+
+State 125
+
+   15 Relation: Factor TOKEN_LESS Factor •
+
+    $default  reduce using rule 15 (Relation)
+
+
+State 126
+
+   16 Relation: Factor TOKEN_LEQ Factor •
+
+    $default  reduce using rule 16 (Relation)
+
+
+State 127
+
+   17 Relation: Factor TOKEN_GREAT Factor •
+
+    $default  reduce using rule 17 (Relation)
+
+
+State 128
+
+   18 Relation: Factor TOKEN_GEQ Factor •
+
+    $default  reduce using rule 18 (Relation)
+
+
+State 129
+
+   22 Factor: Term TOKEN_PLUS Factor •
+
+    $default  reduce using rule 22 (Factor)
+
+
+State 130
+
+   23 Factor: Term TOKEN_MINUS Factor •
+
+    $default  reduce using rule 23 (Factor)
+
+
+State 131
+
+   25 Term: Unary TOKEN_MULT Term •
+
+    $default  reduce using rule 25 (Term)
+
+
+State 132
+
+   26 Term: Unary TOKEN_DIV Term •
+
+    $default  reduce using rule 26 (Term)
+
+
+State 133
+
+   69 TypeIndicator: TOKEN_FUNC •
+
+    $default  reduce using rule 69 (TypeIndicator)
+
+
+State 134
+
+   66 TypeIndicator: TOKEN_EMPTY •
+
+    $default  reduce using rule 66 (TypeIndicator)
+
+
+State 135
+
+   62 TypeIndicator: TOKEN_INT •
+
+    $default  reduce using rule 62 (TypeIndicator)
+
+
+State 136
+
+   63 TypeIndicator: TOKEN_REAL •
+
+    $default  reduce using rule 63 (TypeIndicator)
+
+
+State 137
+
+   64 TypeIndicator: TOKEN_BOOL •
+
+    $default  reduce using rule 64 (TypeIndicator)
+
+
+State 138
+
+   65 TypeIndicator: TOKEN_STRING •
+
+    $default  reduce using rule 65 (TypeIndicator)
+
+
+State 139
+
+   67 TypeIndicator: TOKEN_ARRAY •
+
+    $default  reduce using rule 67 (TypeIndicator)
+
+
+State 140
+
+   68 TypeIndicator: TOKEN_TUPLE •
+
+    $default  reduce using rule 68 (TypeIndicator)
+
+
+State 141
+
+   36 Unary: Primary TOKEN_IS TypeIndicator •
+
+    $default  reduce using rule 36 (Unary)
+
+
+State 142
+
+   54 Expressions: Expression TOKEN_COMMA Expressions •
+
+    $default  reduce using rule 54 (Expressions)
+
+
+State 143
+
+    9 Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression • TOKEN_SEMI
+
+    TOKEN_SEMI  shift, and go to state 159
+
+
+State 144
+
+   61 LoopBody: TOKEN_LOOP Body • TOKEN_END
+
+    TOKEN_END  shift, and go to state 160
+
+
+State 145
+
+   60 Loop: TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator • LoopBody
+
+    TOKEN_LOOP  shift, and go to state 96
+
+    LoopBody  go to state 161
+
+
+State 146
+
+   51 Assignment: Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI •
+
+    $default  reduce using rule 51 (Assignment)
+
+
+State 147
+
+   86 FunctionLiteral: TOKEN_FUNC TOKEN_IS Body TOKEN_END •
+
+    $default  reduce using rule 86 (FunctionLiteral)
+
+
+State 148
+
+   92 Identifiers: TOKEN_IDENTIFIER TOKEN_COMMA • Identifiers
+
+    TOKEN_IDENTIFIER  shift, and go to state 106
+
+    Identifiers  go to state 162
+
+
+State 149
+
+   90 Parameters: TOKEN_LPAREN Identifiers TOKEN_RPAREN •
+
+    $default  reduce using rule 90 (Parameters)
+
+
+State 150
+
+   89 FunctionLiteral: TOKEN_FUNC Parameters TOKEN_FUNCTOR Expression •
+
+    $default  reduce using rule 89 (FunctionLiteral)
+
+
+State 151
+
+   88 FunctionLiteral: TOKEN_FUNC Parameters TOKEN_IS Body • TOKEN_END
+
+    TOKEN_END  shift, and go to state 163
+
+
+State 152
+
+   35 Unary: TOKEN_NOT Primary TOKEN_IS TypeIndicator •
+
+    $default  reduce using rule 35 (Unary)
+
+
+State 153
+
+   82 TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression • TupleTail
+
+    TOKEN_RCURLY  shift, and go to state 114
+    TOKEN_COMMA   shift, and go to state 115
+
+    TupleTail  go to state 164
+
+
+State 154
+
+   84 TupleTail: TOKEN_COMMA TOKEN_IDENTIFIER • TupleTail
+   85          | TOKEN_COMMA TOKEN_IDENTIFIER • TOKEN_ASSIGNMENT Expression TupleTail
+
+    TOKEN_ASSIGNMENT  shift, and go to state 165
+    TOKEN_RCURLY      shift, and go to state 114
+    TOKEN_COMMA       shift, and go to state 115
+
+    TupleTail  go to state 166
+
+
+State 155
+
+   33 Unary: TOKEN_PLUS Primary TOKEN_IS TypeIndicator •
+
+    $default  reduce using rule 33 (Unary)
+
+
+State 156
+
+   34 Unary: TOKEN_MINUS Primary TOKEN_IS TypeIndicator •
+
+    $default  reduce using rule 34 (Unary)
+
+
+State 157
+
+   57 If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_END •
+
+    $default  reduce using rule 57 (If)
+
+
+State 158
+
+   58 If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE • Body TOKEN_END
+
+    TOKEN_IDENTIFIER  shift, and go to state 1
+    TOKEN_IF          shift, and go to state 2
+    TOKEN_PRINT       shift, and go to state 3
+    TOKEN_RETURN      shift, and go to state 4
+    TOKEN_VAR         shift, and go to state 5
+    TOKEN_WHILE       shift, and go to state 6
+    TOKEN_FOR         shift, and go to state 7
+    TOKEN_READINT     shift, and go to state 8
+    TOKEN_READREAL    shift, and go to state 9
+    TOKEN_READSTRING  shift, and go to state 10
+
+    $default  reduce using rule 2 (Body)
+
+    Body         go to state 167
+    Declaration  go to state 13
+    Primary      go to state 14
+    Statement    go to state 15
+    Assignment   go to state 16
+    Print        go to state 17
+    Return       go to state 18
+    If           go to state 19
+    Loop         go to state 20
+
+
+State 159
+
+    9 Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI •
+
+    $default  reduce using rule 9 (Declaration)
+
+
+State 160
+
+   61 LoopBody: TOKEN_LOOP Body TOKEN_END •
+
+    $default  reduce using rule 61 (LoopBody)
+
+
+State 161
+
+   60 Loop: TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody •
+
+    $default  reduce using rule 60 (Loop)
+
+
+State 162
+
+   92 Identifiers: TOKEN_IDENTIFIER TOKEN_COMMA Identifiers •
+
+    $default  reduce using rule 92 (Identifiers)
+
+
+State 163
+
+   88 FunctionLiteral: TOKEN_FUNC Parameters TOKEN_IS Body TOKEN_END •
+
+    $default  reduce using rule 88 (FunctionLiteral)
+
+
+State 164
+
+   82 TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail •
+
+    $default  reduce using rule 82 (TupleLiteral)
+
+
+State 165
+
+   85 TupleTail: TOKEN_COMMA TOKEN_IDENTIFIER TOKEN_ASSIGNMENT • Expression TupleTail
+
+    TOKEN_IDENTIFIER      shift, and go to state 1
+    TOKEN_INT_LITERAL     shift, and go to state 25
+    TOKEN_REAL_LITERAL    shift, and go to state 26
+    TOKEN_STRING_LITERAL  shift, and go to state 27
+    TOKEN_TRUE            shift, and go to state 28
+    TOKEN_FALSE           shift, and go to state 29
+    TOKEN_FUNC            shift, and go to state 30
+    TOKEN_NOT             shift, and go to state 31
+    TOKEN_LPAREN          shift, and go to state 32
+    TOKEN_LSQUARE         shift, and go to state 33
+    TOKEN_LCURLY          shift, and go to state 34
+    TOKEN_PLUS            shift, and go to state 35
+    TOKEN_MINUS           shift, and go to state 36
+    TOKEN_READINT         shift, and go to state 8
+    TOKEN_READREAL        shift, and go to state 9
+    TOKEN_READSTRING      shift, and go to state 10
+
+    Expression       go to state 168
+    Relation         go to state 38
+    Factor           go to state 39
+    Term             go to state 40
+    Unary            go to state 41
+    Primary          go to state 42
+    Literal          go to state 43
+    ArrayLiteral     go to state 44
+    TupleLiteral     go to state 45
+    FunctionLiteral  go to state 46
+
+
+State 166
+
+   84 TupleTail: TOKEN_COMMA TOKEN_IDENTIFIER TupleTail •
+
+    $default  reduce using rule 84 (TupleTail)
+
+
+State 167
+
+   58 If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body • TOKEN_END
+
+    TOKEN_END  shift, and go to state 169
+
+
+State 168
+
+   85 TupleTail: TOKEN_COMMA TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression • TupleTail
+
+    TOKEN_RCURLY  shift, and go to state 114
+    TOKEN_COMMA   shift, and go to state 115
+
+    TupleTail  go to state 170
+
+
+State 169
+
+   58 If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END •
+
+    $default  reduce using rule 58 (If)
+
+
+State 170
+
+   85 TupleTail: TOKEN_COMMA TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail •
+
+    $default  reduce using rule 85 (TupleTail)

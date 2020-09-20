@@ -14,22 +14,18 @@ int main(int argc, char *argv[]) {
     } 
     
     //Reading the source code
-    std::ifstream sourceCode(srcInput);
+    std::ifstream sourceFile;
+    std::string sourceCode;
+    sourceFile.open(srcInput);
     std::string str;
 
-    if(sourceCode){
-        std::ostringstream ss;
-        ss << sourceCode.rdbuf(); // reading data
-        str = ss.str();
-    } else{
-
-        std::cout << "\n\n Error reading file\n \n";
-        exit(228);
+    while(getline(sourceFile, str)){
+        sourceCode += str; // reading data
     }
-    sourceCode.close();
+    sourceFile.close();
 
-    Lexer sas = Lexer(str);
-    while (sas.getNextToken().type != Token::TOKEN_EOF);
+    Lexer sas = Lexer(sourceCode);
+    while (sas.getNextToken().type != TOKEN_EOF);
 
     std::vector<Token> list = sas.getTokenList();
     for (auto i = list.begin(); i != list.end(); ++i) 
