@@ -29,7 +29,7 @@
 %token TOKEN_UNKNOWN
 
 // Identifiers
-%token TOKEN_IDENTIFIER
+%token<string_t> TOKEN_IDENTIFIER
 
 // Literals
 %nterm<integer_t> Literal
@@ -98,7 +98,7 @@
 
 
 // Type declaration
-%type<integer_t> Expressions Expression Relation Factor Term Unary  Primary TOKEN_IDENTIFIER
+%type<integer_t> Expressions Expression Relation Factor Term Unary  Primary 
 // %type<float_t> Unary
 // %type<string_t> Unary 
 // %type<bool_t> Expression Relation Unary
@@ -132,8 +132,8 @@ Body : /* empty */                                        //{$$ = NULL; }
      | Statement Body                                     {;}
      | Expression Body                                    {;}     
      ;
-Declaration : TOKEN_VAR TOKEN_IDENTIFIER LineEnd          {printf(" Declared Identifier '%d'", $2);} // SYMBOL_TABLE                     
-            | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression LineEnd  {printf(" Initialized Identifier '%d' with %d", $2, $4);}  // SYMBOL_TABLE   
+Declaration : TOKEN_VAR TOKEN_IDENTIFIER LineEnd          {printf(" Declared Identifier '%s'", $2);} // SYMBOL_TABLE                     
+            | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression LineEnd  {printf(" Initialized Identifier '%s' with %d", $2, $4);}  // SYMBOL_TABLE   
             ;
 Expression : Relation                                     { $$ = $1;}
            | Relation TOKEN_AND Relation                  { $$ = $1 && $3; }
@@ -226,10 +226,10 @@ TypeIndicator : TOKEN_INT                                     //{$$ = "int";}
               | TupleLiteral                    
               | TOKEN_FUNC                      
               ;
-Literal : TOKEN_INT_LITERAL                                  { $$ = $1; std::cout << "\n Found Int literal: " << $$ << std::endl;}
-        | TOKEN_REAL_LITERAL                                 { $$ = $1; std::cout << "\n Found Real literal(dont mind the rounding): " << $$ << std::endl;}                 
-        | TOKEN_TRUE                                         { $$ = 1; std::cout <<  "\n Found True " << std::endl;}
-        | TOKEN_FALSE                                        { $$ = 0; std::cout <<  "\n Found False " << std::endl;}
+Literal : TOKEN_INT_LITERAL                                  { $$ = $1; std::cout << " Found Int literal: " << $$ << std::endl;}
+        | TOKEN_REAL_LITERAL                                 { $$ = $1; std::cout << " Found Real literal(dont mind the rounding): " << $$ << std::endl;}                 
+        | TOKEN_TRUE                                         { $$ = 1; std::cout <<  " Found True " << std::endl;}
+        | TOKEN_FALSE                                        { $$ = 0; std::cout <<  " Found False " << std::endl;}
         | TOKEN_STRING_LITERAL                               { printf("\n There are problems, so not declared string literal %s\n", $1);}
         | ArrayLiteral                          
         | TupleLiteral

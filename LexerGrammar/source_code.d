@@ -1,3 +1,3 @@
 var kek ;
-var str := -578;
+var str := (true and false) or true
 var realval := +(1337)

@@ -1820,13 +1820,13 @@ yyreduce:
 
   case 7: /* Declaration: TOKEN_VAR TOKEN_IDENTIFIER LineEnd  */
 #line 135 "grammar.yy"
-                                                          {printf(" Declared Identifier '%d'", (yyvsp[-1].integer_t));}
+                                                          {printf(" Declared Identifier '%s'", (yyvsp[-1].string_t));}
 #line 1825 "grammar.tab.cc"
     break;
 
   case 8: /* Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression LineEnd  */
 #line 136 "grammar.yy"
-                                                                              {printf(" Initialized Identifier '%d' with %d", (yyvsp[-3].integer_t), (yyvsp[-1].integer_t));}
+                                                                              {printf(" Initialized Identifier '%s' with %d", (yyvsp[-3].string_t), (yyvsp[-1].integer_t));}
 #line 1831 "grammar.tab.cc"
     break;
 
