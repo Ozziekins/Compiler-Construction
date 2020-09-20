@@ -231,7 +231,7 @@ Literal : TOKEN_INT_LITERAL                                  { $$ = $1; std::cou
         | TOKEN_TRUE                                         { $$ = 1; std::cout <<  " Found True " << std::endl;}
         | TOKEN_FALSE                                        { $$ = 0; std::cout <<  " Found False " << std::endl;}
         | TOKEN_STRING_LITERAL                               { printf("\n There are problems, so not declared string literal %s\n", $1);}
-        | ArrayLiteral                          
+        | ArrayLiteral                                       
         | TupleLiteral
         | FunctionLiteral                                    { ;}
         ;

@@ -1,3 +1,6 @@
 
 Lexer/cmake-build-debug/
 Lexer/.idea/
+LexerGrammar/a.out
+LexerGrammar/grammar.tab.cc
+LexerGrammar/grammar.yy
