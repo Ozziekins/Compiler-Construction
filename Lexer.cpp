@@ -90,8 +90,8 @@ Token Lexer::readLiteral() {
         advance();
 
         //Is finding the position of the next " really more efficient than reallocating several times?
-        unsigned int quotePosition = contents.find('"', currentIndex);
-        unsigned int stringLength = quotePosition - currentIndex;
+        unsigned long quotePosition = contents.find('"', currentIndex);
+        unsigned long stringLength = quotePosition - currentIndex;
 
         //Getting value as substring
         tokenValue = contents.substr(currentIndex, stringLength);
@@ -149,7 +149,7 @@ Token Lexer::readUntilTokenDetected() {
     std::string unknownTokenValue;
 
 
-    unsigned int tokenStart = currentPosOnLine;
+    unsigned long tokenStart = currentPosOnLine;
 
 
     // Collecting PURELY single character tokens

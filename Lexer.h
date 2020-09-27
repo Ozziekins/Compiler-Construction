@@ -8,9 +8,9 @@ class Lexer {
 
 
     //Hidden variables
-    unsigned int currentIndex; //Represents state as one of the enum values
-    unsigned int currentLine;
-    unsigned int currentPosOnLine;
+    unsigned long currentIndex; //Represents state as one of the enum values
+    unsigned long currentLine;
+    unsigned long currentPosOnLine;
     std::string contents; //The source code itself
     char currentChar; //Character that we are on
     std::vector<Token> tokenList;
