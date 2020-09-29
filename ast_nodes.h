@@ -282,7 +282,7 @@ public:
     int accept(Visitor &);
 };
 
-class NRangeLoop : public NLoop {
+class NRangeLoop : public NStatement {
 private:
     friend class Evaluate; 
     friend class Traverse;

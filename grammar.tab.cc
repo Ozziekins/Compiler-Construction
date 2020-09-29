@@ -2106,7 +2106,7 @@ yyreduce:
 
   case 59: /* Loop: TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN Expression TOKEN_RANGE Expression LoopBody  */
 #line 183 "grammar.yy"
-                                                                                          { (yyval.statement) = NRangeLoop(new NIdentifier((yyvsp[-5].string)), (yyvsp[-3].expression), (yyvsp[-1].expression), (yyvsp[0].block)); }
+                                                                                          { (yyval.statement) = new NRangeLoop(new NIdentifier((yyvsp[-5].string)), (yyvsp[-3].expression), (yyvsp[-1].expression), (yyvsp[0].block)); }
 #line 2111 "grammar.tab.cc"
     break;
 
