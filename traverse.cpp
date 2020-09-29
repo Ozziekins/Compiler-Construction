@@ -90,6 +90,15 @@ int Traverse::visit(NLoop *loop){
     return 0;
 }
 
+int Traverse::visit(NRangeLoop *loop){
+    cout << "NRangeLoop" << endl;
+    loop->id->accept(*this);
+    loop->from->accept(*this);
+    loop->to->accept(*this);
+    loop->block->accept(*this);
+    return 0;
+}
+
 int Traverse::visit(NReturn *retstmt){
     cout << "NReturn" << endl;
     retstmt->expression->accept(*this);

@@ -7,7 +7,7 @@ var factorial := func (n) is
 end;
 var lambdafunc := func( x ) => x/1.4;
 
-for i in 1..10 loop
+for x in int loop
     print factorial( i );
     end
 

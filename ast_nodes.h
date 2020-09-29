@@ -25,6 +25,7 @@ class NParameters;
 class NIf;
 class NIfElse;
 class NLoop;
+class NRangeLoop;
 class NReturn;
 
 class NExpression;
@@ -55,6 +56,7 @@ public:
     virtual int visit(NIf *) = 0;
     virtual int visit(NIfElse *) = 0;
     virtual int visit(NLoop *) = 0;
+    virtual int visit(NRangeLoop *) = 0;
     virtual int visit(NReturn *) = 0;
     virtual int visit(NExpression *) = 0;
     virtual int visit(NIdentifier *) = 0;
@@ -277,6 +279,19 @@ public:
     NBlock *block;
     NExpression *condition;
     NLoop(NExpression *condition, NBlock *block);
+    int accept(Visitor &);
+};
+
+class NRangeLoop : public NLoop {
+private:
+    friend class Evaluate; 
+    friend class Traverse;
+public:
+    NBlock *block;
+    NIdentifier *id;
+    NExpression *from;
+    NExpression *to;
+    NRangeLoop(NIdentifier *id, NExpression *from, NExpression *to, NBlock *block);
     int accept(Visitor &);
 };
 

@@ -178,9 +178,10 @@ Return : TOKEN_RETURN Expression TOKEN_SEMI                   { $$ = new NReturn
 If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END            { $$ = new NIf($2, $4); }
    | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      { $$ = new NIfElse($2, $4, $6); }
    ;
-Loop : TOKEN_WHILE Expression LoopBody                        { $$ = new NLoop($2, $3); }
-     | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody             { $$ = NULL; }
-     ;
+Loop : TOKEN_WHILE Expression LoopBody                                                    { $$ = new NLoop($2, $3); }
+     | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody                         { $$ = NULL; }
+     | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN Expression TOKEN_RANGE Expression  LoopBody    { $$ = NRangeLoop(new NIdentifier($2), $4, $6, $7); } 
+     ; 
 LoopBody : TOKEN_LOOP Body TOKEN_END                          { $$ = $2; }
          ;
 TypeIndicator : TOKEN_INT                                     { $$ = $1; }                   
@@ -190,7 +191,6 @@ TypeIndicator : TOKEN_INT                                     { $$ = $1; }
               | TOKEN_EMPTY                                   { $$ = $1; }
               | TOKEN_ARRAY                                   { $$ = $1; }
               | TOKEN_TUPLE                                   { $$ = $1; }
-              | Expression TOKEN_RANGE Expression             { ; }
               ;
 Literal : TOKEN_INT_LITERAL                                   { $$ = new NIntegerLiteral(atol($1->c_str())); }
         | TOKEN_REAL_LITERAL                                  { $$ = new NReal(atof($1->c_str())); }

@@ -481,7 +481,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  54
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   258
+#define YYLAST   235
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  61
@@ -490,7 +490,7 @@ union yyalloc
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  90
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  169
+#define YYNSTATES  170
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   315
@@ -550,8 +550,8 @@ static const yytype_uint8 yyrline[] =
      133,   134,   136,   137,   138,   140,   141,   142,   143,   144,
      145,   146,   147,   148,   149,   151,   152,   153,   154,   156,
      157,   158,   159,   160,   162,   163,   164,   165,   166,   168,
-     170,   172,   173,   175,   176,   178,   179,   181,   182,   184,
-     186,   187,   188,   189,   190,   191,   192,   193,   195,   196,
+     170,   172,   173,   175,   176,   178,   179,   181,   182,   183,
+     185,   187,   188,   189,   190,   191,   192,   193,   195,   196,
      197,   198,   199,   200,   201,   202,   204,   205,   207,   208,
      209,   211,   212,   213,   215,   216,   217,   218,   220,   222,
      223
@@ -613,7 +613,7 @@ static const yytype_int16 yytoknum[] =
 };
 #endif
 
-#define YYPACT_NINF (-92)
+#define YYPACT_NINF (-136)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -627,23 +627,23 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     165,    59,   198,   198,    33,    -1,   198,    17,   -92,   -92,
-     -92,    28,   -92,   165,    11,   165,   -92,   -92,   -92,   -92,
-     -92,   198,   198,    75,   -92,   -92,   -92,   -92,   -92,   -92,
-      52,     4,   198,   157,     6,     4,     4,    49,    -4,   123,
-      38,    46,    26,   -92,   -92,   -92,   -92,    27,    35,   -92,
-      43,     7,    83,    81,   -92,   -92,   198,   -92,    68,    69,
-     -92,   -92,   198,   165,   118,    23,    97,    89,   -92,    88,
-       5,   -92,   100,   101,   165,   198,   198,   198,   198,   198,
-     198,   198,   198,   198,   198,   198,   198,   198,   103,   198,
-     -92,   -92,   198,   -92,   165,   -92,   103,    98,   -92,   -92,
-     -92,   129,   102,    94,   198,   165,   103,   -92,   -92,   198,
-     -92,   138,   -92,   103,   103,    12,   -92,   -92,   -92,   -92,
-     -92,   -92,   -92,   -92,   -92,   -92,   -92,   -92,   -92,   -92,
-     -92,   -92,   -92,   -92,   -92,   -92,    95,   -92,   -92,   108,
-     140,    83,   -92,   -92,   118,   -92,   -92,   141,   -92,    25,
-       9,   -92,   -92,   -92,   165,   198,   -92,   -92,   -92,   -92,
-     -92,   -92,   198,   -92,   142,   -92,    25,   -92,   -92
+     175,    54,   167,   167,    72,     5,   167,    10,  -136,  -136,
+    -136,    32,  -136,   175,    38,   175,  -136,  -136,  -136,  -136,
+    -136,   167,   167,    14,  -136,  -136,  -136,  -136,  -136,  -136,
+       6,    12,   167,   126,     0,    12,    12,    52,   123,   165,
+      70,    80,    29,  -136,  -136,  -136,  -136,    45,    30,  -136,
+      43,     2,    81,    68,  -136,  -136,   167,  -136,    74,   116,
+    -136,  -136,   167,   175,   103,     7,    85,   120,  -136,   119,
+      61,  -136,   135,   139,   175,   167,   167,   167,   167,   167,
+     167,   167,   167,   167,   167,   167,   167,   167,   110,   167,
+    -136,  -136,   167,  -136,   175,  -136,    16,   127,  -136,  -136,
+    -136,   155,   137,   133,   167,   175,   110,  -136,  -136,   167,
+    -136,   176,  -136,   110,   110,    23,  -136,  -136,  -136,  -136,
+    -136,  -136,  -136,  -136,  -136,  -136,  -136,  -136,  -136,  -136,
+    -136,  -136,  -136,  -136,  -136,  -136,  -136,  -136,   144,   174,
+     140,    81,  -136,  -136,   103,  -136,  -136,   177,  -136,    17,
+      62,  -136,  -136,  -136,   175,  -136,  -136,   167,  -136,  -136,
+    -136,  -136,   167,  -136,   185,    81,    17,  -136,  -136,  -136
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -663,26 +663,26 @@ static const yytype_int8 yydefact[] =
       50,    53,     0,     6,     3,    57,     0,     0,    43,    42,
       85,     0,    89,     0,     0,     3,     0,    30,    77,     0,
       81,     0,    79,     0,     0,     0,     9,    10,    11,    17,
-      18,    13,    14,    15,    16,    20,    21,    23,    24,    64,
-      60,    61,    62,    63,    65,    66,     0,    34,    52,     0,
+      18,    13,    14,    15,    16,    20,    21,    23,    24,    65,
+      61,    62,    63,    64,    66,    67,    34,    52,     0,     0,
        0,     0,    49,    84,     0,    88,    87,     0,    33,     0,
-       0,    31,    32,    55,     3,     0,     7,    59,    58,    90,
-      86,    80,     0,    82,     0,    67,     0,    56,    83
+       0,    31,    32,    55,     3,     7,    60,     0,    58,    90,
+      86,    80,     0,    82,     0,     0,     0,    56,    59,    83
 };
 
   /* YYPGOTO[NTERM-NUM].  */
-static const yytype_int8 yypgoto[] =
+static const yytype_int16 yypgoto[] =
 {
-     -92,   -92,    -6,   -92,    -2,   -40,    39,    14,   -92,     3,
-     -92,   -92,   -92,   -92,   -16,   -92,   -92,   -92,    18,   -81,
-     -92,   -92,   -92,   -91,   -92,   -92,     8
+    -136,  -136,    -7,  -136,    -2,    76,    42,    75,  -136,     3,
+    -136,  -136,  -136,  -136,   -20,  -136,  -136,  -136,  -132,   -18,
+    -136,  -136,  -136,  -135,  -136,  -136,    56
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,    11,    12,    13,   136,    38,    39,    40,    41,    42,
-      24,    15,    16,    17,    48,    18,    19,    20,    95,   137,
+      -1,    11,    12,    13,    47,    38,    39,    40,    41,    42,
+      24,    15,    16,    17,    48,    18,    19,    20,    95,   136,
       43,    44,    45,   112,    46,    65,   103
 };
 
@@ -691,62 +691,58 @@ static const yytype_int16 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      37,    47,    50,    14,    52,    58,    51,    55,   109,    57,
-      92,     1,   162,    70,    56,   141,    14,    69,    14,    47,
-      59,    75,    76,    77,    53,   148,   153,   104,    54,   154,
-      67,    47,   151,   152,    66,   116,   117,   118,    72,    73,
-       1,    25,    26,    27,    28,    29,    30,   110,    71,   111,
-      93,   110,   105,   111,    97,    88,    62,   101,   161,   163,
-     100,    31,     8,     9,    10,    74,    14,   110,   115,   111,
-      32,    89,    33,   138,    34,   168,    49,    14,    90,    35,
-      36,    63,    60,    61,    84,    85,    91,    47,   140,    64,
-     139,     8,     9,    10,    86,    87,    21,    14,    22,   147,
-     127,   128,   146,    94,    23,    96,    98,   149,    14,    99,
-       1,    25,    26,    27,    28,    29,    30,   119,   120,   121,
-     122,   123,   124,   125,   126,   102,   106,   107,   108,   113,
-     114,    31,   145,   129,   130,   131,   132,   133,   134,   135,
-      32,   142,    33,   143,    34,   150,   144,   155,   164,    35,
-      36,   156,   159,   165,   157,   160,   167,    14,     0,   158,
-     166,     8,     9,    10,     1,    25,    26,    27,    28,    29,
-      30,     0,     1,    78,    79,     0,    80,    81,    82,    83,
-       2,     0,     0,     3,     4,    31,     5,     6,     7,     0,
-       0,     0,     0,     0,    32,     0,    33,    68,    34,     0,
-       0,     0,     0,    35,    36,     1,    25,    26,    27,    28,
-      29,    30,     0,     0,     0,     8,     9,    10,     0,     0,
-       0,     0,     0,     8,     9,    10,    31,     0,     0,     0,
-       0,     0,     0,     0,     0,    32,     0,    33,     0,    34,
-       0,     0,     0,     0,    35,    36,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     8,     9,    10
+      37,    58,    50,    14,    52,    92,    55,    70,    57,   158,
+      62,   104,    51,    69,   161,   163,    14,    53,    14,     1,
+      59,    60,    61,     1,    25,    26,    27,    28,    29,    30,
+      67,   169,    54,   168,    66,    63,   105,   153,    72,    73,
+     154,    56,    71,    64,    31,    93,   129,   130,   131,   132,
+     133,   134,   135,    32,    97,    33,   101,    34,    88,   110,
+     100,   111,    35,    36,   109,   162,    14,   115,    74,   137,
+       8,     9,    10,    90,     8,     9,    10,    14,   141,     1,
+      25,    26,    27,    28,    29,    30,    91,   139,   148,    89,
+     138,    21,    96,    22,   140,   151,   152,    14,   147,    23,
+      31,    94,   146,   110,   110,   111,   111,   149,    14,    32,
+     102,    33,    98,    34,   106,    49,    84,    85,    35,    36,
+     119,   120,   121,   122,   123,   124,   125,   126,    86,    87,
+       8,     9,    10,     1,    25,    26,    27,    28,    29,    30,
+     129,   130,   131,   132,   133,   134,   135,   164,    75,    76,
+      77,   116,   117,   118,    31,   165,    99,    14,   107,   108,
+     166,   127,   128,    32,   113,    33,    68,    34,   114,   143,
+     142,   145,    35,    36,     1,    25,    26,    27,    28,    29,
+      30,   144,     1,   150,     8,     9,    10,   155,   156,     0,
+       2,   160,   157,     3,     4,    31,     5,     6,     7,   167,
+     159,     0,     0,     0,    32,     0,    33,     0,    34,     0,
+       0,     0,     0,    35,    36,    78,    79,     0,    80,    81,
+      82,    83,     0,     0,     0,     8,     9,    10,     0,     0,
+       0,     0,     0,     8,     9,    10
 };
 
 static const yytype_int16 yycheck[] =
 {
-       2,     3,     4,     0,     6,    21,     7,    13,     3,    15,
-       3,     7,     3,     7,     3,    96,    13,    33,    15,    21,
-      22,    25,    26,    27,     7,   106,    14,     4,     0,    17,
-      32,    33,   113,   114,    31,    75,    76,    77,    35,    36,
-       7,     8,     9,    10,    11,    12,    13,    42,    42,    44,
-      43,    42,    29,    44,    56,    29,     4,    63,   149,   150,
-      62,    28,    58,    59,    60,    16,    63,    42,    74,    44,
-      37,    44,    39,    89,    41,   166,    43,    74,    43,    46,
-      47,    29,     7,     8,    46,    47,    43,    89,    94,    37,
-      92,    58,    59,    60,    48,    49,    37,    94,    39,   105,
-      86,    87,   104,    20,    45,    24,    38,   109,   105,    40,
-       7,     8,     9,    10,    11,    12,    13,    78,    79,    80,
-      81,    82,    83,    84,    85,     7,    29,    38,    40,    29,
-      29,    28,    38,    30,    31,    32,    33,    34,    35,    36,
-      37,    43,    39,    14,    41,     7,    44,    52,   154,    46,
-      47,    43,   144,   155,    14,    14,    14,   154,    -1,   141,
-     162,    58,    59,    60,     7,     8,     9,    10,    11,    12,
-      13,    -1,     7,    50,    51,    -1,    53,    54,    55,    56,
-      15,    -1,    -1,    18,    19,    28,    21,    22,    23,    -1,
-      -1,    -1,    -1,    -1,    37,    -1,    39,    40,    41,    -1,
-      -1,    -1,    -1,    46,    47,     7,     8,     9,    10,    11,
-      12,    13,    -1,    -1,    -1,    58,    59,    60,    -1,    -1,
-      -1,    -1,    -1,    58,    59,    60,    28,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    37,    -1,    39,    -1,    41,
-      -1,    -1,    -1,    -1,    46,    47,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,    -1,    58,    59,    60
+       2,    21,     4,     0,     6,     3,    13,     7,    15,   141,
+       4,     4,     7,    33,   149,   150,    13,     7,    15,     7,
+      22,     7,     8,     7,     8,     9,    10,    11,    12,    13,
+      32,   166,     0,   165,    31,    29,    29,    14,    35,    36,
+      17,     3,    42,    37,    28,    43,    30,    31,    32,    33,
+      34,    35,    36,    37,    56,    39,    63,    41,    29,    42,
+      62,    44,    46,    47,     3,     3,    63,    74,    16,    89,
+      58,    59,    60,    43,    58,    59,    60,    74,    96,     7,
+       8,     9,    10,    11,    12,    13,    43,    94,   106,    44,
+      92,    37,    24,    39,    96,   113,   114,    94,   105,    45,
+      28,    20,   104,    42,    42,    44,    44,   109,   105,    37,
+       7,    39,    38,    41,    29,    43,    46,    47,    46,    47,
+      78,    79,    80,    81,    82,    83,    84,    85,    48,    49,
+      58,    59,    60,     7,     8,     9,    10,    11,    12,    13,
+      30,    31,    32,    33,    34,    35,    36,   154,    25,    26,
+      27,    75,    76,    77,    28,   157,    40,   154,    38,    40,
+     162,    86,    87,    37,    29,    39,    40,    41,    29,    14,
+      43,    38,    46,    47,     7,     8,     9,    10,    11,    12,
+      13,    44,     7,     7,    58,    59,    60,    43,    14,    -1,
+      15,    14,    52,    18,    19,    28,    21,    22,    23,    14,
+     144,    -1,    -1,    -1,    37,    -1,    39,    -1,    41,    -1,
+      -1,    -1,    -1,    46,    47,    50,    51,    -1,    53,    54,
+      55,    56,    -1,    -1,    -1,    58,    59,    60,    -1,    -1,
+      -1,    -1,    -1,    58,    59,    60
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -766,10 +762,10 @@ static const yytype_int8 yystos[] =
       65,    63,     7,    87,     4,    29,    29,    38,    40,     3,
       42,    44,    84,    29,    29,    63,    66,    66,    66,    67,
       67,    67,    67,    67,    67,    67,    67,    68,    68,    30,
-      31,    32,    33,    34,    35,    36,    65,    80,    75,    65,
-      63,    80,    43,    14,    44,    38,    65,    63,    80,    65,
-       7,    80,    80,    14,    17,    52,    43,    14,    79,    87,
-      14,    84,     3,    84,    63,    65,    65,    14,    84
+      31,    32,    33,    34,    35,    36,    80,    75,    65,    63,
+      65,    80,    43,    14,    44,    38,    65,    63,    80,    65,
+       7,    80,    80,    14,    17,    43,    14,    52,    79,    87,
+      14,    84,     3,    84,    63,    65,    65,    14,    79,    84
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -780,8 +776,8 @@ static const yytype_int8 yyr1[] =
       67,    67,    68,    68,    68,    69,    69,    69,    69,    69,
       69,    69,    69,    69,    69,    70,    70,    70,    70,    71,
       71,    71,    71,    71,    72,    72,    72,    72,    72,    73,
-      74,    75,    75,    76,    76,    77,    77,    78,    78,    79,
-      80,    80,    80,    80,    80,    80,    80,    80,    81,    81,
+      74,    75,    75,    76,    76,    77,    77,    78,    78,    78,
+      79,    80,    80,    80,    80,    80,    80,    80,    81,    81,
       81,    81,    81,    81,    81,    81,    82,    82,    83,    83,
       83,    84,    84,    84,    85,    85,    85,    85,    86,    87,
       87
@@ -795,8 +791,8 @@ static const yytype_int8 yyr2[] =
        3,     3,     1,     3,     3,     1,     2,     2,     2,     1,
        3,     4,     4,     4,     3,     2,     1,     1,     1,     0,
        2,     2,     3,     3,     1,     1,     1,     1,     1,     4,
-       3,     1,     3,     3,     2,     5,     7,     3,     5,     3,
-       1,     1,     1,     1,     1,     1,     1,     3,     1,     1,
+       3,     1,     3,     3,     2,     5,     7,     3,     5,     7,
+       3,     1,     1,     1,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     1,     1,     1,     2,     3,     2,     3,
        5,     1,     3,     5,     4,     3,     5,     4,     3,     1,
        3
@@ -1799,491 +1795,491 @@ yyreduce:
   case 2: /* Program: Body  */
 #line 110 "grammar.yy"
                                                     { programBlock = (yyvsp[0].block); }
-#line 1803 "grammar.tab.cc"
+#line 1799 "grammar.tab.cc"
     break;
 
   case 3: /* Body: %empty  */
 #line 112 "grammar.yy"
                                                     { (yyval.block) = new NBlock(); }
-#line 1809 "grammar.tab.cc"
+#line 1805 "grammar.tab.cc"
     break;
 
   case 4: /* Body: Declaration Body  */
 #line 113 "grammar.yy"
                                                     { (yyval.block) = (yyvsp[0].block); (yyval.block)->push_back((yyvsp[-1].declaration)); }
-#line 1815 "grammar.tab.cc"
+#line 1811 "grammar.tab.cc"
     break;
 
   case 5: /* Body: Statement Body  */
 #line 114 "grammar.yy"
                                                     { (yyval.block) = (yyvsp[0].block); (yyval.block)->push_back((yyvsp[-1].statement)); }
-#line 1821 "grammar.tab.cc"
+#line 1817 "grammar.tab.cc"
     break;
 
   case 6: /* Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI  */
 #line 116 "grammar.yy"
                                                                                           { (yyval.declaration) = new NDeclaration((yyvsp[-1].string)); }
-#line 1827 "grammar.tab.cc"
+#line 1823 "grammar.tab.cc"
     break;
 
   case 7: /* Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI  */
 #line 117 "grammar.yy"
                                                                                           { (yyval.declaration) = new NDeclaration((yyvsp[-3].string), (yyvsp[-1].expression)); }
-#line 1833 "grammar.tab.cc"
+#line 1829 "grammar.tab.cc"
     break;
 
   case 8: /* Expression: Relation  */
 #line 119 "grammar.yy"
                                                           { (yyval.expression) = (yyvsp[0].expression); }
-#line 1839 "grammar.tab.cc"
+#line 1835 "grammar.tab.cc"
     break;
 
   case 9: /* Expression: Relation TOKEN_AND Relation  */
 #line 120 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1845 "grammar.tab.cc"
+#line 1841 "grammar.tab.cc"
     break;
 
   case 10: /* Expression: Relation TOKEN_OR Relation  */
 #line 121 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1851 "grammar.tab.cc"
+#line 1847 "grammar.tab.cc"
     break;
 
   case 11: /* Expression: Relation TOKEN_XOR Relation  */
 #line 122 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1857 "grammar.tab.cc"
+#line 1853 "grammar.tab.cc"
     break;
 
   case 12: /* Relation: Factor  */
 #line 124 "grammar.yy"
                                                           { (yyval.expression) = (yyvsp[0].expression); }
-#line 1863 "grammar.tab.cc"
+#line 1859 "grammar.tab.cc"
     break;
 
   case 13: /* Relation: Factor TOKEN_LESS Factor  */
 #line 125 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1869 "grammar.tab.cc"
+#line 1865 "grammar.tab.cc"
     break;
 
   case 14: /* Relation: Factor TOKEN_LEQ Factor  */
 #line 126 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1875 "grammar.tab.cc"
+#line 1871 "grammar.tab.cc"
     break;
 
   case 15: /* Relation: Factor TOKEN_GREAT Factor  */
 #line 127 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1881 "grammar.tab.cc"
+#line 1877 "grammar.tab.cc"
     break;
 
   case 16: /* Relation: Factor TOKEN_GEQ Factor  */
 #line 128 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1887 "grammar.tab.cc"
+#line 1883 "grammar.tab.cc"
     break;
 
   case 17: /* Relation: Factor TOKEN_EQUAL Factor  */
 #line 129 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1893 "grammar.tab.cc"
+#line 1889 "grammar.tab.cc"
     break;
 
   case 18: /* Relation: Factor TOKEN_NEQ Factor  */
 #line 130 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1899 "grammar.tab.cc"
+#line 1895 "grammar.tab.cc"
     break;
 
   case 19: /* Factor: Term  */
 #line 132 "grammar.yy"
                                                           { (yyval.expression) = (yyvsp[0].expression); }
-#line 1905 "grammar.tab.cc"
+#line 1901 "grammar.tab.cc"
     break;
 
   case 20: /* Factor: Term TOKEN_PLUS Factor  */
 #line 133 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1911 "grammar.tab.cc"
+#line 1907 "grammar.tab.cc"
     break;
 
   case 21: /* Factor: Term TOKEN_MINUS Factor  */
 #line 134 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1917 "grammar.tab.cc"
+#line 1913 "grammar.tab.cc"
     break;
 
   case 22: /* Term: Unary  */
 #line 136 "grammar.yy"
                                                           { (yyval.expression) = (yyvsp[0].expression); }
-#line 1923 "grammar.tab.cc"
+#line 1919 "grammar.tab.cc"
     break;
 
   case 23: /* Term: Unary TOKEN_MULT Term  */
 #line 137 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1929 "grammar.tab.cc"
+#line 1925 "grammar.tab.cc"
     break;
 
   case 24: /* Term: Unary TOKEN_DIV Term  */
 #line 138 "grammar.yy"
                                                           { (yyval.expression) = new NBinaryOperator((yyvsp[-2].expression), (yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1935 "grammar.tab.cc"
+#line 1931 "grammar.tab.cc"
     break;
 
   case 25: /* Unary: Primary  */
 #line 140 "grammar.yy"
                                                 { (yyval.expression) = (yyvsp[0].expression); }
-#line 1941 "grammar.tab.cc"
+#line 1937 "grammar.tab.cc"
     break;
 
   case 26: /* Unary: TOKEN_PLUS Primary  */
 #line 141 "grammar.yy"
                                                 { (yyval.expression) = new NUnary((yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1947 "grammar.tab.cc"
+#line 1943 "grammar.tab.cc"
     break;
 
   case 27: /* Unary: TOKEN_MINUS Primary  */
 #line 142 "grammar.yy"
                                                 { (yyval.expression) = new NUnary((yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1953 "grammar.tab.cc"
+#line 1949 "grammar.tab.cc"
     break;
 
   case 28: /* Unary: TOKEN_NOT Primary  */
 #line 143 "grammar.yy"
                                                 { (yyval.expression) = new NUnary((yyvsp[-1].token), (yyvsp[0].expression)); }
-#line 1959 "grammar.tab.cc"
+#line 1955 "grammar.tab.cc"
     break;
 
   case 29: /* Unary: Literal  */
 #line 144 "grammar.yy"
                                                 { (yyval.expression) = (yyvsp[0].expression); }
-#line 1965 "grammar.tab.cc"
+#line 1961 "grammar.tab.cc"
     break;
 
   case 30: /* Unary: TOKEN_LPAREN Expression TOKEN_RPAREN  */
 #line 145 "grammar.yy"
                                                 { (yyval.expression) = (yyvsp[-1].expression); }
-#line 1971 "grammar.tab.cc"
+#line 1967 "grammar.tab.cc"
     break;
 
   case 31: /* Unary: TOKEN_PLUS Primary TOKEN_IS TypeIndicator  */
 #line 146 "grammar.yy"
                                                             { (yyval.expression) = new NTypeCheck((yyvsp[-3].token), (yyvsp[-2].expression), (yyvsp[0].string)); }
-#line 1977 "grammar.tab.cc"
+#line 1973 "grammar.tab.cc"
     break;
 
   case 32: /* Unary: TOKEN_MINUS Primary TOKEN_IS TypeIndicator  */
 #line 147 "grammar.yy"
                                                             { (yyval.expression) = new NTypeCheck((yyvsp[-3].token), (yyvsp[-2].expression), (yyvsp[0].string)); }
-#line 1983 "grammar.tab.cc"
+#line 1979 "grammar.tab.cc"
     break;
 
   case 33: /* Unary: TOKEN_NOT Primary TOKEN_IS TypeIndicator  */
 #line 148 "grammar.yy"
                                                             { (yyval.expression) = new NTypeCheck((yyvsp[-3].token), (yyvsp[-2].expression), (yyvsp[0].string)); }
-#line 1989 "grammar.tab.cc"
+#line 1985 "grammar.tab.cc"
     break;
 
   case 34: /* Unary: Primary TOKEN_IS TypeIndicator  */
 #line 149 "grammar.yy"
                                                             { (yyval.expression) = new NTypeCheck((yyvsp[-2].expression), (yyvsp[0].string)); }
-#line 1995 "grammar.tab.cc"
+#line 1991 "grammar.tab.cc"
     break;
 
   case 35: /* Primary: TOKEN_IDENTIFIER Tail  */
 #line 151 "grammar.yy"
                                                             { (yyval.expression) = new NIdentifier((yyvsp[-1].string)); }
-#line 2001 "grammar.tab.cc"
+#line 1997 "grammar.tab.cc"
     break;
 
   case 36: /* Primary: TOKEN_READINT  */
 #line 152 "grammar.yy"
                                                             { (yyval.expression) = new NReadInput(); }
-#line 2007 "grammar.tab.cc"
+#line 2003 "grammar.tab.cc"
     break;
 
   case 37: /* Primary: TOKEN_READREAL  */
 #line 153 "grammar.yy"
                                                             { (yyval.expression) = new NReadInput(); }
-#line 2013 "grammar.tab.cc"
+#line 2009 "grammar.tab.cc"
     break;
 
   case 38: /* Primary: TOKEN_READSTRING  */
 #line 154 "grammar.yy"
                                                             { (yyval.expression) = new NReadInput(); }
-#line 2019 "grammar.tab.cc"
+#line 2015 "grammar.tab.cc"
     break;
 
   case 44: /* Statement: Assignment  */
 #line 162 "grammar.yy"
                                                         { (yyval.statement) = (yyvsp[0].statement); }
-#line 2025 "grammar.tab.cc"
+#line 2021 "grammar.tab.cc"
     break;
 
   case 45: /* Statement: Print  */
 #line 163 "grammar.yy"
                                                         { (yyval.statement) = (yyvsp[0].print); }
-#line 2031 "grammar.tab.cc"
+#line 2027 "grammar.tab.cc"
     break;
 
   case 46: /* Statement: Return  */
 #line 164 "grammar.yy"
                                                         { (yyval.statement) = (yyvsp[0].statement); }
-#line 2037 "grammar.tab.cc"
+#line 2033 "grammar.tab.cc"
     break;
 
   case 47: /* Statement: If  */
 #line 165 "grammar.yy"
                                                         { (yyval.statement) = (yyvsp[0].statement); }
-#line 2043 "grammar.tab.cc"
+#line 2039 "grammar.tab.cc"
     break;
 
   case 48: /* Statement: Loop  */
 #line 166 "grammar.yy"
                                                         { (yyval.statement) = (yyvsp[0].statement); }
-#line 2049 "grammar.tab.cc"
+#line 2045 "grammar.tab.cc"
     break;
 
   case 49: /* Assignment: Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI  */
 #line 168 "grammar.yy"
                                                               { (yyval.statement) = new NAssignment((yyvsp[-3].expression), (yyvsp[-1].expression)); }
-#line 2055 "grammar.tab.cc"
+#line 2051 "grammar.tab.cc"
     break;
 
   case 50: /* Print: TOKEN_PRINT Expressions TOKEN_SEMI  */
 #line 170 "grammar.yy"
                                                               { (yyval.print) = (yyvsp[-1].print); }
-#line 2061 "grammar.tab.cc"
+#line 2057 "grammar.tab.cc"
     break;
 
   case 51: /* Expressions: Expression  */
 #line 172 "grammar.yy"
                                                               { (yyval.print) = new NPrint(); (yyval.print)->push_back((yyvsp[0].expression)); }
-#line 2067 "grammar.tab.cc"
+#line 2063 "grammar.tab.cc"
     break;
 
   case 52: /* Expressions: Expression TOKEN_COMMA Expressions  */
 #line 173 "grammar.yy"
                                                               { (yyval.print) = (yyvsp[0].print); (yyval.print)->push_back((yyvsp[-2].expression)); }
-#line 2073 "grammar.tab.cc"
+#line 2069 "grammar.tab.cc"
     break;
 
   case 53: /* Return: TOKEN_RETURN Expression TOKEN_SEMI  */
 #line 175 "grammar.yy"
                                                               { (yyval.statement) = new NReturn((yyvsp[-1].expression)); }
-#line 2079 "grammar.tab.cc"
+#line 2075 "grammar.tab.cc"
     break;
 
   case 54: /* Return: TOKEN_RETURN TOKEN_SEMI  */
 #line 176 "grammar.yy"
                                                               { (yyval.statement) = new NReturn(); }
-#line 2085 "grammar.tab.cc"
+#line 2081 "grammar.tab.cc"
     break;
 
   case 55: /* If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_END  */
 #line 178 "grammar.yy"
                                                               { (yyval.statement) = new NIf((yyvsp[-3].expression), (yyvsp[-1].block)); }
-#line 2091 "grammar.tab.cc"
+#line 2087 "grammar.tab.cc"
     break;
 
   case 56: /* If: TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END  */
 #line 179 "grammar.yy"
                                                                         { (yyval.statement) = new NIfElse((yyvsp[-5].expression), (yyvsp[-3].block), (yyvsp[-1].block)); }
-#line 2097 "grammar.tab.cc"
+#line 2093 "grammar.tab.cc"
     break;
 
   case 57: /* Loop: TOKEN_WHILE Expression LoopBody  */
 #line 181 "grammar.yy"
-                                                              { (yyval.statement) = new NLoop((yyvsp[-1].expression), (yyvsp[0].block)); }
-#line 2103 "grammar.tab.cc"
+                                                                                          { (yyval.statement) = new NLoop((yyvsp[-1].expression), (yyvsp[0].block)); }
+#line 2099 "grammar.tab.cc"
     break;
 
   case 58: /* Loop: TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody  */
 #line 182 "grammar.yy"
-                                                                              { (yyval.statement) = NULL; }
-#line 2109 "grammar.tab.cc"
+                                                                                          { (yyval.statement) = NULL; }
+#line 2105 "grammar.tab.cc"
     break;
 
-  case 59: /* LoopBody: TOKEN_LOOP Body TOKEN_END  */
-#line 184 "grammar.yy"
+  case 59: /* Loop: TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN Expression TOKEN_RANGE Expression LoopBody  */
+#line 183 "grammar.yy"
+                                                                                          { (yyval.statement) = NRangeLoop(new NIdentifier((yyvsp[-5].string)), (yyvsp[-3].expression), (yyvsp[-1].expression), (yyvsp[0].block)); }
+#line 2111 "grammar.tab.cc"
+    break;
+
+  case 60: /* LoopBody: TOKEN_LOOP Body TOKEN_END  */
+#line 185 "grammar.yy"
                                                               { (yyval.block) = (yyvsp[-1].block); }
-#line 2115 "grammar.tab.cc"
+#line 2117 "grammar.tab.cc"
     break;
 
-  case 60: /* TypeIndicator: TOKEN_INT  */
-#line 186 "grammar.yy"
-                                                              { (yyval.string) = (yyvsp[0].string); }
-#line 2121 "grammar.tab.cc"
-    break;
-
-  case 61: /* TypeIndicator: TOKEN_REAL  */
+  case 61: /* TypeIndicator: TOKEN_INT  */
 #line 187 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
-#line 2127 "grammar.tab.cc"
+#line 2123 "grammar.tab.cc"
     break;
 
-  case 62: /* TypeIndicator: TOKEN_BOOL  */
+  case 62: /* TypeIndicator: TOKEN_REAL  */
 #line 188 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
-#line 2133 "grammar.tab.cc"
+#line 2129 "grammar.tab.cc"
     break;
 
-  case 63: /* TypeIndicator: TOKEN_STRING  */
+  case 63: /* TypeIndicator: TOKEN_BOOL  */
 #line 189 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
-#line 2139 "grammar.tab.cc"
+#line 2135 "grammar.tab.cc"
     break;
 
-  case 64: /* TypeIndicator: TOKEN_EMPTY  */
+  case 64: /* TypeIndicator: TOKEN_STRING  */
 #line 190 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
-#line 2145 "grammar.tab.cc"
+#line 2141 "grammar.tab.cc"
     break;
 
-  case 65: /* TypeIndicator: TOKEN_ARRAY  */
+  case 65: /* TypeIndicator: TOKEN_EMPTY  */
 #line 191 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
-#line 2151 "grammar.tab.cc"
+#line 2147 "grammar.tab.cc"
     break;
 
-  case 66: /* TypeIndicator: TOKEN_TUPLE  */
+  case 66: /* TypeIndicator: TOKEN_ARRAY  */
 #line 192 "grammar.yy"
                                                               { (yyval.string) = (yyvsp[0].string); }
-#line 2157 "grammar.tab.cc"
+#line 2153 "grammar.tab.cc"
     break;
 
-  case 67: /* TypeIndicator: Expression TOKEN_RANGE Expression  */
+  case 67: /* TypeIndicator: TOKEN_TUPLE  */
 #line 193 "grammar.yy"
-                                                              { ; }
-#line 2163 "grammar.tab.cc"
+                                                              { (yyval.string) = (yyvsp[0].string); }
+#line 2159 "grammar.tab.cc"
     break;
 
   case 68: /* Literal: TOKEN_INT_LITERAL  */
 #line 195 "grammar.yy"
                                                               { (yyval.expression) = new NIntegerLiteral(atol((yyvsp[0].string)->c_str())); }
-#line 2169 "grammar.tab.cc"
+#line 2165 "grammar.tab.cc"
     break;
 
   case 69: /* Literal: TOKEN_REAL_LITERAL  */
 #line 196 "grammar.yy"
                                                               { (yyval.expression) = new NReal(atof((yyvsp[0].string)->c_str())); }
-#line 2175 "grammar.tab.cc"
+#line 2171 "grammar.tab.cc"
     break;
 
   case 70: /* Literal: TOKEN_TRUE  */
 #line 197 "grammar.yy"
                                                               { (yyval.expression) = new NBool((yyvsp[0].string)); }
-#line 2181 "grammar.tab.cc"
+#line 2177 "grammar.tab.cc"
     break;
 
   case 71: /* Literal: TOKEN_FALSE  */
 #line 198 "grammar.yy"
                                                               { (yyval.expression) = new NBool((yyvsp[0].string)); }
-#line 2187 "grammar.tab.cc"
+#line 2183 "grammar.tab.cc"
     break;
 
   case 72: /* Literal: TOKEN_STRING_LITERAL  */
 #line 199 "grammar.yy"
                                                               { (yyval.expression) = new NStringLiteral((yyvsp[0].string)); }
-#line 2193 "grammar.tab.cc"
+#line 2189 "grammar.tab.cc"
     break;
 
   case 73: /* Literal: ArrayLiteral  */
 #line 200 "grammar.yy"
                                                               { (yyval.expression) = (yyvsp[0].expression); }
-#line 2199 "grammar.tab.cc"
+#line 2195 "grammar.tab.cc"
     break;
 
   case 74: /* Literal: TupleLiteral  */
 #line 201 "grammar.yy"
                                                               { (yyval.expression) = (yyvsp[0].expression); }
-#line 2205 "grammar.tab.cc"
+#line 2201 "grammar.tab.cc"
     break;
 
   case 75: /* Literal: FunctionLiteral  */
 #line 202 "grammar.yy"
                                                               { (yyval.expression) = (yyvsp[0].funcdef); }
-#line 2211 "grammar.tab.cc"
+#line 2207 "grammar.tab.cc"
     break;
 
   case 76: /* ArrayLiteral: TOKEN_LSQUARE TOKEN_RSQUARE  */
 #line 204 "grammar.yy"
                                                               { (yyval.expression) = new NArray(); }
-#line 2217 "grammar.tab.cc"
+#line 2213 "grammar.tab.cc"
     break;
 
   case 77: /* ArrayLiteral: TOKEN_LSQUARE Expressions TOKEN_RSQUARE  */
 #line 205 "grammar.yy"
                                                               { (yyval.expression) = new NArray(); }
-#line 2223 "grammar.tab.cc"
+#line 2219 "grammar.tab.cc"
     break;
 
   case 78: /* TupleLiteral: TOKEN_LCURLY TOKEN_RCURLY  */
 #line 207 "grammar.yy"
                                                               { (yyval.expression) = new NTuple(); }
-#line 2229 "grammar.tab.cc"
+#line 2225 "grammar.tab.cc"
     break;
 
   case 79: /* TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TupleTail  */
 #line 208 "grammar.yy"
                                                               { (yyval.expression) = new NTuple(); }
-#line 2235 "grammar.tab.cc"
+#line 2231 "grammar.tab.cc"
     break;
 
   case 80: /* TupleLiteral: TOKEN_LCURLY TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail  */
 #line 209 "grammar.yy"
                                                                                         { (yyval.expression) = new NTuple(); }
-#line 2241 "grammar.tab.cc"
+#line 2237 "grammar.tab.cc"
     break;
 
   case 84: /* FunctionLiteral: TOKEN_FUNC TOKEN_IS Body TOKEN_END  */
 #line 215 "grammar.yy"
                                                                               { (yyval.funcdef) = new NFunctionDefinition();  (yyval.funcdef)->setBody((yyvsp[-1].block)); }
-#line 2247 "grammar.tab.cc"
+#line 2243 "grammar.tab.cc"
     break;
 
   case 85: /* FunctionLiteral: TOKEN_FUNC TOKEN_FUNCTOR Expression  */
 #line 216 "grammar.yy"
                                                                               { (yyval.funcdef) = new NFunctionDefinition();  (yyval.funcdef)->setExpression((yyvsp[0].expression)); }
-#line 2253 "grammar.tab.cc"
+#line 2249 "grammar.tab.cc"
     break;
 
   case 86: /* FunctionLiteral: TOKEN_FUNC Parameters TOKEN_IS Body TOKEN_END  */
 #line 217 "grammar.yy"
                                                                               { (yyval.funcdef) = new NFunctionDefinition(); (yyval.funcdef)->setParameters((yyvsp[-3].param)); (yyval.funcdef)->setBody((yyvsp[-1].block)); }
-#line 2259 "grammar.tab.cc"
+#line 2255 "grammar.tab.cc"
     break;
 
   case 87: /* FunctionLiteral: TOKEN_FUNC Parameters TOKEN_FUNCTOR Expression  */
 #line 218 "grammar.yy"
                                                                               { (yyval.funcdef) = new NFunctionDefinition(); (yyval.funcdef)->setParameters((yyvsp[-2].param)); (yyval.funcdef)->setExpression((yyvsp[0].expression)); }
-#line 2265 "grammar.tab.cc"
+#line 2261 "grammar.tab.cc"
     break;
 
   case 88: /* Parameters: TOKEN_LPAREN Identifiers TOKEN_RPAREN  */
 #line 220 "grammar.yy"
                                                                               { (yyval.param) = (yyvsp[-1].param); }
-#line 2271 "grammar.tab.cc"
+#line 2267 "grammar.tab.cc"
     break;
 
   case 89: /* Identifiers: TOKEN_IDENTIFIER  */
 #line 222 "grammar.yy"
                                                                               { (yyval.param) = new NParameters(); (yyval.param)->push_parameter(new NIdentifier((yyvsp[0].string))); }
-#line 2277 "grammar.tab.cc"
+#line 2273 "grammar.tab.cc"
     break;
 
   case 90: /* Identifiers: TOKEN_IDENTIFIER TOKEN_COMMA Identifiers  */
 #line 223 "grammar.yy"
                                                                               { (yyval.param) = (yyvsp[0].param); (yyval.param)->push_parameter(new NIdentifier((yyvsp[-2].string))); }
-#line 2283 "grammar.tab.cc"
+#line 2279 "grammar.tab.cc"
     break;
 
 
-#line 2287 "grammar.tab.cc"
+#line 2283 "grammar.tab.cc"
 
         default: break;
       }

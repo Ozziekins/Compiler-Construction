@@ -18,6 +18,7 @@ public:
     int visit(NIf *);
     int visit(NIfElse *);
     int visit(NLoop *);
+    int visit(NRangeLoop *);
     int visit(NReturn *);
     int visit(NExpression *);
     int visit(NIdentifier *);

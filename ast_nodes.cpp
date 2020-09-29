@@ -68,6 +68,16 @@ int NLoop::accept(Visitor &v) {
     return v.visit(this);
 }
 
+NRangeLoop::NRangeLoop(NIdentifier *id, NExpression *from, NExpression *to, NBlock *block) {
+    this->id = id;
+    this->from = from;
+    this->to = to;
+    this->block = block;
+}
+
+int NRangeLoop::accept(Visitor &v) {
+    return v.visit(this);
+}
 
 //Declaration
 NDeclaration::NDeclaration(string *id) {
