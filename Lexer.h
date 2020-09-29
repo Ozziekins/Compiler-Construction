@@ -79,6 +79,7 @@ private:
             {"false",TOKEN_FALSE},
             {"is",TOKEN_IS},
             {".",TOKEN_DOT},
+            {"..",TOKEN_RANGE},
             {"+",TOKEN_PLUS},
             {"-",TOKEN_MINUS},
             {"*",TOKEN_MULT},

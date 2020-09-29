@@ -74,7 +74,7 @@
 %token <token> TOKEN_LCURLY TOKEN_RCURLY TOKEN_SEMI TOKEN_COMMA TOKEN_DOT
 
 // Operators
-%token <token> TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_EQUAL TOKEN_NEQ             
+%token <token> TOKEN_PLUS TOKEN_MINUS TOKEN_MULT TOKEN_DIV TOKEN_EQUAL TOKEN_NEQ TOKEN_RANGE             
 %token <token> TOKEN_LESS TOKEN_LEQ TOKEN_GREAT TOKEN_GEQ TOKEN_INCREMENT       
 
 // Input
@@ -190,6 +190,7 @@ TypeIndicator : TOKEN_INT                                     { $$ = $1; }
               | TOKEN_EMPTY                                   { $$ = $1; }
               | TOKEN_ARRAY                                   { $$ = $1; }
               | TOKEN_TUPLE                                   { $$ = $1; }
+              | Expression TOKEN_RANGE Expression             { ; }
               ;
 Literal : TOKEN_INT_LITERAL                                   { $$ = new NIntegerLiteral(atol($1->c_str())); }
         | TOKEN_REAL_LITERAL                                  { $$ = new NReal(atof($1->c_str())); }

@@ -90,8 +90,14 @@ Token Lexer::readLiteral() {
         advance();
 
         //Is finding the position of the next " really more efficient than reallocating several times?
-        unsigned long quotePosition = contents.find('"', currentIndex);
-        unsigned long stringLength = quotePosition - currentIndex;
+        std::size_t quotePosition = contents.find('"', currentIndex);
+
+        if ( quotePosition == std::string::npos ){
+            std::cout << "Syntax error:\n Incomplete string on " << currentLine << ":" << currentPosOnLine - 1 << std::endl;
+            exit(228);
+        }
+
+        unsigned int stringLength = quotePosition - currentIndex;
 
         //Getting value as substring
         tokenValue = contents.substr(currentIndex, stringLength);
@@ -151,14 +157,31 @@ Token Lexer::readUntilTokenDetected() {
 
     unsigned long tokenStart = currentPosOnLine;
 
+    if ( currentChar == '+' && contents[ currentIndex + 1] == '=' ){
+        Token token =  Token( specialCharMappings["+="], "+=", currentLine, tokenStart );
+
+        advance(); // ??????
+
+        tokenList.push_back(token);
+        return token;
+    }
+
+    if ( currentChar == '.' && contents[ currentIndex + 1] == '.' ){
+        Token token =  Token( specialCharMappings[".."], "..", currentLine, tokenStart );
+
+        advance(); // ??????
+
+        tokenList.push_back(token);
+        return token;
+    }
 
     // Collecting PURELY single character tokens
-    if (specialCharMappings.count(std::string() + currentChar) != 0 && currentChar != '+' && currentChar != '=' &&
-        currentChar != '<' && currentChar != '/' && currentChar != '+') {
+    if (specialCharMappings.count(std::string() + currentChar) != 0 && currentChar != '=' &&
+        currentChar != '<' && currentChar != '/') {
 
         unknownTokenValue = std::string() + currentChar;
 
-        Token token = Token(specialCharMappings[unknownTokenValue], unknownTokenValue, currentLine, tokenStart);
+        Token token =  Token(specialCharMappings[unknownTokenValue], unknownTokenValue, currentLine, tokenStart);
 
         tokenList.push_back(token);
         return token;
@@ -185,7 +208,7 @@ Token Lexer::readUntilTokenDetected() {
     } else {
 
 
-        std::cout << " READ A STRANGE THING\n";
+        std::cout << " READ A STRANGE THING with value [" << unknownTokenValue << "]" << std::endl;
         Token token = Token(TOKEN_UNKNOWN, unknownTokenValue, currentLine, tokenStart);
         tokenList.push_back(token);
         return token;
