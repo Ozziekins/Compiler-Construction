@@ -90,14 +90,14 @@ int Evaluate::visit(NLoop *loop){
     return 0;
 }
 
-// int Evaluate::visit(NRangeLoop *loop){
-//     cout << "NRangeLoop" << endl;
-//     loop->id->accept(*this);
-//     loop->from->accept(*this);
-//     loop->to->accept(*this);
-//     loop->block->accept(*this);
-//     return 0;
-// }
+int Evaluate::visit(NRangeLoop *loop){
+    cout << "NRangeLoop" << endl;
+    loop->id->accept(*this);
+    loop->from->accept(*this);
+    loop->to->accept(*this);
+    loop->block->accept(*this);
+    return 0;
+}
 
 int Evaluate::visit(NReturn *retstmt){
     cout << "NReturn" << endl;
