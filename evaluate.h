@@ -4,12 +4,11 @@ class Evaluate;
 
 class Evaluate : public Visitor
 {
-private:
-    map<string, complex_t> SymbolTable;
+public:
+    map<NIdentifier *, complex_t *> SymbolTable;
     string str;
     int num;
 
-public:
     complex_t *visit(NProgram *);
     complex_t *visit(NBlock *);
     complex_t *visit(NDeclaration *);

@@ -1818,13 +1818,13 @@ yyreduce:
 
   case 6: /* Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI  */
 #line 116 "grammar.yy"
-                                                                                          { (yyval.declaration) = new NDeclaration((yyvsp[-1].string)); }
+                                                                                          { (yyval.declaration) = new NDeclaration(new NIdentifier((yyvsp[-1].string))); }
 #line 1823 "grammar.tab.cc"
     break;
 
   case 7: /* Declaration: TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI  */
 #line 117 "grammar.yy"
-                                                                                          { (yyval.declaration) = new NDeclaration((yyvsp[-3].string), (yyvsp[-1].expression)); }
+                                                                                          { (yyval.declaration) = new NDeclaration(new NIdentifier((yyvsp[-3].string)), (yyvsp[-1].expression)); }
 #line 1829 "grammar.tab.cc"
     break;
 
@@ -2552,8 +2552,8 @@ int main(int argc, char *argv[]) {
     yyparse();
     std::cout << programBlock << std::endl;
 
-    Traverse t;
-    cout << "Traversing" << endl;
+    Evaluate t;
+    cout << "Evaluating" << endl;
     programBlock->accept(t);
     return 0;
 }

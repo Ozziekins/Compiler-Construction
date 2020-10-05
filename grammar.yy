@@ -113,8 +113,8 @@ Body : /* empty */                                  { $$ = new NBlock(); }
       | Declaration Body                            { $$ = $2; $$->push_back($1); }
       | Statement Body                              { $$ = $2; $$->push_back($1); }
       ;
-Declaration : TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI                                       { $$ = new NDeclaration($2); }                                //{printf("He");} 
-            | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI           { $$ = new NDeclaration($2, $4); }
+Declaration : TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI                                       { $$ = new NDeclaration(new NIdentifier($2)); }
+            | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI           { $$ = new NDeclaration(new NIdentifier($2), $4); }
             ;
 Expression : Relation                                     { $$ = $1; }
            | Relation TOKEN_AND Relation                  { $$ = new NBinaryOperator($1, $2, $3); }
@@ -259,8 +259,8 @@ int main(int argc, char *argv[]) {
     yyparse();
     std::cout << programBlock << std::endl;
 
-    Traverse t;
-    cout << "Traversing" << endl;
+    Evaluate t;
+    cout << "Evaluating" << endl;
     programBlock->accept(t);
     return 0;
 }

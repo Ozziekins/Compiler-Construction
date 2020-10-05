@@ -103,11 +103,11 @@ complex_t * NRangeLoop::accept(Visitor &v) {
 }
 
 //Declaration
-NDeclaration::NDeclaration(string *id) {
+NDeclaration::NDeclaration(NIdentifier *id) {
     this->identifier = id;
 }
 
-NDeclaration::NDeclaration(string *id, NExpression *assignmentExpr) {
+NDeclaration::NDeclaration(NIdentifier *id, NExpression *assignmentExpr) {
     this->identifier = id;
     this->assignmentExpr = assignmentExpr;
 }
@@ -173,6 +173,12 @@ complex_t * NReal::accept(Visitor &v) {
 
 
 //Bool
+ NBool::NBool(string *text){
+     this->text = text;
+     string str = *text;
+     if (str.compare("true"))
+        this->value = true;
+ }
 complex_t * NBool::accept(Visitor &v) {
     return v.visit(this);
 }

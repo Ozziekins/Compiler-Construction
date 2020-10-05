@@ -14,7 +14,6 @@ complex_t *Traverse::visit(NBlock *block){
 
 complex_t *Traverse::visit(NDeclaration *decl){
     cout << "NDeclaration" << endl;
-    cout << *(decl->identifier) << endl;
     if (decl->assignmentExpr) {
         decl->assignmentExpr->accept(*this);
     }

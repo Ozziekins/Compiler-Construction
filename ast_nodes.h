@@ -136,10 +136,10 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    string *identifier;
+    NIdentifier *identifier;
     NExpression *assignmentExpr = nullptr;
-    NDeclaration(string *id);
-    NDeclaration(string *id, NExpression *assignmentExpr);
+    NDeclaration(NIdentifier *id);
+    NDeclaration(NIdentifier *id, NExpression *assignmentExpr);
     complex_t *accept(Visitor &);
 };
 
@@ -181,7 +181,8 @@ private:
     friend class Traverse;
 public:
     string *text;
-    NBool(string *text) : text(text) { }
+    bool value = false;
+    NBool(string *text);
     complex_t *accept(Visitor &);
 };
 
@@ -191,7 +192,7 @@ private:
     friend class Traverse;
 public:
     string *text;
-    NStringLiteral(string *text){ }
+    NStringLiteral(string *text) : text(text) {}
     complex_t *accept(Visitor &);
 };
 

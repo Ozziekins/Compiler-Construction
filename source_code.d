@@ -1,6 +1,3 @@
-var a;
-if true then		// Brackets are omitted intentionally
-    a := 1;
-else
-    a := 0;
-end
+var name := "Daniel Atonge";
+var age := 26;
+var testscore := 17.99;

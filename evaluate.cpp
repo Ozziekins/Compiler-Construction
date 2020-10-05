@@ -1,3 +1,17 @@
+void print_symbol_table(map<NIdentifier *, complex_t *> SymbolTable) {
+    cout << "_____ SYMBOLTABLE _______\n";
+    for (const auto& x : SymbolTable) {
+        cout << *x.first->name << ": " << type_name(*x.second) << "\n";
+        if (!string(type_name(*x.second)).compare("STRING"))
+            cout << *(x.second->stringVAl) << endl;
+        if (!string(type_name(*x.second)).compare("INTEGER"))
+            cout << x.second->intVal << endl;
+        if (!string(type_name(*x.second)).compare("FLOAT"))
+            cout << x.second->floatVal << endl;
+    }
+    
+}
+
 complex_t *Evaluate::visit(NProgram *program){
     return nullptr;
 }
@@ -12,27 +26,15 @@ complex_t *Evaluate::visit(NBlock *block){
 
 complex_t *Evaluate::visit(NDeclaration *decl){
     cout << "NDeclaration" << endl;
-    //string ident_name = *(decl->identifier);
+    NIdentifier* ident_name = decl->identifier;
 
     //initialize symbol table with corresponding types
-    // complex_structure value = decl->assignmentExpr->accept(*this);
-    // if (decl->assignmentExpr) {
-        
-    //     if (type.compare("int")) {
-        
-    //     } else if (type.compare("real")) {
-
-    //     } else if (type.compare("string")) {
-            
-    //     } else if (type.compare("array")) {
-            
-    //     } else if (type.compare("tuple")) {
-            
-    //     } else if (type.compare("bool")) {
-            
-    //     }
-    // }
-
+    complex_t *value = nullptr;
+    if (decl->assignmentExpr)
+        value = decl->assignmentExpr->accept(*this);
+        ident_name->type = string(type_name(*value));
+    SymbolTable.insert({ident_name, value});
+    print_symbol_table(SymbolTable);
     return nullptr;
 }
 
@@ -135,26 +137,35 @@ complex_t *Evaluate::visit(NIdentifier *id){
 
 complex_t *Evaluate::visit(NIntegerLiteral *intlit){
     cout << "NIntegerLiteral" << endl;
-    complex_t * ival;
-    // ival.type = INTEGER;
-    // ival.intVal = intlit->value;
+    complex_t * ival = create_type();
+    ival->type = INTEGER;
+    ival->intVal = intlit->value;
     return ival;
 }
 
-complex_t *Evaluate::visit(NReal *){
+complex_t *Evaluate::visit(NReal *reallit){
     cout << "NReal" << endl;
-    return nullptr;
+    complex_t * fval = create_type();
+    fval->type = FLOAT;
+    fval->floatVal = reallit->value;
+    return fval;
 }
 
 
-complex_t *Evaluate::visit(NBool *){
+complex_t *Evaluate::visit(NBool *blit){
     cout << "NBool" << endl;
-    return nullptr;
+    complex_t * bval = create_type();
+    bval->type = BOOL;
+    bval->boolVAl = blit->value;
+    return bval;
 }
 
-complex_t *Evaluate::visit(NStringLiteral *){
+complex_t *Evaluate::visit(NStringLiteral *slit){
     cout << "NStringLiteral" << endl;
-    return nullptr;
+    complex_t * sval = create_type();
+    sval->type = STRING;
+    sval->stringVAl = slit->text;
+    return sval;
 }
 
 complex_t *Evaluate::visit(NBinaryOperator *bin_op){
