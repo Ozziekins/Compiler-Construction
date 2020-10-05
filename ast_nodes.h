@@ -4,7 +4,8 @@
 
 using namespace std;
 
-typedef enum types { INTEGER = 0, FLOAT, STRING, BOOL, ARRAY, TUPLE } type_t;
+// ADDED EMPTY AS -1
+typedef enum types { EMPTY = -1, INTEGER = 0, FLOAT, STRING, BOOL, ARRAY, TUPLE } type_t;
 typedef struct complexTypes complex_t;
 
 struct complexTypes{
@@ -148,7 +149,7 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    string type = string("empty");
+    string type = string("EMPTY");
     string *name;
     NIdentifier(string *name);
     complex_t *accept(Visitor &);

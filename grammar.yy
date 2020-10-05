@@ -110,7 +110,7 @@
 Program : Body                                      { programBlock = $1; }
         ;                                   
 Body : /* empty */                                  { $$ = new NBlock(); }
-      | Declaration Body                            { $$ = $2; $$->push_back($1); }
+      | Declaration Body                            { $$ = $2; $$->push_back($1);  }
       | Statement Body                              { $$ = $2; $$->push_back($1); }
       ;
 Declaration : TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI                                       { $$ = new NDeclaration(new NIdentifier($2)); }

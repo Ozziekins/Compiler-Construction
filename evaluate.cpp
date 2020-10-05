@@ -1,14 +1,26 @@
+
+// A very bad move from me to declare such a global variable
+bool DEBUG = true;
+
 void print_symbol_table(map<NIdentifier *, complex_t *> SymbolTable) {
-    cout << "_____ SYMBOLTABLE _______\n";
+    cout << "\n _____ SYMBOLTABLE ________\n";
     for (const auto& x : SymbolTable) {
-        cout << *x.first->name << ": " << type_name(*x.second) << "\n";
+        cout << "| " << type_name(*x.second) << "\n";
+
         if (!string(type_name(*x.second)).compare("STRING"))
-            cout << *(x.second->stringVAl) << endl;
-        if (!string(type_name(*x.second)).compare("INTEGER"))
-            cout << x.second->intVal << endl;
-        if (!string(type_name(*x.second)).compare("FLOAT"))
-            cout << x.second->floatVal << endl;
+            cout << "| " << *x.first->name << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+        else if (!string(type_name(*x.second)).compare("INTEGER"))
+            cout << "| " << *x.first->name << "= " << x.second->intVal << endl << "| " << endl;
+        else if (!string(type_name(*x.second)).compare("FLOAT"))
+            cout << "| " << *x.first->name << "= " << x.second->floatVal << endl << "| " << endl;
+        
+        
+        else if (!string(type_name(*x.second)).compare("EMPTY"))
+            cout << "| " << *x.first->name << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+        else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
+        //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     }
+    cout << "|__________________________\n\n";
     
 }
 
@@ -25,16 +37,25 @@ complex_t *Evaluate::visit(NBlock *block){
 }
 
 complex_t *Evaluate::visit(NDeclaration *decl){
-    cout << "NDeclaration" << endl;
+    
+    if (DEBUG) cout << "Parsed NDeclaration "; //<< endl;
     NIdentifier* ident_name = decl->identifier;
+    if (DEBUG) cout << "of variable [" << *ident_name->name << "] : ";
 
     //initialize symbol table with corresponding types
     complex_t *value = nullptr;
-    if (decl->assignmentExpr)
+    if (decl->assignmentExpr){
         value = decl->assignmentExpr->accept(*this);
         ident_name->type = string(type_name(*value));
+    }
+    else { //TODO NOW EMPTY HAS VALUE eMpTy; IS IT OK?
+        value = create_type();
+        value->type = EMPTY;
+        value->stringVAl = new string("eMpTy");
+    }
     SymbolTable.insert({ident_name, value});
     print_symbol_table(SymbolTable);
+
     return nullptr;
 }
 
@@ -136,7 +157,7 @@ complex_t *Evaluate::visit(NIdentifier *id){
 
 
 complex_t *Evaluate::visit(NIntegerLiteral *intlit){
-    cout << "NIntegerLiteral" << endl;
+    cout << "NIntegerLiteral {" << intlit->value << "}" << endl;
     complex_t * ival = create_type();
     ival->type = INTEGER;
     ival->intVal = intlit->value;

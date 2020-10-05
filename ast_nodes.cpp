@@ -3,19 +3,19 @@
 string type_name(complex_t complex){
     switch( complex.type ){
         case INTEGER: 
-            return "INTEGER";
+            return "INTEGER"; break;
         case FLOAT: 
-            return "FLOAT";
+            return "FLOAT"; break;
         case STRING: 
-            return "STRING";
+            return "STRING"; break;
         case BOOL: 
-            return "BOOL";
+            return "BOOL"; break;
         case ARRAY: 
-            return "ARRAY";
+            return "ARRAY"; break;
         case TUPLE: 
-            return "TUPLE";
+            return "TUPLE"; break;
         default:
-            cout << "empty :- not implemented";
+            return "EMPTY"; cout << "\nempty :- not implemented??\n"; break; 
     }
 }
 
