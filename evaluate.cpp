@@ -106,6 +106,7 @@ complex_t *Evaluate::visit(NLoop *loop){
 }
 
 complex_t *Evaluate::visit(NRangeLoop *loop){
+
     cout << "NRangeLoop" << endl;
     loop->id->accept(*this);
     loop->from->accept(*this);
