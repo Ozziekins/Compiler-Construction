@@ -174,9 +174,9 @@ complex_t * NReal::accept(Visitor &v) {
 
 //Bool
  NBool::NBool(string *text){
-     this->text = text;
-     string str = *text;
-     if (str.compare("true"))
+    this->text = text;
+    string str = *text;
+    if (!str.compare("true"))
         this->value = true;
  }
 complex_t * NBool::accept(Visitor &v) {

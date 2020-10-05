@@ -13,7 +13,8 @@ void print_symbol_table(map<NIdentifier *, complex_t *> SymbolTable) {
             cout << "| " << *x.first->name << "= " << x.second->intVal << endl << "| " << endl;
         else if (!string(type_name(*x.second)).compare("FLOAT"))
             cout << "| " << *x.first->name << "= " << x.second->floatVal << endl << "| " << endl;
-        
+                else if (!string(type_name(*x.second)).compare("BOOL"))
+            cout << "| " << *x.first->name << "= " << x.second->boolVAl << endl << "| " << endl;
         
         else if (!string(type_name(*x.second)).compare("EMPTY"))
             cout << "| " << *x.first->name << "= " << *(x.second->stringVAl) << endl << "| " << endl;
@@ -157,7 +158,7 @@ complex_t *Evaluate::visit(NIdentifier *id){
 
 
 complex_t *Evaluate::visit(NIntegerLiteral *intlit){
-    cout << "NIntegerLiteral {" << intlit->value << "}" << endl;
+    if (DEBUG) cout << "NIntegerLiteral {" << intlit->value << "}" << endl;
     complex_t * ival = create_type();
     ival->type = INTEGER;
     ival->intVal = intlit->value;
@@ -174,7 +175,7 @@ complex_t *Evaluate::visit(NReal *reallit){
 
 
 complex_t *Evaluate::visit(NBool *blit){
-    cout << "NBool" << endl;
+    cout << "NBool with val: " << blit->value <<endl;
     complex_t * bval = create_type();
     bval->type = BOOL;
     bval->boolVAl = blit->value;
@@ -182,7 +183,7 @@ complex_t *Evaluate::visit(NBool *blit){
 }
 
 complex_t *Evaluate::visit(NStringLiteral *slit){
-    cout << "NStringLiteral" << endl;
+    if (DEBUG) cout << "NStringLiteral" << "{" << *(slit->text) << "}" << endl;
     complex_t * sval = create_type();
     sval->type = STRING;
     sval->stringVAl = slit->text;
