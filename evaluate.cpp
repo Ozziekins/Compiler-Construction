@@ -1,162 +1,195 @@
-int Evaluate::visit(NProgram *program){
-    cout << "Program" << endl;
-    return 0;
+complex_t *Evaluate::visit(NProgram *program){
+    return nullptr;
 }
 
-int Evaluate::visit(NBlock *block){
-    cout << "NBlock" << endl;
+complex_t *Evaluate::visit(NBlock *block){
+
     for(int i = 0; i < (int)block->instructions.size(); i++) {
         block->instructions[i]->accept(*this);
     }
-
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NDeclaration *decl){
+complex_t *Evaluate::visit(NDeclaration *decl){
     cout << "NDeclaration" << endl;
-    cout << *(decl->identifier) << endl;
-    if (decl->assignmentExpr) {
-        decl->assignmentExpr->accept(*this);
-    }
-    return 0;
+    //string ident_name = *(decl->identifier);
+
+    //initialize symbol table with corresponding types
+    // complex_structure value = decl->assignmentExpr->accept(*this);
+    // if (decl->assignmentExpr) {
+        
+    //     if (type.compare("int")) {
+        
+    //     } else if (type.compare("real")) {
+
+    //     } else if (type.compare("string")) {
+            
+    //     } else if (type.compare("array")) {
+            
+    //     } else if (type.compare("tuple")) {
+            
+    //     } else if (type.compare("bool")) {
+            
+    //     }
+    // }
+
+    return nullptr;
 }
 
 
-int Evaluate::visit(NArray *){
+complex_t *Evaluate::visit(NArray *){
     cout << "NArray" << endl;
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NTuple *){
+complex_t *Evaluate::visit(NTuple *){
     cout << "NTuple" << endl;
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NStatement *stmt){
+complex_t *Evaluate::visit(NStatement *stmt){
     cout << "NStatement" << endl;
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NAssignment *assignmnt){
+complex_t *Evaluate::visit(NAssignment *assignmnt){
     cout << "NAssignment" << endl;
     assignmnt->identifier->accept(*this);
     assignmnt->expression->accept(*this);
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NPrint *print){
+complex_t *Evaluate::visit(NPrint *print){
     cout << "NPrint" << endl;
     for(int i = 0; i < (int)print->expressions.size(); i++)
         print->expressions[i]->accept(*this);
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NFunctionDefinition *funcdef){
+complex_t *Evaluate::visit(NFunctionDefinition *funcdef){
     cout << "NFunctionDefinition" << endl;
     funcdef->arguments->accept(*this);
     if (funcdef->block)
         funcdef->block->accept(*this);
     if (funcdef->expression)
         funcdef->expression->accept(*this);
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NParameters *params) {
+complex_t *Evaluate::visit(NParameters *params) {
     cout << "NParameter" << endl;
     for(int i = 0; i < (int)params->arguments.size(); i++)
         params->arguments[i]->accept(*this);
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NIf *ifstmt){
+complex_t *Evaluate::visit(NIf *ifstmt){
     cout << "NIf" << endl;
     ifstmt->condition->accept(*this);
     ifstmt->ifblock->accept(*this);
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NIfElse *ifstmt){
+complex_t *Evaluate::visit(NIfElse *ifstmt){
     cout << "NIfElse" << endl;
     ifstmt->condition->accept(*this);
     ifstmt->ifblock->accept(*this);
     ifstmt->elseblock->accept(*this);
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NLoop *loop){
+complex_t *Evaluate::visit(NLoop *loop){
     cout << "NLoop" << endl;
     loop->condition->accept(*this);
     loop->block->accept(*this);
-    return 0;
+    return nullptr;
 }
 
-// int Evaluate::visit(NRangeLoop *loop){
-//     cout << "NRangeLoop" << endl;
-//     loop->id->accept(*this);
-//     loop->from->accept(*this);
-//     loop->to->accept(*this);
-//     loop->block->accept(*this);
-//     return 0;
-// }
+complex_t *Evaluate::visit(NRangeLoop *loop){
+    cout << "NRangeLoop" << endl;
+    loop->id->accept(*this);
+    loop->from->accept(*this);
+    loop->to->accept(*this);
+    loop->block->accept(*this);
+    return nullptr;
+}
 
-int Evaluate::visit(NReturn *retstmt){
+complex_t *Evaluate::visit(NReturn *retstmt){
     cout << "NReturn" << endl;
     retstmt->expression->accept(*this);
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NExpression *){
+complex_t *Evaluate::visit(NExpression *){
     cout << "NExpression" << endl;
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NIdentifier *id){
+complex_t *Evaluate::visit(NIdentifier *id){
     cout << "NIdentifier" << endl;
     cout << *(id->name) << endl;
-    return 0;
+    return nullptr;
 }
 
 
-int Evaluate::visit(NIntegerLiteral *intlit){
+complex_t *Evaluate::visit(NIntegerLiteral *intlit){
     cout << "NIntegerLiteral" << endl;
-    cout << intlit->value << endl;
-    return 0;
+    complex_t * ival;
+    // ival.type = INTEGER;
+    // ival.intVal = intlit->value;
+    return ival;
 }
 
-int Evaluate::visit(NReal *){
+complex_t *Evaluate::visit(NReal *){
     cout << "NReal" << endl;
-    return 0;
+    return nullptr;
 }
 
 
-int Evaluate::visit(NBool *){
+complex_t *Evaluate::visit(NBool *){
     cout << "NBool" << endl;
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NStringLiteral *){
+complex_t *Evaluate::visit(NStringLiteral *){
     cout << "NStringLiteral" << endl;
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NBinaryOperator *bin_op){
+complex_t *Evaluate::visit(NBinaryOperator *bin_op){
     cout << "NBinaryOperator" << endl;
-    bin_op->lhs->accept(*this);
-    bin_op->rhs->accept(*this);
-    return 0;
+    auto op = bin_op->op;
+    auto left = bin_op->lhs->accept(*this);
+    auto right = bin_op->rhs->accept(*this);
+
+    // int result;
+    // if(op == 1) result = left + right;
+    // else if(op == 2) result = left - right;
+    // else if(op == 3) result = left * right;
+    // else if(op == 4) result = left / right;
+    // else if(op == 5) result = left < right;
+    // else if(op == 6) result = left > right;
+    // else if(op == 7) result = left <= right;
+    // else if(op == 8) result = left >= right;
+    // else if(op == 9) result = left == right;
+    // else if(op == 10) result = left != right;
+    // else if(op == 11) result = left && right;
+    // else if(op == 12) result = left || right;
+    // else if(op == 13) result = left ^ right;
+    return nullptr;
 }
 
-int Evaluate::visit(NTypeCheck *){
+complex_t *Evaluate::visit(NTypeCheck *){
     cout << "NTypeCheck" << endl;
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NUnary *){
+complex_t *Evaluate::visit(NUnary *){
     cout << "NUnary" << endl;
-    return 0;
+    return nullptr;
 }
 
-int Evaluate::visit(NReadInput *){
+complex_t *Evaluate::visit(NReadInput *){
     cout << "NReadInput" << endl;
-    return 0;
+    return nullptr;
 }

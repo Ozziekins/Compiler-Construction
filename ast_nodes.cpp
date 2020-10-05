@@ -1,7 +1,30 @@
 #include "ast_nodes.h"
 
+string type_name(complex_t complex){
+    switch( complex.type ){
+        case INTEGER: 
+            return "INTEGER";
+        case FLOAT: 
+            return "FLOAT";
+        case STRING: 
+            return "STRING";
+        case BOOL: 
+            return "BOOL";
+        case ARRAY: 
+            return "ARRAY";
+        case TUPLE: 
+            return "TUPLE";
+        default:
+            cout << "empty :- not implemented";
+    }
+}
+
+complex_t *create_type () {
+    return (complex_t *)malloc(sizeof(complex_t));
+}
+
 //Program
-int NProgram::accept(Visitor &v) {
+complex_t * NProgram::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -11,7 +34,7 @@ void NBlock::push_back(NInstruction *instruction) {
     instructions.push_back(instruction);
 }
 
-int NBlock::accept(Visitor &v) {
+complex_t * NBlock::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -22,7 +45,7 @@ NAssignment::NAssignment(NExpression *identifier, NExpression *expression) {
     this->expression = expression;
 }
 
-int NAssignment::accept(Visitor &v) {
+complex_t * NAssignment::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -32,7 +55,7 @@ void NPrint::push_back(NExpression *expression) {
     expressions.push_back(expression);
 }
 
-int NPrint::accept(Visitor &v) {
+complex_t * NPrint::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -43,7 +66,7 @@ NIf::NIf(NExpression *condition, NBlock *ifblock) {
     this->ifblock = ifblock;
 }
 
-int NIf::accept(Visitor &v) {
+complex_t * NIf::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -53,7 +76,7 @@ NIfElse::NIfElse(NExpression *condition, NBlock *ifblock, NBlock *elseblock) {
     this->elseblock = elseblock;
 }
 
-int NIfElse::accept(Visitor &v) {
+complex_t * NIfElse::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -64,7 +87,7 @@ NLoop::NLoop(NExpression *condition, NBlock *block) {
     this->block = block;
 }
 
-int NLoop::accept(Visitor &v) {
+complex_t * NLoop::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -75,7 +98,7 @@ NRangeLoop::NRangeLoop(NIdentifier *id, NExpression *from, NExpression *to, NBlo
     this->block = block;
 }
 
-int NRangeLoop::accept(Visitor &v) {
+complex_t * NRangeLoop::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -89,7 +112,7 @@ NDeclaration::NDeclaration(string *id, NExpression *assignmentExpr) {
     this->assignmentExpr = assignmentExpr;
 }
 
-int NDeclaration::accept(Visitor &v) {
+complex_t * NDeclaration::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -99,7 +122,7 @@ NReturn::NReturn(NExpression *expression) {
     this->expression = expression;
 }
 
-int NReturn::accept(Visitor &v) {
+complex_t * NReturn::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -108,7 +131,7 @@ int NReturn::accept(Visitor &v) {
 NExpression::NExpression() {
 }
 
-int NExpression::accept(Visitor &v) {
+complex_t * NExpression::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -117,47 +140,54 @@ int NExpression::accept(Visitor &v) {
 //Statement
 NStatement::NStatement(){
 }
-int NStatement::accept(Visitor &v) {
+complex_t * NStatement::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 //Identifier
-int NIdentifier::accept(Visitor &v) {
+NIdentifier::NIdentifier(string *name){
+    this->type = string("empty");
+    this->name = name;
+}
+complex_t * NIdentifier::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 
 //IntegerLiteral
-int NIntegerLiteral::accept(Visitor &v) {
+NIntegerLiteral::NIntegerLiteral(long long value) {
+    this->value = value;
+}
+complex_t * NIntegerLiteral::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 //Real
-int NReal::accept(Visitor &v) {
+complex_t * NReal::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 
 //Bool
-int NBool::accept(Visitor &v) {
+complex_t * NBool::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 
 //StringLiteral
-int NStringLiteral::accept(Visitor &v) {
+complex_t * NStringLiteral::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 
 //BinaryOperator
-int NBinaryOperator::accept(Visitor &v) {
+complex_t * NBinaryOperator::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -173,7 +203,7 @@ void NFunctionDefinition::setExpression(NExpression *expression) {
 void NFunctionDefinition::setParameters(NParameters *arguments) {
     this->arguments = arguments;
 }
-int NFunctionDefinition::accept(Visitor &v) {
+complex_t * NFunctionDefinition::accept(Visitor &v) {
     return v.visit(this);
 }
 
@@ -183,37 +213,37 @@ int NFunctionDefinition::accept(Visitor &v) {
 void NParameters::push_parameter(NIdentifier * argument) {
     this->arguments.push_back(argument);
 }
-int NParameters::accept(Visitor &v) {
+complex_t * NParameters::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 
 //TypeCheck
-int NTypeCheck::accept(Visitor &v) {
+complex_t * NTypeCheck::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 //Array
-int NArray::accept(Visitor &v) {
+complex_t * NArray::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 //Tuple
-int NTuple::accept(Visitor &v) {
+complex_t * NTuple::accept(Visitor &v) {
     return v.visit(this);
 }
 
 
 //Unary
-int NUnary::accept(Visitor &v) {
+complex_t * NUnary::accept(Visitor &v) {
     return v.visit(this);
 }
 
 //ReadInput
-int NReadInput::accept(Visitor &v) {
+complex_t * NReadInput::accept(Visitor &v) {
     return v.visit(this);
 }
 
