@@ -13,8 +13,6 @@ public:
     complex_t *visit(NProgram *);
     complex_t *visit(NBlock *);
     complex_t *visit(NDeclaration *);
-
-<<<<<<< HEAD
     complex_t *visit(NArray *);
     complex_t *visit(NTuple *);
     complex_t *visit(NStatement *);
