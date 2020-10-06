@@ -78,14 +78,25 @@ complex_t *Evaluate::visit(NStatement *stmt){
 }
 
 complex_t *Evaluate::visit(NAssignment *assignmnt){
-    cout << "NAssignment" << endl;
-    assignmnt->identifier->accept(*this);
-    assignmnt->expression->accept(*this);
+
+    complex_t *var = assignmnt->identifier->accept(*this);
+    complex_t *newvar = assignmnt->expression->accept(*this);
+
+    #define THING(x) cout << x;
+    if (DEBUG){
+        cout << "Parsed NAssignment and changed newvar from {";
+        DO_THING(var, THING);
+        cout << "} to {";
+        DO_THING(newvar, THING);
+        cout<< "}" << endl;
+    }
+    
+    *var = *newvar;
+
     return nullptr;
 }
 
 
- 
 
 
 complex_t *Evaluate::visit(NPrint *print){
@@ -95,9 +106,8 @@ complex_t *Evaluate::visit(NPrint *print){
     if (DEBUG) cout << "Parsed NPrint" << endl;
     for(int i = 0; i < (int)print->expressions.size(); i++)
         DO_THING(print->expressions[i]->accept(*this),THING)
-        // complex_t sas = print->expressions[i]->accept(*this);
-        // print->expressions[i]->accept(*this);
 
+    cout << endl;
     #undef  THING
 
     return nullptr;
@@ -165,10 +175,18 @@ complex_t *Evaluate::visit(NExpression *){
 
 complex_t *Evaluate::visit(NIdentifier *id){
     //TODO PROPER SYMBOLTABLES + SCOPE interactions
-    // if ( SymbolTable.count(*(id->name)) != 0)
-    //     printf("EXISTS");
-    if (DEBUG) cout << "Parsed NIdentifier {NOT WORKING; or mb I am retarded} [" << *(id->name) << "]" << endl;
-    return nullptr;
+
+    string name = *(id->name);
+    if (DEBUG) cout << "Parsed NIdentifier [" << name << "]" << endl;
+
+    if ( SymbolTable.count(*(id->name)) != 0)
+         return SymbolTable[name];
+    else{
+        cout << "\nSEMANTIC? ERROR:\n\tIDENTIFIER " << name << " IS NOT PRESENT IN THE SYMBOL TABLE!\n";
+        exit(228);
+    }
+        
+   
 }
 
 

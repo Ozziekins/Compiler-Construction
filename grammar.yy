@@ -270,6 +270,7 @@ void yyerror(const char *error){
     std::cout << "\n";
     std::cout << error << " \'"<< feedback.value <<"\' on [" << feedback.line 
     << ":" << feedback.column << "]\n\n";
+    exit(228);
 }
 
 

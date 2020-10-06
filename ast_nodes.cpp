@@ -1,5 +1,15 @@
 #include "ast_nodes.h"
 
+#define DO_THING(complex, THING) \
+switch( complex->type ){ \
+case INTEGER: THING(complex->intVal); break;\
+case FLOAT:   THING(complex->floatVal); break;\
+case STRING:  THING(*(complex->stringVAl)); break;\
+case BOOL:    THING(complex->boolVAl); break;\
+case ARRAY: cout << "\nARRAYS :- not implemented??\n"; exit(228); break;\
+case TUPLE: cout << "\nTUPLE :- not implemented??\n";  exit(228);break;\
+}\
+
 string type_name(complex_t complex){
     switch( complex.type ){
         case INTEGER: 
@@ -18,38 +28,6 @@ string type_name(complex_t complex){
             return "EMPTY"; cout << "\nempty :- not implemented??\n"; break; 
     }
 }
-
-// #define THING(complex)
-// #undef  THING
- 
-#define DO_THING(complex, THING) \
-switch( complex->type ){ \
-case INTEGER: THING(complex->intVal); break;\
-case FLOAT:   THING(complex->floatVal); break;\
-case STRING:  THING(*(complex->stringVAl)); break;\
-}\
-
-
-// auto get_value(complex_t complex){
-
-//     switch( complex.type ){
-//         case INTEGER: 
-//             return complex.intVal; break;
-//         case FLOAT: 
-//             return complex.floatVal; break;
-//         case STRING: 
-//             return *(complex.stringVAl); break;
-//         case BOOL: 
-//             return complex.boolVAl; break;
-//         case ARRAY: 
-//              cout << "\nARRAYS :- not implemented??\n"; break;
-//         case TUPLE: 
-//              cout << "\nARRAYS :- not implemented??\n"; break;
-//         default:
-//             return new string("eMpTy"); cout << "\nempty :- not implemented??\n"; break; 
-//     }
-
-// }
 
 complex_t *create_type () {
     return (complex_t *)malloc(sizeof(complex_t));
@@ -85,8 +63,8 @@ complex_t * NAssignment::accept(Visitor &v) {
 
 //Print
 void NPrint::push_back(NExpression *expression) {
-    // expressions.insert(expressions.end(),expression);
-    expressions.push_back(expression);
+    expressions.insert(expressions.begin(),expression);
+    // expressions.push_back(expression);
 }
 
 complex_t * NPrint::accept(Visitor &v) {

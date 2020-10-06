@@ -1,12 +1,8 @@
+var oprand1 := 23;
+var oprand2 := 43.5;
 
-//var sas;
-//var name := "Daniel Atonge";
-//var age := 26.2;
+var sas := "KEK";
+print "Currently it is a string: {",sas,"} But I will change it to an int \n";
+sas := 33;
 
-var sas := (2*2)/2+2;
-print " Tolya, PRIVET, THIS IS an expression: ";
-print 3;
-print " + ";
-print 4.5;
-print " = ";
-print 3 + 4.5;
+print "The result of sum: ", oprand1 + oprand2 + sas;
