@@ -2,23 +2,23 @@
 // A very bad move from me to declare such a global variable
 bool DEBUG = false;
 
-void print_symbol_table(map<NIdentifier *, complex_t *> SymbolTable) {
+void print_symbol_table(map<string/*NIdentifier * */, complex_t *> SymbolTable) {
     if (DEBUG){
         cout << "\n _____ SYMBOLTABLE ________\n";
         for (const auto& x : SymbolTable) {
             cout << "| " << type_name(*x.second) << "\n";
 
             if (!string(type_name(*x.second)).compare("STRING"))
-                cout << "| " << *x.first->name << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+                cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
             else if (!string(type_name(*x.second)).compare("INTEGER"))
-                cout << "| " << *x.first->name << "= " << x.second->intVal << endl << "| " << endl;
+                cout << "| " << x.first << "= " << x.second->intVal << endl << "| " << endl;
             else if (!string(type_name(*x.second)).compare("FLOAT"))
-                cout << "| " << *x.first->name << "= " << x.second->floatVal << endl << "| " << endl;
+                cout << "| " << x.first << "= " << x.second->floatVal << endl << "| " << endl;
                     else if (!string(type_name(*x.second)).compare("BOOL"))
-                cout << "| " << *x.first->name << "= " << x.second->boolVAl << endl << "| " << endl;
+                cout << "| " << x.first << "= " << x.second->boolVAl << endl << "| " << endl;
             
             else if (!string(type_name(*x.second)).compare("EMPTY"))
-                cout << "| " << *x.first->name << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+                cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
             else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
             //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
@@ -41,21 +41,21 @@ complex_t *Evaluate::visit(NBlock *block){
 complex_t *Evaluate::visit(NDeclaration *decl){
     
     if (DEBUG) cout << "Parsed NDeclaration "; //<< endl;
-    NIdentifier* ident_name = decl->identifier;
-    if (DEBUG) cout << "of variable [" << *ident_name->name << "] : ";
+    string ident_name = *(decl->identifier->name);
+    if (DEBUG) cout << "of variable [" << ident_name << "] : ";
 
     //initialize symbol table with corresponding types
     complex_t *value = nullptr;
     if (decl->assignmentExpr){
         value = decl->assignmentExpr->accept(*this);
-        ident_name->type = string(type_name(*value)); //TODO OH NO, WHAT IS THE EXPRESSION TYPE AAAAAAAAAAA
+        // ident_name->type = string(type_name(*value)); //TODO OH NO, WHAT IS THE EXPRESSION TYPE AAAAAAAAAAA
     }
     else { //TODO NOW EMPTY HAS VALUE eMpTy; IS IT OK?
         value = create_type();
         value->type = EMPTY;
         value->stringVAl = new string("eMpTy");
     }
-    SymbolTable.insert({ident_name, value});
+    SymbolTable.insert({ ident_name, value});
     print_symbol_table(SymbolTable);
 
     return nullptr;
@@ -91,7 +91,6 @@ complex_t *Evaluate::visit(NAssignment *assignmnt){
 complex_t *Evaluate::visit(NPrint *print){
 
     #define THING(x) cout << x;
-
 
     if (DEBUG) cout << "Parsed NPrint" << endl;
     for(int i = 0; i < (int)print->expressions.size(); i++)
@@ -275,25 +274,9 @@ complex_t *Evaluate::visit(NBinaryOperator *bin_op){
             value->intVal = kostil(op, LVAL, RVAL);
         }
 
-
-        // cout << "ADDING " << left->intVal  << " AND " << right->intVal << " YIELDED " << VAL << " WHILE SHOULD HAVE " << left->intVal + right->intVal ;
     }
     // if for RETARDED OPERATIONS
 
-    // int result;
-    // if(op == 1) result = left + right;
-    // else if(op == 2) result = left - right;
-    // else if(op == 3) result = left * right;
-    // else if(op == 4) result = left / right;
-    // else if(op == 5) result = left < right;
-    // else if(op == 6) result = left > right;
-    // else if(op == 7) result = left <= right;
-    // else if(op == 8) result = left >= right;
-    // else if(op == 9) result = left == right;
-    // else if(op == 10) result = left != right;
-    // else if(op == 11) result = left && right;
-    // else if(op == 12) result = left || right;
-    // else if(op == 13) result = left ^ right;
     return value;
 }
 

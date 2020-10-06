@@ -150,7 +150,7 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    string type = string("EMPTY");
+    // string type = string("EMPTY");
     string *name;
     NIdentifier(string *name);
     complex_t *accept(Visitor &);

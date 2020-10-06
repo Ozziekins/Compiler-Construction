@@ -4,7 +4,7 @@
 //var age := 26.2;
 
 var sas := (2*2)/2+2;
-print " Daniel, PRIVET, THIS IS an expression: ";
+print " Tolya, PRIVET, THIS IS an expression: ";
 print 3;
 print " + ";
 print 4.5;

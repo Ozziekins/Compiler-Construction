@@ -63,7 +63,8 @@ complex_t * NProgram::accept(Visitor &v) {
 
 //Block
 void NBlock::push_back(NInstruction *instruction) {
-    instructions.push_back(instruction);
+    instructions.insert(instructions.begin(),instruction);
+    // instructions.push_back(instruction);
 }
 
 complex_t * NBlock::accept(Visitor &v) {
@@ -84,6 +85,7 @@ complex_t * NAssignment::accept(Visitor &v) {
 
 //Print
 void NPrint::push_back(NExpression *expression) {
+    // expressions.insert(expressions.end(),expression);
     expressions.push_back(expression);
 }
 
@@ -179,7 +181,7 @@ complex_t * NStatement::accept(Visitor &v) {
 
 //Identifier
 NIdentifier::NIdentifier(string *name){
-    this->type = string("empty");
+    // this->type = string("empty");
     this->name = name;
 }
 complex_t * NIdentifier::accept(Visitor &v) {
