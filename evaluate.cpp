@@ -1,28 +1,29 @@
 
 // A very bad move from me to declare such a global variable
-bool DEBUG = true;
+bool DEBUG = false;
 
 void print_symbol_table(map<NIdentifier *, complex_t *> SymbolTable) {
-    cout << "\n _____ SYMBOLTABLE ________\n";
-    for (const auto& x : SymbolTable) {
-        cout << "| " << type_name(*x.second) << "\n";
+    if (DEBUG){
+        cout << "\n _____ SYMBOLTABLE ________\n";
+        for (const auto& x : SymbolTable) {
+            cout << "| " << type_name(*x.second) << "\n";
 
-        if (!string(type_name(*x.second)).compare("STRING"))
-            cout << "| " << *x.first->name << "= " << *(x.second->stringVAl) << endl << "| " << endl;
-        else if (!string(type_name(*x.second)).compare("INTEGER"))
-            cout << "| " << *x.first->name << "= " << x.second->intVal << endl << "| " << endl;
-        else if (!string(type_name(*x.second)).compare("FLOAT"))
-            cout << "| " << *x.first->name << "= " << x.second->floatVal << endl << "| " << endl;
-                else if (!string(type_name(*x.second)).compare("BOOL"))
-            cout << "| " << *x.first->name << "= " << x.second->boolVAl << endl << "| " << endl;
-        
-        else if (!string(type_name(*x.second)).compare("EMPTY"))
-            cout << "| " << *x.first->name << "= " << *(x.second->stringVAl) << endl << "| " << endl;
-        else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
-        //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            if (!string(type_name(*x.second)).compare("STRING"))
+                cout << "| " << *x.first->name << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+            else if (!string(type_name(*x.second)).compare("INTEGER"))
+                cout << "| " << *x.first->name << "= " << x.second->intVal << endl << "| " << endl;
+            else if (!string(type_name(*x.second)).compare("FLOAT"))
+                cout << "| " << *x.first->name << "= " << x.second->floatVal << endl << "| " << endl;
+                    else if (!string(type_name(*x.second)).compare("BOOL"))
+                cout << "| " << *x.first->name << "= " << x.second->boolVAl << endl << "| " << endl;
+            
+            else if (!string(type_name(*x.second)).compare("EMPTY"))
+                cout << "| " << *x.first->name << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+            else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
+            //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }
+        cout << "|__________________________\n\n";
     }
-    cout << "|__________________________\n\n";
-    
 }
 
 complex_t *Evaluate::visit(NProgram *program){
@@ -47,7 +48,7 @@ complex_t *Evaluate::visit(NDeclaration *decl){
     complex_t *value = nullptr;
     if (decl->assignmentExpr){
         value = decl->assignmentExpr->accept(*this);
-        ident_name->type = string(type_name(*value));
+        ident_name->type = string(type_name(*value)); //TODO OH NO, WHAT IS THE EXPRESSION TYPE AAAAAAAAAAA
     }
     else { //TODO NOW EMPTY HAS VALUE eMpTy; IS IT OK?
         value = create_type();
@@ -83,10 +84,23 @@ complex_t *Evaluate::visit(NAssignment *assignmnt){
     return nullptr;
 }
 
+
+ 
+
+
 complex_t *Evaluate::visit(NPrint *print){
-    cout << "NPrint" << endl;
+
+    #define THING(x) cout << x;
+
+
+    if (DEBUG) cout << "Parsed NPrint" << endl;
     for(int i = 0; i < (int)print->expressions.size(); i++)
-        print->expressions[i]->accept(*this);
+        DO_THING(print->expressions[i]->accept(*this),THING)
+        // complex_t sas = print->expressions[i]->accept(*this);
+        // print->expressions[i]->accept(*this);
+
+    #undef  THING
+
     return nullptr;
 }
 
@@ -151,14 +165,16 @@ complex_t *Evaluate::visit(NExpression *){
 }
 
 complex_t *Evaluate::visit(NIdentifier *id){
-    cout << "NIdentifier" << endl;
-    cout << *(id->name) << endl;
+    //TODO PROPER SYMBOLTABLES + SCOPE interactions
+    // if ( SymbolTable.count(*(id->name)) != 0)
+    //     printf("EXISTS");
+    if (DEBUG) cout << "Parsed NIdentifier {NOT WORKING; or mb I am retarded} [" << *(id->name) << "]" << endl;
     return nullptr;
 }
 
 
 complex_t *Evaluate::visit(NIntegerLiteral *intlit){
-    if (DEBUG) cout << "NIntegerLiteral {" << intlit->value << "}" << endl;
+    if (DEBUG) cout << "Parsed NIntegerLiteral {" << intlit->value << "}" << endl;
     complex_t * ival = create_type();
     ival->type = INTEGER;
     ival->intVal = intlit->value;
@@ -166,7 +182,7 @@ complex_t *Evaluate::visit(NIntegerLiteral *intlit){
 }
 
 complex_t *Evaluate::visit(NReal *reallit){
-    cout << "NReal" << endl;
+    if (DEBUG) cout << "Parsed NReal {" << reallit->value << "}" << endl;
     complex_t * fval = create_type();
     fval->type = FLOAT;
     fval->floatVal = reallit->value;
@@ -175,7 +191,7 @@ complex_t *Evaluate::visit(NReal *reallit){
 
 
 complex_t *Evaluate::visit(NBool *blit){
-    cout << "NBool with val: " << blit->value <<endl;
+    if (DEBUG) cout << "Parsed NBool {" << blit->value << "}" << endl;
     complex_t * bval = create_type();
     bval->type = BOOL;
     bval->boolVAl = blit->value;
@@ -183,18 +199,86 @@ complex_t *Evaluate::visit(NBool *blit){
 }
 
 complex_t *Evaluate::visit(NStringLiteral *slit){
-    if (DEBUG) cout << "NStringLiteral" << "{" << *(slit->text) << "}" << endl;
+    if (DEBUG) cout << "Parsed NStringLiteral {" << *(slit->text) << "}" << endl;
     complex_t * sval = create_type();
     sval->type = STRING;
     sval->stringVAl = slit->text;
     return sval;
 }
 
+auto kostil(int op, auto LVAL, auto RVAL){
+    
+    switch(op){
+        case PLUS:
+            return LVAL + RVAL; break;
+        case MINUS:
+            return LVAL - RVAL; break;
+        case MULT:
+            return LVAL * RVAL; break;
+        case DIV:
+            return LVAL / RVAL; break;
+        // case LESS:
+        //     return LVAL < RVAL; break;
+        // case GREAT:
+        //     return LVAL > RVAL; break;
+        default:
+            cout << "ILLEGAL OPERATION for numbers; CODE: [" << op << "]"; break; 
+    }
+
+return LVAL + RVAL;
+}
+
 complex_t *Evaluate::visit(NBinaryOperator *bin_op){
-    cout << "NBinaryOperator" << endl;
+
+    if (DEBUG) cout << "Parsed NBinaryOperator CODE={" << bin_op->op << "}" << endl;
     auto op = bin_op->op;
     auto left = bin_op->lhs->accept(*this);
     auto right = bin_op->rhs->accept(*this);
+    auto left_T  = left->type;
+    auto right_T = right->type;
+    complex_t * value = create_type();
+
+
+    //OPerations on numbers
+    if ( ( left_T == INTEGER ||  left_T == FLOAT ) && (right_T == INTEGER || right_T == FLOAT ) ){
+        
+        // ETA HUYNA NE RABOTAET
+        if (left_T == FLOAT || right_T == FLOAT){
+            value->type = FLOAT; 
+        }
+        else{
+           value->type = INTEGER;
+
+        };
+
+
+        if (left_T == FLOAT){
+            auto LVAL = left->floatVal;
+
+            if (right_T == FLOAT){
+               auto RVAL = right->floatVal;
+               value->floatVal = kostil(op, LVAL, RVAL);
+            }
+            else{
+                auto RVAL = right->intVal;
+                value->floatVal = kostil(op, LVAL, RVAL);
+            }
+        }
+        else if (right_T == FLOAT){
+            auto LVAL = left->intVal;
+            auto RVAL = right->floatVal;
+            value->floatVal = kostil(op, LVAL, RVAL);
+        }
+        else{
+            auto LVAL = left->intVal;
+            auto RVAL = right->intVal;
+            value->intVal = kostil(op, LVAL, RVAL);
+        }
+
+
+        // cout << "ADDING " << left->intVal  << " AND " << right->intVal << " YIELDED " << VAL << " WHILE SHOULD HAVE " << left->intVal + right->intVal ;
+    }
+    // if for RETARDED OPERATIONS
 
     // int result;
     // if(op == 1) result = left + right;
@@ -210,7 +294,7 @@ complex_t *Evaluate::visit(NBinaryOperator *bin_op){
     // else if(op == 11) result = left && right;
     // else if(op == 12) result = left || right;
     // else if(op == 13) result = left ^ right;
-    return nullptr;
+    return value;
 }
 
 complex_t *Evaluate::visit(NTypeCheck *){

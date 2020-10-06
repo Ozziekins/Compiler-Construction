@@ -19,6 +19,38 @@ string type_name(complex_t complex){
     }
 }
 
+// #define THING(complex)
+// #undef  THING
+ 
+#define DO_THING(complex, THING) \
+switch( complex->type ){ \
+case INTEGER: THING(complex->intVal); break;\
+case FLOAT:   THING(complex->floatVal); break;\
+case STRING:  THING(*(complex->stringVAl)); break;\
+}\
+
+
+// auto get_value(complex_t complex){
+
+//     switch( complex.type ){
+//         case INTEGER: 
+//             return complex.intVal; break;
+//         case FLOAT: 
+//             return complex.floatVal; break;
+//         case STRING: 
+//             return *(complex.stringVAl); break;
+//         case BOOL: 
+//             return complex.boolVAl; break;
+//         case ARRAY: 
+//              cout << "\nARRAYS :- not implemented??\n"; break;
+//         case TUPLE: 
+//              cout << "\nARRAYS :- not implemented??\n"; break;
+//         default:
+//             return new string("eMpTy"); cout << "\nempty :- not implemented??\n"; break; 
+//     }
+
+// }
+
 complex_t *create_type () {
     return (complex_t *)malloc(sizeof(complex_t));
 }

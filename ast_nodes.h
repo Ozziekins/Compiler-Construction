@@ -6,6 +6,7 @@ using namespace std;
 
 // ADDED EMPTY AS -1
 typedef enum types { EMPTY = -1, INTEGER = 0, FLOAT, STRING, BOOL, ARRAY, TUPLE } type_t;
+typedef enum Operators {PLUS = 1, MINUS, MULT, DIV, LESS, GREAT, LEQ, GEQ, EQUAL, NEQ, AND, OR, XOR, NOT } Operators;
 typedef struct complexTypes complex_t;
 
 struct complexTypes{
@@ -206,7 +207,7 @@ public:
     NExpression *lhs;
     NExpression *rhs;
     NBinaryOperator(NExpression *lhs, int op, NExpression *rhs) :
-        lhs(lhs), rhs(rhs), op(op) { }
+        lhs(lhs), rhs(rhs), op(op) {}
     complex_t *accept(Visitor &);
 };
 
