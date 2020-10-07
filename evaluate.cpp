@@ -1,13 +1,14 @@
 void print_symbol_table(map<NIdentifier *, complex_t *> SymbolTable) {
     cout << "_____ SYMBOLTABLE _______\n";
     for (const auto& x : SymbolTable) {
-        cout << *x.first->name << ": " << type_name(*x.second) << "\n";
+        cout << *x.first->name << ": " << type_name(*x.second) << " (";
         if (!string(type_name(*x.second)).compare("STRING"))
-            cout << *(x.second->stringVAl) << endl;
+            cout << *(x.second->stringVAl);
         if (!string(type_name(*x.second)).compare("INTEGER"))
-            cout << x.second->intVal << endl;
+            cout << x.second->intVal;
         if (!string(type_name(*x.second)).compare("FLOAT"))
-            cout << x.second->floatVal << endl;
+            cout << x.second->floatVal;
+        cout << ")\n";
     }
     
 }
