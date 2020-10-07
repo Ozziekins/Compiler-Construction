@@ -5,7 +5,7 @@ class Evaluate;
 class Evaluate : public Visitor
 {
 public:
-    map<NIdentifier *, complex_t *> SymbolTable;
+    map<string/*NIdentifier.name* */, complex_t *> SymbolTable;
     string str;
     int num;
 

@@ -12,6 +12,7 @@
     int yylex ();
     void yyerror(const char *error);
     NBlock *programBlock;
+
 %}
 
 %union {
@@ -110,42 +111,42 @@
 Program : Body                                      { programBlock = $1; }
         ;                                   
 Body : /* empty */                                  { $$ = new NBlock(); }
-      | Declaration Body                            { $$ = $2; $$->push_back($1); }
+      | Declaration Body                            { $$ = $2; $$->push_back($1);  }
       | Statement Body                              { $$ = $2; $$->push_back($1); }
       ;
 Declaration : TOKEN_VAR TOKEN_IDENTIFIER TOKEN_SEMI                                       { $$ = new NDeclaration(new NIdentifier($2)); }
             | TOKEN_VAR TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TOKEN_SEMI           { $$ = new NDeclaration(new NIdentifier($2), $4); }
             ;
 Expression : Relation                                     { $$ = $1; }
-           | Relation TOKEN_AND Relation                  { $$ = new NBinaryOperator($1, $2, $3); }
-           | Relation TOKEN_OR Relation                   { $$ = new NBinaryOperator($1, $2, $3); }
-           | Relation TOKEN_XOR Relation                  { $$ = new NBinaryOperator($1, $2, $3); }
+           | Relation TOKEN_AND Relation                  { $$ = new NBinaryOperator($1, AND, $3); }
+           | Relation TOKEN_OR Relation                   { $$ = new NBinaryOperator($1, OR, $3); }
+           | Relation TOKEN_XOR Relation                  { $$ = new NBinaryOperator($1, XOR, $3); }
            ;
 Relation : Factor                                         { $$ = $1; }
-         | Factor TOKEN_LESS Factor                       { $$ = new NBinaryOperator($1, $2, $3); }
-         | Factor TOKEN_LEQ Factor                        { $$ = new NBinaryOperator($1, $2, $3); }
-         | Factor TOKEN_GREAT Factor                      { $$ = new NBinaryOperator($1, $2, $3); }
-         | Factor TOKEN_GEQ Factor                        { $$ = new NBinaryOperator($1, $2, $3); }
-         | Factor TOKEN_EQUAL Factor                      { $$ = new NBinaryOperator($1, $2, $3); }
-         | Factor TOKEN_NEQ Factor                        { $$ = new NBinaryOperator($1, $2, $3); }
+         | Factor TOKEN_LESS Factor                       { $$ = new NBinaryOperator($1, LESS, $3); }
+         | Factor TOKEN_LEQ Factor                        { $$ = new NBinaryOperator($1, LEQ, $3); }
+         | Factor TOKEN_GREAT Factor                      { $$ = new NBinaryOperator($1, GREAT, $3); }
+         | Factor TOKEN_GEQ Factor                        { $$ = new NBinaryOperator($1, GEQ, $3); }
+         | Factor TOKEN_EQUAL Factor                      { $$ = new NBinaryOperator($1, EQUAL, $3); }
+         | Factor TOKEN_NEQ Factor                        { $$ = new NBinaryOperator($1, NEQ, $3); }
          ;
 Factor : Term                                             { $$ = $1; }
-       | Term TOKEN_PLUS Factor                           { $$ = new NBinaryOperator($1, $2, $3); }
-       | Term TOKEN_MINUS Factor                          { $$ = new NBinaryOperator($1, $2, $3); }
+       | Term TOKEN_PLUS Factor                           { $$ = new NBinaryOperator($1, PLUS, $3); }
+       | Term TOKEN_MINUS Factor                          { $$ = new NBinaryOperator($1, MINUS, $3); }
        ;
 Term : Unary                                              { $$ = $1; }
-     | Unary TOKEN_MULT Term                              { $$ = new NBinaryOperator($1, $2, $3); }
-     | Unary TOKEN_DIV Term                               { $$ = new NBinaryOperator($1, $2, $3); }
+     | Unary TOKEN_MULT Term                              { $$ = new NBinaryOperator($1, MULT, $3); }
+     | Unary TOKEN_DIV Term                               { $$ = new NBinaryOperator($1, DIV, $3); }
      ;
 Unary : Primary                                 { $$ = $1; }
-      | TOKEN_PLUS Primary                      { $$ = new NUnary($1, $2); }
-      | TOKEN_MINUS Primary                     { $$ = new NUnary($1, $2); }
-      | TOKEN_NOT Primary                       { $$ = new NUnary($1, $2); }
+      | TOKEN_PLUS Primary                      { $$ = new NUnary(PLUS, $2); }
+      | TOKEN_MINUS Primary                     { $$ = new NUnary(MINUS, $2); }
+      | TOKEN_NOT Primary                       { $$ = new NUnary(NOT, $2); }
       | Literal                                 { $$ = $1; }
       | TOKEN_LPAREN Expression TOKEN_RPAREN    { $$ = $2; }
-      | TOKEN_PLUS Primary TOKEN_IS TypeIndicator           { $$ = new NTypeCheck($1, $2, $4); }
-      | TOKEN_MINUS Primary TOKEN_IS TypeIndicator          { $$ = new NTypeCheck($1, $2, $4); }
-      | TOKEN_NOT Primary TOKEN_IS TypeIndicator            { $$ = new NTypeCheck($1, $2, $4); }
+      | TOKEN_PLUS Primary TOKEN_IS TypeIndicator           { $$ = new NTypeCheck(PLUS, $2, $4); }
+      | TOKEN_MINUS Primary TOKEN_IS TypeIndicator          { $$ = new NTypeCheck(MINUS, $2, $4); }
+      | TOKEN_NOT Primary TOKEN_IS TypeIndicator            { $$ = new NTypeCheck(NOT, $2, $4); }
       | Primary TOKEN_IS TypeIndicator                      { $$ = new NTypeCheck($1, $3); }
       ;
 Primary : TOKEN_IDENTIFIER Tail                             { $$ = new NIdentifier($1); }
@@ -257,7 +258,7 @@ int main(int argc, char *argv[]) {
     while (sas.getNextToken().type != YYEOF);
     list = sas.getTokenList();
     yyparse();
-    std::cout << programBlock << std::endl;
+    // std::cout << programBlock << std::endl;
 
     Evaluate t;
     cout << "Evaluating" << endl;
@@ -269,6 +270,7 @@ void yyerror(const char *error){
     std::cout << "\n";
     std::cout << error << " \'"<< feedback.value <<"\' on [" << feedback.line 
     << ":" << feedback.column << "]\n\n";
+    exit(228);
 }
 
 

@@ -1,21 +1,31 @@
 #include "ast_nodes.h"
 
+#define DO_THING(complex, THING) \
+switch( complex->type ){ \
+case INTEGER: THING(complex->intVal); break;\
+case FLOAT:   THING(complex->floatVal); break;\
+case STRING:  THING(*(complex->stringVAl)); break;\
+case BOOL:    THING(complex->boolVAl); break;\
+case ARRAY: cout << "\nARRAYS :- not implemented??\n"; exit(228); break;\
+case TUPLE: cout << "\nTUPLE :- not implemented??\n";  exit(228);break;\
+}\
+
 string type_name(complex_t complex){
     switch( complex.type ){
         case INTEGER: 
-            return "INTEGER";
+            return "INTEGER"; break;
         case FLOAT: 
-            return "FLOAT";
+            return "FLOAT"; break;
         case STRING: 
-            return "STRING";
+            return "STRING"; break;
         case BOOL: 
-            return "BOOL";
+            return "BOOL"; break;
         case ARRAY: 
-            return "ARRAY";
+            return "ARRAY"; break;
         case TUPLE: 
-            return "TUPLE";
+            return "TUPLE"; break;
         default:
-            cout << "empty :- not implemented";
+            return "EMPTY"; cout << "\nempty :- not implemented??\n"; break; 
     }
 }
 
@@ -31,7 +41,8 @@ complex_t * NProgram::accept(Visitor &v) {
 
 //Block
 void NBlock::push_back(NInstruction *instruction) {
-    instructions.push_back(instruction);
+    instructions.insert(instructions.begin(),instruction);
+    // instructions.push_back(instruction);
 }
 
 complex_t * NBlock::accept(Visitor &v) {
@@ -52,7 +63,8 @@ complex_t * NAssignment::accept(Visitor &v) {
 
 //Print
 void NPrint::push_back(NExpression *expression) {
-    expressions.push_back(expression);
+    expressions.insert(expressions.begin(),expression);
+    // expressions.push_back(expression);
 }
 
 complex_t * NPrint::accept(Visitor &v) {
@@ -147,7 +159,7 @@ complex_t * NStatement::accept(Visitor &v) {
 
 //Identifier
 NIdentifier::NIdentifier(string *name){
-    this->type = string("empty");
+    // this->type = string("empty");
     this->name = name;
 }
 complex_t * NIdentifier::accept(Visitor &v) {
@@ -174,9 +186,9 @@ complex_t * NReal::accept(Visitor &v) {
 
 //Bool
  NBool::NBool(string *text){
-     this->text = text;
-     string str = *text;
-     if (str.compare("true"))
+    this->text = text;
+    string str = *text;
+    if (!str.compare("true"))
         this->value = true;
  }
 complex_t * NBool::accept(Visitor &v) {
