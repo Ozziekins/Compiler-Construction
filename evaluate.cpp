@@ -101,9 +101,16 @@ complex_t *Evaluate::visit(NAssignment *assignmnt){
 
 complex_t *Evaluate::visit(NPrint *print){
 
+    //TODO CHECK FOR EMPTY???
+    // if ( x == EMPTY ){
+    //     cout << "Semantic? Error:\n\tOPERATIONS ON EMPTY VALUES ARE NOT ALLOWED\n";
+    //     exit(228);
+    // }
+
     #define THING(x) cout << x;
 
     if (DEBUG) cout << "Parsed NPrint" << endl;
+    
     for(int i = 0; i < (int)print->expressions.size(); i++)
         DO_THING(print->expressions[i]->accept(*this),THING)
 
@@ -225,6 +232,7 @@ complex_t *Evaluate::visit(NStringLiteral *slit){
 
 auto kostil(int op, auto LVAL, auto RVAL){
     
+    //TODO implement other ones
     switch(op){
         case PLUS:
             return LVAL + RVAL; break;
@@ -255,6 +263,11 @@ complex_t *Evaluate::visit(NBinaryOperator *bin_op){
     auto right_T = right->type;
     complex_t * value = create_type();
 
+    //CHECK FOR EMPTY
+    if ( left_T == EMPTY || right_T == EMPTY  ){
+        cout << "Semantic? Error:\n\tOPERATIONS ON EMPTY VALUES ARE NOT ALLOWED\n";
+        exit(228);
+    }
 
     //OPerations on numbers
     if ( ( left_T == INTEGER ||  left_T == FLOAT ) && (right_T == INTEGER || right_T == FLOAT ) ){
@@ -299,13 +312,54 @@ complex_t *Evaluate::visit(NBinaryOperator *bin_op){
 }
 
 complex_t *Evaluate::visit(NTypeCheck *){
-    cout << "NTypeCheck" << endl;
+     cout << "NTypeCheck" << endl;
     return nullptr;
 }
 
-complex_t *Evaluate::visit(NUnary *){
-    cout << "NUnary" << endl;
-    return nullptr;
+
+complex_t *Evaluate::visit(NUnary *unary){
+    if (DEBUG) cout << "Parsed NUnary {" ;
+    
+    complex_t *exp = unary->expression->accept(*this);
+    complex_t *value = create_type();
+    value->type = exp->type;
+
+    int op = unary->op;
+
+    //TODO ADD PROPER NOT SUPPORT
+    if (value->type == INTEGER){
+        if (op == PLUS)
+            value->intVal = exp->intVal;
+        else if (op == MINUS)
+            value->intVal = -exp->intVal;
+        else if (op == NOT)
+            value->intVal = !exp->intVal; 
+        else{
+            cout << "Semantic? Error:\n\tILLEGAL UNARY OPERATION: " << op << endl;
+            exit(228);
+        }
+    }
+    else if (value->type == FLOAT){
+        if (op == PLUS)
+            value->floatVal = exp->floatVal;
+        else if (op == MINUS)
+            value->floatVal = -exp->floatVal;
+        else if (op == NOT)
+            value->floatVal = !exp->floatVal;
+        else{
+            cout << "Semantic? Error:\n\tILLEGAL UNARY OPERATION: " << op << endl;
+            exit(228);
+        }
+    }
+    else{
+        cout << "Semantic? Error:\n\tILLEGAL TYPE FOUND IN UNARY OPERATION\n";
+        exit(228);
+    }
+
+   
+
+    cout << endl;
+    return value;
 }
 
 complex_t *Evaluate::visit(NReadInput *){
