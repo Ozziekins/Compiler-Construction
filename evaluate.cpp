@@ -1,28 +1,35 @@
-
 // A very bad move from me to declare such a global variable
 bool DEBUG = false;
 
-void print_symbol_table(map<string/*NIdentifier * */, complex_t *> SymbolTable) {
-    if (DEBUG){
-        cout << "\n _____ SYMBOLTABLE ________\n";
-        for (const auto& x : SymbolTable) {
-            cout << "| " << type_name(*x.second) << "\n";
 
-            if (!string(type_name(*x.second)).compare("STRING"))
-                cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
-            else if (!string(type_name(*x.second)).compare("INTEGER"))
-                cout << "| " << x.first << "= " << x.second->intVal << endl << "| " << endl;
-            else if (!string(type_name(*x.second)).compare("FLOAT"))
-                cout << "| " << x.first << "= " << x.second->floatVal << endl << "| " << endl;
-                    else if (!string(type_name(*x.second)).compare("BOOL"))
-                cout << "| " << x.first << "= " << x.second->boolVAl << endl << "| " << endl;
-            
-            else if (!string(type_name(*x.second)).compare("EMPTY"))
-                cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
-            else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
-            //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+void Evaluate::print_symbol_table() {
+    int depth = 0;
+    if (DEBUG){
+
+        for ( auto scope = scopes.rbegin(); scope != scopes.rend(); ++scope  ){
+            cout << "\n _____ SYMBOLTABLE_"<<depth<<"________\n";
+            auto temp = **scope;
+            for (const auto& x : temp) {
+
+                cout << "| " << type_name(*x.second) << "\n";
+
+                if (!string(type_name(*x.second)).compare("STRING"))
+                    cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+                else if (!string(type_name(*x.second)).compare("INTEGER"))
+                    cout << "| " << x.first << "= " << x.second->intVal << endl << "| " << endl;
+                else if (!string(type_name(*x.second)).compare("FLOAT"))
+                    cout << "| " << x.first << "= " << x.second->floatVal << endl << "| " << endl;
+                        else if (!string(type_name(*x.second)).compare("BOOL"))
+                    cout << "| " << x.first << "= " << x.second->boolVAl << endl << "| " << endl;
+                
+                else if (!string(type_name(*x.second)).compare("EMPTY"))
+                    cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+                else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
+                //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            }
+            cout << "|__________________________\n\n";
+            depth++;
         }
-        cout << "|__________________________\n\n";
     }
 }
 
@@ -32,9 +39,12 @@ complex_t *Evaluate::visit(NProgram *program){
 
 complex_t *Evaluate::visit(NBlock *block){
 
+    add_new_scope();
+
     for(int i = 0; i < (int)block->instructions.size(); i++) {
         block->instructions[i]->accept(*this);
     }
+
     return nullptr;
 }
 
@@ -55,8 +65,8 @@ complex_t *Evaluate::visit(NDeclaration *decl){
         value->type = EMPTY;
         value->stringVAl = new string("eMpTy");
     }
-    SymbolTable.insert({ ident_name, value});
-    print_symbol_table(SymbolTable);
+    scopes.front()->insert( { ident_name, value} );
+    print_symbol_table();
 
     return nullptr;
 }
@@ -138,17 +148,39 @@ complex_t *Evaluate::visit(NParameters *params) {
 }
 
 complex_t *Evaluate::visit(NIf *ifstmt){
-    cout << "NIf" << endl;
-    ifstmt->condition->accept(*this);
-    ifstmt->ifblock->accept(*this);
+    if (DEBUG) cout << "Parsed NIf" << endl;
+    
+
+    // #define THING(x) if ( x ){\
+    //     add_new_scope();\
+    //     ifstmt->ifblock->accept(*this);\
+    //     scopes.pop_front();\
+    // }\
+
+    // DO_THING_NUM(ifstmt->condition->accept(*this), THING)
+    
+    // #undef THING
+
+    if (ifstmt->condition->accept(*this)->boolVAl){
+        // add_new_scope();
+        ifstmt->ifblock->accept(*this);
+        scopes.pop_front();
+    }
+
     return nullptr;
 }
 
 complex_t *Evaluate::visit(NIfElse *ifstmt){
     cout << "NIfElse" << endl;
     ifstmt->condition->accept(*this);
+
     ifstmt->ifblock->accept(*this);
+
+
+
     ifstmt->elseblock->accept(*this);
+    
+
     return nullptr;
 }
 
@@ -186,13 +218,19 @@ complex_t *Evaluate::visit(NIdentifier *id){
     string name = *(id->name);
     if (DEBUG) cout << "Parsed NIdentifier [" << name << "]" << endl;
 
-    if ( SymbolTable.count(*(id->name)) != 0)
-         return SymbolTable[name];
-    else{
-        cout << "\nSEMANTIC? ERROR:\n\tIDENTIFIER " << name << " IS NOT PRESENT IN THE SYMBOL TABLE!\n";
-        exit(228);
-    }
-        
+
+    for (auto& x : scopes)
+        if ( (*x).count(*(id->name)) != 0){
+            // cout << "Found in this scope; " << x->size() << endl;
+            return (*x)[name];
+        }
+        else{
+            if (DEBUG) cout << "Not found in this scope; " << x->size() << " ;trying outer one...\n";
+        }
+
+    cout << "\nSEMANTIC? ERROR:\n\tIDENTIFIER " << name << " IS NOT PRESENT IN THE SYMBOL TABLE!\n";
+    exit(228);
+
    
 }
 

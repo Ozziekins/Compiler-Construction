@@ -11,6 +11,14 @@ case TUPLE: cout << "\nTUPLE :- not implemented??\n";  exit(228);break;\
 case EMPTY: cout << "\nEMPTY :- not implemented??\n";  exit(228);break;\
 }\
 
+#define DO_THING_NUM(complex, THING) \
+switch( complex->type ){ \
+case INTEGER: THING(complex->intVal); break;\
+case FLOAT:   THING(complex->floatVal); break;\
+case BOOL:    THING(complex->boolVAl); break;\
+}\
+
+
 string type_name(complex_t complex){
     switch( complex.type ){
         case INTEGER: 
