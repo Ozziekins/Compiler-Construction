@@ -318,8 +318,10 @@ complex_t *Evaluate::visit(NIfElse *ifstmt){
         ifstmt->ifblock->accept(*this);\
         scopes.pop_front();\
     }\
-    else\
-    ifstmt->elseblock->accept(*this);\
+    else{\
+        ifstmt->elseblock->accept(*this);\
+        scopes.pop_front();\
+    }\
 
     DO_THING_NUM(ifstmt->condition->accept(*this), THING)
     
@@ -335,19 +337,45 @@ complex_t *Evaluate::visit(NIfElse *ifstmt){
 }
 
 complex_t *Evaluate::visit(NLoop *loop){
-    cout << "NLoop" << endl;
-    loop->condition->accept(*this);
-    loop->block->accept(*this);
+    if (DEBUG) cout << "Parsed NLoop" << endl;
+
+
+
+    #define THING(x) while ( x )\
+    for(int i = 0; i < (int)loop->block->instructions.size(); i++)\
+        loop->block->instructions[i]->accept(*this);\
+
+    scopes.push_front( new map<string/*NIdentifier.name* */, complex_t *>() );
+    DO_THING_NUM(loop->condition->accept(*this), THING)
+    scopes.pop_front();
+    #undef THING
+
     return nullptr;
 }
 
 complex_t *Evaluate::visit(NRangeLoop *loop){
 
-    cout << "NRangeLoop" << endl;
-    loop->id->accept(*this);
-    loop->from->accept(*this);
-    loop->to->accept(*this);
-    loop->block->accept(*this);
+    if (DEBUG) cout << "Parsed NRangeLoop" << endl;
+
+
+    auto from = loop->from->accept(*this);
+    auto to = loop->to->accept(*this);
+    auto complex = loop->id->accept(*this);
+
+    if ( from->type == INTEGER && to->type == INTEGER ){
+
+        complex->type = INTEGER;
+
+        scopes.push_front( new map<string/*NIdentifier.name* */, complex_t *>() );
+        for( complex->intVal = from->intVal; complex->intVal <= to->intVal ; ++(complex->intVal) )
+            for(int i = 0; i < (int)loop->block->instructions.size(); i++)
+                loop->block->instructions[i]->accept(*this);
+        scopes.pop_front();
+
+    }
+    else
+        cout << "\n SEMANTIC ERROR:\n NON-INTEGER IN THE RANGE LOOP\n";
+
     return nullptr;
 }
 

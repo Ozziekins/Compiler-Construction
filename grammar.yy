@@ -187,7 +187,7 @@ If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END                      { $$ = n
    | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      { $$ = new NIfElse($2, $4, $6); }
    ;
 Loop : TOKEN_WHILE Expression LoopBody                                                    { $$ = new NLoop($2, $3); }
-     | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody                         { $$ = NULL; }
+    //  | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN TypeIndicator LoopBody                         { $$ = NULL; }
      | TOKEN_FOR TOKEN_IDENTIFIER TOKEN_IN Expression TOKEN_RANGE Expression  LoopBody    { $$ = new NRangeLoop(new NIdentifier($2), $4, $6, $7); } 
      ; 
 LoopBody : TOKEN_LOOP Body TOKEN_END                          { $$ = $2; }
