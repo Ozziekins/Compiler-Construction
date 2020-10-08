@@ -92,8 +92,8 @@ private:
             {"=>",TOKEN_GEQ},
             {"+=",TOKEN_INCREMENT},
             {"readString",TOKEN_READSTRING},
-            {"readReal",TOKEN_READINT},
-            {"readInt",TOKEN_READREAL}
+            {"readInt",TOKEN_READINT},
+            {"readReal",TOKEN_READREAL}
     };
 };
 

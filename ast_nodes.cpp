@@ -270,10 +270,19 @@ complex_t * NUnary::accept(Visitor &v) {
 }
 
 //ReadInput
-complex_t * NReadInput::accept(Visitor &v) {
+complex_t * NReadIntInput::accept(Visitor &v) {
     return v.visit(this);
 }
 
+//ReadInput
+complex_t * NReadRealInput::accept(Visitor &v) {
+    return v.visit(this);
+}
+
+//ReadInput
+complex_t * NReadStringInput::accept(Visitor &v) {
+    return v.visit(this);
+}
 
 #include "traverse.cpp"
 #include "evaluate.cpp"

@@ -53,7 +53,9 @@ class NStringLiteral;
 class NBinaryOperator;
 class NTypeCheck;
 class NUnary;
-class NReadInput;
+class NReadIntInput;
+class NReadRealInput;
+class NReadStringInput;
 
 class Visitor
 {
@@ -85,7 +87,9 @@ public:
     virtual complex_t *visit(NBinaryOperator *) = 0;
     virtual complex_t *visit(NTypeCheck *) = 0;
     virtual complex_t *visit(NUnary *) = 0;
-    virtual complex_t *visit(NReadInput *) = 0;
+    virtual complex_t *visit(NReadIntInput *) = 0;
+    virtual complex_t *visit(NReadRealInput *) = 0;
+    virtual complex_t *visit(NReadStringInput *) = 0;
 };
 
 
@@ -203,10 +207,10 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    int op;
+    Operators op;
     NExpression *lhs;
     NExpression *rhs;
-    NBinaryOperator(NExpression *lhs, int op, NExpression *rhs) :
+    NBinaryOperator(NExpression *lhs, Operators op, NExpression *rhs) :
         lhs(lhs), rhs(rhs), op(op) {}
     complex_t *accept(Visitor &);
 };
@@ -368,15 +372,32 @@ public:
     complex_t *accept(Visitor &);
 };
 
-class NReadInput : public NExpression {
+class NReadIntInput : public NExpression {
 private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    NReadInput() {}
+    NReadIntInput() {}
     complex_t *accept(Visitor &);
 };
 
+class NReadRealInput : public NExpression {
+private:
+    friend class Evaluate; 
+    friend class Traverse;
+public:
+    NReadRealInput() {}
+    complex_t *accept(Visitor &);
+};
+
+class NReadStringInput : public NExpression {
+private:
+    friend class Evaluate; 
+    friend class Traverse;
+public:
+    NReadStringInput() {}
+    complex_t *accept(Visitor &);
+};
 
 #include "traverse.h"
 #include "evaluate.h"

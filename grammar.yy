@@ -42,7 +42,7 @@
   NBinaryOperator *binaryop;
   NTypeCheck *typecheck;
   NUnary *unary;
-  NReadInput *readinput;
+  // NReadInput *readinput;
   std::vector<NDeclaration*> *variableVector;
   std::vector<NStatement*> *statementVector;
   std::vector<NExpression*> *expressionVector;
@@ -148,6 +148,9 @@ Unary : Primary                                 { $$ = $1; }
       | TOKEN_MINUS TOKEN_REAL_LITERAL          { $$ = new NUnary(MINUS, new NReal(atof($2->c_str()))); }
       | TOKEN_NOT TOKEN_TRUE                    { $$ = new NUnary(NOT, new NBool($2)); }
       | TOKEN_NOT TOKEN_FALSE                   { $$ = new NUnary(NOT, new NBool($2)); }
+      | TOKEN_READINT                           { $$ = new NReadIntInput(); }
+      | TOKEN_READREAL                          { $$ = new NReadRealInput(); }
+      | TOKEN_READSTRING                        { $$ = new NReadStringInput(); }
       | Literal                                 { $$ = $1; }
       | TOKEN_LPAREN Expression TOKEN_RPAREN    { $$ = $2; }
       | TOKEN_PLUS Primary TOKEN_IS TypeIndicator           { $$ = new NTypeCheck(PLUS, $2, $4); }
@@ -156,9 +159,7 @@ Unary : Primary                                 { $$ = $1; }
       | Primary TOKEN_IS TypeIndicator                      { $$ = new NTypeCheck($1, $3); }
       ;
 Primary : TOKEN_IDENTIFIER Tail                             { $$ = new NIdentifier($1); }
-        | TOKEN_READINT                                     { $$ = new NReadInput(); }
-        | TOKEN_READREAL                                    { $$ = new NReadInput(); }
-        | TOKEN_READSTRING                                  { $$ = new NReadInput(); }
+
         ;
 Tail : /* empty */
      | TOKEN_DOT TOKEN_INT_LITERAL                   

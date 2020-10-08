@@ -31,5 +31,7 @@ public:
     complex_t *visit(NBinaryOperator *);
     complex_t *visit(NTypeCheck *);
     complex_t *visit(NUnary *);
-    complex_t *visit(NReadInput *);
+    complex_t *visit(NReadIntInput *);
+    complex_t *visit(NReadRealInput *);
+    complex_t *visit(NReadStringInput *);
 };

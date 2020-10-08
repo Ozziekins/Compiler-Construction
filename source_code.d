@@ -1,10 +1,27 @@
-var oprand1 := 23;
-var oprand2 := 43.5;
+var x := 50;
+var y := -1;
+var z:= 4;
 
-var sas := "KEK";
-print "Currently it is a string: {",sas,"} But I will change it to an int: ", oprand1 + oprand2;
-var lol := -5;
-
-if (3) then
-    print lol, " The result of sum: ", sas; //- 1 * (oprand1 + oprand2 + 2);
-end
+if x > y and x > z then
+    if y > z then
+        print z; // z is minimum
+    else
+        print y; // y is minimum
+    end
+else
+    if y > x and y > z then
+        if x > z then
+            print z; // z is minimum
+        else 
+            print x; // x is minimum
+        end
+    else 
+        if z > x and z > y then
+            if x > y then 
+                print y; // y is minimum
+            else 
+                print x; // x is minimum
+            end
+        end
+    end
+end 

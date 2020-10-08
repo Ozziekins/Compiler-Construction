@@ -155,7 +155,17 @@ complex_t *Traverse::visit(NUnary *){
     return nullptr;
 }
 
-complex_t *Traverse::visit(NReadInput *){
+complex_t *Traverse::visit(NReadIntInput *){
     cout << "NReadInput" << endl;
+    return nullptr;
+}
+
+complex_t *Traverse::visit(NReadRealInput *){
+    cout << "NReadRealInput" << endl;
+    return nullptr;
+}
+
+complex_t *Traverse::visit(NReadStringInput *){
+    cout << "NReadStringInput" << endl;
     return nullptr;
 }

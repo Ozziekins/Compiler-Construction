@@ -1,3 +1,6 @@
+// A very bad move from me to declare such a global variable
+bool DEBUG = false;
+
 // OPERATIONS ON INTEGER _ INTEGER
 int add_int_int(int lval, int rval) {
     return lval + rval;
@@ -141,10 +144,6 @@ vector<complex_t> *add_arr_int(vector<complex_t> *lval, complex_t rval) {
 
 
 
-// A very bad move from me to declare such a global variable
-bool DEBUG = false;
-
-
 void Evaluate::print_symbol_table() {
     int depth = 0;
     if (DEBUG){
@@ -182,7 +181,7 @@ complex_t *Evaluate::visit(NProgram *program){
 
 complex_t *Evaluate::visit(NBlock *block){
 
-    add_new_scope();
+    scopes.push_front( new map<string/*NIdentifier.name* */, complex_t *>() );
 
     for(int i = 0; i < (int)block->instructions.size(); i++) {
         block->instructions[i]->accept(*this);
@@ -243,9 +242,9 @@ complex_t *Evaluate::visit(NAssignment *assignmnt){
         DO_THING(newvar, THING);
         cout<< "}" << endl;
     }
-    
+    #undef THING
     *var = *newvar;
-
+    print_symbol_table();
     return nullptr;
 }
 
@@ -294,34 +293,42 @@ complex_t *Evaluate::visit(NIf *ifstmt){
     if (DEBUG) cout << "Parsed NIf" << endl;
     
 
-    // #define THING(x) if ( x ){\
-    //     add_new_scope();\
-    //     ifstmt->ifblock->accept(*this);\
-    //     scopes.pop_front();\
-    // }\
+    #define THING(x) if ( x ){\
+        ifstmt->ifblock->accept(*this);\
+        scopes.pop_front();\
+    }\
 
-    // DO_THING_NUM(ifstmt->condition->accept(*this), THING)
+    DO_THING_NUM(ifstmt->condition->accept(*this), THING)
     
-    // #undef THING
+    #undef THING
 
-    if (ifstmt->condition->accept(*this)->boolVal){
-        // add_new_scope();
-        ifstmt->ifblock->accept(*this);
-        scopes.pop_front();
-    }
+    //TODO check whether this is okay
+    // if (ifstmt->condition->accept(*this)->boolVAl){
+    //     ifstmt->ifblock->accept(*this);
+    //     scopes.pop_front();
+    // }
 
     return nullptr;
 }
 
 complex_t *Evaluate::visit(NIfElse *ifstmt){
-    cout << "NIfElse" << endl;
-    ifstmt->condition->accept(*this);
+    if (DEBUG) cout << "Parsed NIfElse" << endl;
 
-    ifstmt->ifblock->accept(*this);
+    #define THING(x) if ( x ){\
+        ifstmt->ifblock->accept(*this);\
+        scopes.pop_front();\
+    }\
+    else\
+    ifstmt->elseblock->accept(*this);\
 
+    DO_THING_NUM(ifstmt->condition->accept(*this), THING)
+    
+    #undef THING
 
+    // ifstmt->condition->accept(*this);
+    // ifstmt->ifblock->accept(*this);
 
-    ifstmt->elseblock->accept(*this);
+   
     
 
     return nullptr;
@@ -460,42 +467,46 @@ complex_t *Evaluate::visit(NUnary *unary){
     return value;
 }
 
-complex_t *Evaluate::visit(NReadInput *){
-    cout << "NReadInput" << endl;
-    return nullptr;
-}
+complex_t *Evaluate::visit(NReadIntInput *){
+    if (DEBUG) cout << "Parsed NReadIntInput of value {";
 
-#define THING(x)     switch(op){\
-        case PLUS:\
-            x = LVAL + RVAL; break;\
-        case MINUS:\
-            x = LVAL - RVAL; break;\
-        case MULT:\
-            x = LVAL * RVAL; break;\
-        case DIV:\
-            x = LVAL / RVAL; break;\
-        case LESS:\
-            x = LVAL < RVAL; break;\
-        case GREAT:\
-            x = LVAL > RVAL; break;\
-        default:\
-            cout << "ILLEGAL OPERATION for numbers; CODE: [" << op << "]"; break; \
-        }\
+    auto value = create_type();
+    value->type = INTEGER;
+    cin >> value->intVal; 
 
-complex_t *Evaluate::visit(NBinaryOperator *bin_op){
+    if (DEBUG) cout << value->intVal << "}" << endl;;
 
-    if (DEBUG) cout << "Parsed NBinaryOperator CODE={" << bin_op->op << "}" << endl;
-    auto op = bin_op->op;
-    auto left = bin_op->lhs->accept(*this);
-    auto right = bin_op->rhs->accept(*this);
-    auto left_T  = left->type;
-    auto right_T = right->type;
-    complex_t * value = create_type();
-
-    
     return value;
 }
-#undef THING
+
+complex_t *Evaluate::visit(NReadRealInput *){
+    if (DEBUG) cout << "Parsed NReadRealInput {" << endl;
+    
+    auto value = create_type();
+    value->type = FLOAT;
+    cin >> value->floatVal; 
+
+    if (DEBUG) cout << value->floatVal << "}" << endl;;
+
+    return value;
+}
+
+complex_t *Evaluate::visit(NReadStringInput *){
+    if (DEBUG) cout << "Parsed NReadStringInput" << endl;
+    
+    auto value = create_type();
+    value->type = STRING;
+    string* tmp = new string();
+    cin >> *(tmp); 
+
+    value->stringVAl = tmp;
+
+    if (DEBUG) cout << value->stringVAl << "}" << endl;;
+
+    return value;
+}
+
+
 
 complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *right){
     auto left_t = left->type;
@@ -549,8 +560,8 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
         case FLOAT:
             switch(right_t) {
                 case INTEGER:
-                    {float lval = left->intVal;
-                    int rval = right->floatVal;
+                    {float lval = left->floatVal;
+                    int rval = right->intVal;
                     switch(optor) {
                         case PLUS: result->type = FLOAT; result->floatVal = add_int_flt(rval, lval); break;
                         case MINUS: result->type = FLOAT; result->floatVal = sub_flt_int(lval, rval); break;
@@ -566,8 +577,8 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
                     }}
                     break;
                 case FLOAT:
-                    {float lval = left->intVal;
-                    float rval = right->intVal;
+                    {float lval = left->floatVal;
+                    float rval = right->floatVal;
                     switch(optor) {
                         case PLUS: result->type = FLOAT; result->floatVal = add_flt_flt(lval, rval); break;
                         case MINUS: result->type = FLOAT; result->floatVal = sub_flt_flt(lval, rval); break;
@@ -623,3 +634,36 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
     }
     return result;
 }
+
+
+#define THING(x)     switch(op){\
+        case PLUS:\
+            x = LVAL + RVAL; break;\
+        case MINUS:\
+            x = LVAL - RVAL; break;\
+        case MULT:\
+            x = LVAL * RVAL; break;\
+        case DIV:\
+            x = LVAL / RVAL; break;\
+        case LESS:\
+            x = LVAL < RVAL; break;\
+        case GREAT:\
+            x = LVAL > RVAL; break;\
+        default:\
+            cout << "ILLEGAL OPERATION for numbers; CODE: [" << op << "]"; break; \
+        }\
+
+complex_t *Evaluate::visit(NBinaryOperator *bin_op){
+
+    if (DEBUG) cout << "Parsed NBinaryOperator CODE={" << bin_op->op << "}" << endl;
+    auto op = bin_op->op;
+    auto left = bin_op->lhs->accept(*this);
+    auto right = bin_op->rhs->accept(*this);
+    auto left_T  = left->type;
+    auto right_T = right->type;
+    // complex_t * value = create_type();
+
+
+    return evaluate_expression(left, op, right);
+}
+#undef THING

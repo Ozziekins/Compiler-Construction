@@ -13,10 +13,6 @@ public:
     list<map<string, complex_t *>*> scopes;
 
     void print_symbol_table();
-    void add_new_scope(){
-        // cout <<"\nIt is " << new  map<string/*NIdentifier.name* */, complex_t *>() << endl;
-        scopes.push_front( new map<string/*NIdentifier.name* */, complex_t *>() );
-    };
 
     complex_t *visit(NProgram *);
     complex_t *visit(NBlock *);
@@ -44,5 +40,7 @@ public:
     complex_t *visit(NBinaryOperator *);
     complex_t *visit(NTypeCheck *);
     complex_t *visit(NUnary *);
-    complex_t *visit(NReadInput *);
+    complex_t *visit(NReadIntInput *);
+    complex_t *visit(NReadRealInput *);
+    complex_t *visit(NReadStringInput *);
 };
