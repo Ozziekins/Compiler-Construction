@@ -182,7 +182,7 @@ Expressions : Expression                                      { $$ = new NPrint(
 Return : TOKEN_RETURN Expression TOKEN_SEMI                   { $$ = new NReturn($2); }             
        | TOKEN_RETURN TOKEN_SEMI                              { $$ = new NReturn(); }  
        ;
-If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END            { $$ = new NIf($2, $4); }
+If : TOKEN_IF Expression TOKEN_THEN Body TOKEN_END                      { $$ = new NIf($2, $4); }
    | TOKEN_IF Expression TOKEN_THEN Body TOKEN_ELSE Body TOKEN_END      { $$ = new NIfElse($2, $4, $6); }
    ;
 Loop : TOKEN_WHILE Expression LoopBody                                                    { $$ = new NLoop($2, $3); }
@@ -232,7 +232,7 @@ Identifiers : TOKEN_IDENTIFIER                                                { 
 
 %%
 std::string srcInput;
-std::vector<Token> list;
+std::vector<Token> lst;
 std::vector<Token>::iterator it;
 typedef struct {
   std::string value;
@@ -262,7 +262,7 @@ int main(int argc, char *argv[]) {
     Lexer sas = Lexer(sourceCode);
     
     while (sas.getNextToken().type != YYEOF);
-    list = sas.getTokenList();
+    lst = sas.getTokenList();
     yyparse();
     // std::cout << programBlock << std::endl;
 
@@ -282,7 +282,7 @@ void yyerror(const char *error){
 
 
 int yylex () {
-  it = list.begin();
+  it = lst.begin();
   unsigned long _type = (*it).type;
   std::string _value = (*it).value;
   unsigned long _lineNo = (*it).line;
@@ -301,6 +301,6 @@ int yylex () {
     std::cout << _type << " Undefined token " << _value << std::endl;
     return (int)_type;
   }
-  list.erase(it);
+  lst.erase(it);
   return (int)_type;
 }
