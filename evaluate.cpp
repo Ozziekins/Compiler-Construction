@@ -230,28 +230,23 @@ complex_t *Evaluate::visit(NStringLiteral *slit){
     return sval;
 }
 
-auto kostil(int op, auto LVAL, auto RVAL){
-    
-    //TODO implement other ones
-    switch(op){
-        case PLUS:
-            return LVAL + RVAL; break;
-        case MINUS:
-            return LVAL - RVAL; break;
-        case MULT:
-            return LVAL * RVAL; break;
-        case DIV:
-            return LVAL / RVAL; break;
-        // case LESS:
-        //     return LVAL < RVAL; break;
-        // case GREAT:
-        //     return LVAL > RVAL; break;
-        default:
-            cout << "ILLEGAL OPERATION for numbers; CODE: [" << op << "]"; break; 
-    }
 
-return LVAL + RVAL;
-}
+#define THING(x)     switch(op){\
+        case PLUS:\
+            x = LVAL + RVAL; break;\
+        case MINUS:\
+            x = LVAL - RVAL; break;\
+        case MULT:\
+            x = LVAL * RVAL; break;\
+        case DIV:\
+            x = LVAL / RVAL; break;\
+        case LESS:\
+            x = LVAL < RVAL; break;\
+        case GREAT:\
+            x = LVAL > RVAL; break;\
+        default:\
+            cout << "ILLEGAL OPERATION for numbers; CODE: [" << op << "]"; break; \
+        }\
 
 complex_t *Evaluate::visit(NBinaryOperator *bin_op){
 
@@ -277,8 +272,7 @@ complex_t *Evaluate::visit(NBinaryOperator *bin_op){
             value->type = FLOAT; 
         }
         else{
-           value->type = INTEGER;
-
+            value->type = INTEGER;
         };
 
 
@@ -287,22 +281,26 @@ complex_t *Evaluate::visit(NBinaryOperator *bin_op){
 
             if (right_T == FLOAT){
                auto RVAL = right->floatVal;
-               value->floatVal = kostil(op, LVAL, RVAL);
+               DO_THING(value, THING)
+            //    value->floatVal = kostil(op, LVAL, RVAL);
             }
             else{
                 auto RVAL = right->intVal;
-                value->floatVal = kostil(op, LVAL, RVAL);
+                DO_THING(value, THING)
+                // value->floatVal = kostil(op, LVAL, RVAL);
             }
         }
         else if (right_T == FLOAT){
             auto LVAL = left->intVal;
             auto RVAL = right->floatVal;
-            value->floatVal = kostil(op, LVAL, RVAL);
+            DO_THING(value, THING)
+            // value->floatVal = kostil(op, LVAL, RVAL);
         }
         else{
             auto LVAL = left->intVal;
             auto RVAL = right->intVal;
-            value->intVal = kostil(op, LVAL, RVAL);
+            DO_THING(value, THING)
+            // value->intVal = kostil(op, LVAL, RVAL);
         }
 
     }
@@ -310,6 +308,8 @@ complex_t *Evaluate::visit(NBinaryOperator *bin_op){
 
     return value;
 }
+#undef THING
+
 
 complex_t *Evaluate::visit(NTypeCheck *){
      cout << "NTypeCheck" << endl;
