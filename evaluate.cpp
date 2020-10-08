@@ -257,57 +257,26 @@ complex_t *Evaluate::visit(NBinaryOperator *bin_op){
     auto right_T = right->type;
     complex_t * value = create_type();
 
-    //CHECK FOR EMPTY
-    if ( left_T == EMPTY || right_T == EMPTY  ){
-        cout << "Semantic? Error:\n\tOPERATIONS ON EMPTY VALUES ARE NOT ALLOWED\n";
-        exit(228);
-    }
+    
+    return value;
+}
+#undef THING
 
-    //OPerations on numbers
-    if ( ( left_T == INTEGER ||  left_T == FLOAT ) && (right_T == INTEGER || right_T == FLOAT ) ){
-        
-        // ETA HUYNA NE RABOTAET
-        if (left_T == FLOAT || right_T == FLOAT){
-            value->type = FLOAT; 
-        }
-        else{
-            value->type = INTEGER;
-        };
-
-
-        if (left_T == FLOAT){
-            auto LVAL = left->floatVal;
-
-            if (right_T == FLOAT){
-               auto RVAL = right->floatVal;
-               DO_THING(value, THING)
-            }
-            else{
-                auto RVAL = right->intVal;
-                DO_THING(value, THING)
-            }
-        }
-        else if (right_T == FLOAT){
-            auto LVAL = left->intVal;
-            auto RVAL = right->floatVal;
-            DO_THING(value, THING)
-        }
-        else{
-            auto LVAL = left->intVal;
-            auto RVAL = right->intVal;
-            DO_THING(value, THING)
-        }
-
-    }
-    // if for RETARDED OPERATIONS
-
-    switch(left_T) {
+complex_t *evaluate_expression(complex_t * left, int operator, complex_t *right){
+    auto left_t = left->type;
+    auto right_t = right->type;
+    
+    complex_t* result;
+    switch(left_t) {
         case EMPTY:
-            // No operation possible
+            cout << "No possible operations with EMPTY types\n";
             break;
         case INTEGER:
-            switch(right_T) {
+            switch(right_t) {
                 case INTEGER:
+                    int lval = left->intVal;
+                    int rval = right->intVal;
+                    result->type = INTEGER;
 
                 case FLOAT:
 
@@ -341,16 +310,46 @@ complex_t *Evaluate::visit(NBinaryOperator *bin_op){
         case TUPLE:
             switch(right_T) {
                 case ARRAY:
-                
+
                 default:
                     cout << "OPERATION NOT POSSIBLE"
             }
             break;
     }
-    return value;
 }
-#undef THING
 
+// OPERATIONS ON INTEGERS
+int add_int_int(int lval, int rval) {
+    return lval + rval;
+}
+
+int sub_int_int(int lval, int rval) {
+    return lval - rval;
+}
+
+int mult_int_int(int lval, int rval) {
+    return lval * rval;
+}
+
+int div_int_int(int lval, int rval) {
+    return floor(lval / rval);
+}
+
+bool great_int_int(int lval, int rval) {
+    return lval > rval;
+}
+
+bool greatequal_int_int(int lval, int rval) {
+    return lval >= rval;
+}
+
+bool less_int_int(int lval, int rval) {
+    return lval < rval;
+}
+
+bool lessequal_int_int(int lval, int rval) {
+    return lval <= rval;
+}
 
 complex_t *Evaluate::visit(NTypeCheck *){
      cout << "NTypeCheck" << endl;

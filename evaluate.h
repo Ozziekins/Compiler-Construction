@@ -1,5 +1,5 @@
 #include<map>
-
+#include <math.h>
 class Evaluate;
 
 class Evaluate : public Visitor
