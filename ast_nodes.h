@@ -15,7 +15,7 @@ struct complexTypes{
         int intVal;
         float floatVal;
         string *stringVAl;
-        bool boolVAl;
+        bool boolVal;
         vector<complex_t> *arrayVal;
         vector<pair<string, complex_t>> *tupleVal;
     };
