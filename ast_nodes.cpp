@@ -8,24 +8,25 @@ case STRING:  THING(*(complex->stringVAl)); break;\
 case BOOL:    THING(complex->boolVAl); break;\
 case ARRAY: cout << "\nARRAYS :- not implemented??\n"; exit(228); break;\
 case TUPLE: cout << "\nTUPLE :- not implemented??\n";  exit(228);break;\
+case EMPTY: cout << "\nEMPTY :- not implemented??\n";  exit(228);break;\
 }\
 
 string type_name(complex_t complex){
     switch( complex.type ){
         case INTEGER: 
-            return "INTEGER"; break;
+            return "INTEGER"; 
         case FLOAT: 
-            return "FLOAT"; break;
+            return "FLOAT";
         case STRING: 
-            return "STRING"; break;
+            return "STRING"; 
         case BOOL: 
-            return "BOOL"; break;
+            return "BOOL";
         case ARRAY: 
-            return "ARRAY"; break;
+            return "ARRAY";
         case TUPLE: 
-            return "TUPLE"; break;
+            return "TUPLE"; 
         default:
-            return "EMPTY"; cout << "\nempty :- not implemented??\n"; break; 
+            return "EMPTY";
     }
 }
 

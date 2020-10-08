@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-void print_symbol_table(map<NIdentifier *, complex_t *> SymbolTable) {
-    cout << "_____ SYMBOLTABLE _______\n";
-    for (const auto& x : SymbolTable) {
-        cout << *x.first->name << ": " << type_name(*x.second) << " (";
-        if (!string(type_name(*x.second)).compare("STRING"))
-            cout << *(x.second->stringVAl);
-        if (!string(type_name(*x.second)).compare("INTEGER"))
-            cout << x.second->intVal;
-        if (!string(type_name(*x.second)).compare("FLOAT"))
-            cout << x.second->floatVal;
-        cout << ")\n";
-=======
 
 // A very bad move from me to declare such a global variable
 bool DEBUG = false;
@@ -36,7 +23,6 @@ void print_symbol_table(map<string/*NIdentifier * */, complex_t *> SymbolTable) 
             //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
         cout << "|__________________________\n\n";
->>>>>>> 73e9868c9be319be3ade888d9b0e4e6ab787d090
     }
 }
 
@@ -249,19 +235,19 @@ auto kostil(int op, auto LVAL, auto RVAL){
     //TODO implement other ones
     switch(op){
         case PLUS:
-            return LVAL + RVAL; break;
+            return LVAL + RVAL;
         case MINUS:
-            return LVAL - RVAL; break;
+            return LVAL - RVAL;
         case MULT:
-            return LVAL * RVAL; break;
+            return LVAL * RVAL;
         case DIV:
-            return LVAL / RVAL; break;
+            return LVAL / RVAL;
         // case LESS:
         //     return LVAL < RVAL; break;
         // case GREAT:
         //     return LVAL > RVAL; break;
         default:
-            cout << "ILLEGAL OPERATION for numbers; CODE: [" << op << "]"; break; 
+            cout << "ILLEGAL OPERATION for numbers; CODE: [" << op << "]"; 
     }
 
 return LVAL + RVAL;
