@@ -7,10 +7,10 @@ class Evaluate;
 class Evaluate : public Visitor
 {
 public:
-    typedef map<string/*NIdentifier.name* */, complex_t *>* SymbolTable;
+    typedef map<string, complex_t *>* SymbolTable;
     string str;
     int num;
-    list<map<string/*NIdentifier.name* */, complex_t *>*> scopes;
+    list<map<string, complex_t *>*> scopes;
 
     void print_symbol_table();
     void add_new_scope(){

@@ -1,35 +1,28 @@
+
 // A very bad move from me to declare such a global variable
 bool DEBUG = false;
 
-
-void Evaluate::print_symbol_table() {
-    int depth = 0;
+void print_symbol_table(map<string/*NIdentifier * */, complex_t *> SymbolTable) {
     if (DEBUG){
+        cout << "\n _____ SYMBOLTABLE ________\n";
+        for (const auto& x : SymbolTable) {
+            cout << "| " << type_name(*x.second) << "\n";
 
-        for ( auto scope = scopes.rbegin(); scope != scopes.rend(); ++scope  ){
-            cout << "\n _____ SYMBOLTABLE_"<<depth<<"________\n";
-            auto temp = **scope;
-            for (const auto& x : temp) {
-
-                cout << "| " << type_name(*x.second) << "\n";
-
-                if (!string(type_name(*x.second)).compare("STRING"))
-                    cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
-                else if (!string(type_name(*x.second)).compare("INTEGER"))
-                    cout << "| " << x.first << "= " << x.second->intVal << endl << "| " << endl;
-                else if (!string(type_name(*x.second)).compare("FLOAT"))
-                    cout << "| " << x.first << "= " << x.second->floatVal << endl << "| " << endl;
-                        else if (!string(type_name(*x.second)).compare("BOOL"))
-                    cout << "| " << x.first << "= " << x.second->boolVAl << endl << "| " << endl;
-                
-                else if (!string(type_name(*x.second)).compare("EMPTY"))
-                    cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
-                else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
-                //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            }
-            cout << "|__________________________\n\n";
-            depth++;
+            if (!string(type_name(*x.second)).compare("STRING"))
+                cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+            else if (!string(type_name(*x.second)).compare("INTEGER"))
+                cout << "| " << x.first << "= " << x.second->intVal << endl << "| " << endl;
+            else if (!string(type_name(*x.second)).compare("FLOAT"))
+                cout << "| " << x.first << "= " << x.second->floatVal << endl << "| " << endl;
+                    else if (!string(type_name(*x.second)).compare("BOOL"))
+                cout << "| " << x.first << "= " << x.second->boolVAl << endl << "| " << endl;
+            
+            else if (!string(type_name(*x.second)).compare("EMPTY"))
+                cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+            else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
+            //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
+        cout << "|__________________________\n\n";
     }
 }
 
@@ -39,12 +32,9 @@ complex_t *Evaluate::visit(NProgram *program){
 
 complex_t *Evaluate::visit(NBlock *block){
 
-    add_new_scope();
-
     for(int i = 0; i < (int)block->instructions.size(); i++) {
         block->instructions[i]->accept(*this);
     }
-
     return nullptr;
 }
 
@@ -65,8 +55,8 @@ complex_t *Evaluate::visit(NDeclaration *decl){
         value->type = EMPTY;
         value->stringVAl = new string("eMpTy");
     }
-    scopes.front()->insert( { ident_name, value} );
-    print_symbol_table();
+    SymbolTable.insert({ ident_name, value});
+    print_symbol_table(SymbolTable);
 
     return nullptr;
 }
@@ -148,39 +138,17 @@ complex_t *Evaluate::visit(NParameters *params) {
 }
 
 complex_t *Evaluate::visit(NIf *ifstmt){
-    if (DEBUG) cout << "Parsed NIf" << endl;
-    
-
-    // #define THING(x) if ( x ){\
-    //     add_new_scope();\
-    //     ifstmt->ifblock->accept(*this);\
-    //     scopes.pop_front();\
-    // }\
-
-    // DO_THING_NUM(ifstmt->condition->accept(*this), THING)
-    
-    // #undef THING
-
-    if (ifstmt->condition->accept(*this)->boolVAl){
-        // add_new_scope();
-        ifstmt->ifblock->accept(*this);
-        scopes.pop_front();
-    }
-
+    cout << "NIf" << endl;
+    ifstmt->condition->accept(*this);
+    ifstmt->ifblock->accept(*this);
     return nullptr;
 }
 
 complex_t *Evaluate::visit(NIfElse *ifstmt){
     cout << "NIfElse" << endl;
     ifstmt->condition->accept(*this);
-
     ifstmt->ifblock->accept(*this);
-
-
-
     ifstmt->elseblock->accept(*this);
-    
-
     return nullptr;
 }
 
@@ -218,19 +186,13 @@ complex_t *Evaluate::visit(NIdentifier *id){
     string name = *(id->name);
     if (DEBUG) cout << "Parsed NIdentifier [" << name << "]" << endl;
 
-
-    for (auto& x : scopes)
-        if ( (*x).count(*(id->name)) != 0){
-            // cout << "Found in this scope; " << x->size() << endl;
-            return (*x)[name];
-        }
-        else{
-            if (DEBUG) cout << "Not found in this scope; " << x->size() << " ;trying outer one...\n";
-        }
-
-    cout << "\nSEMANTIC? ERROR:\n\tIDENTIFIER " << name << " IS NOT PRESENT IN THE SYMBOL TABLE!\n";
-    exit(228);
-
+    if ( SymbolTable.count(*(id->name)) != 0)
+         return SymbolTable[name];
+    else{
+        cout << "\nSEMANTIC? ERROR:\n\tIDENTIFIER " << name << " IS NOT PRESENT IN THE SYMBOL TABLE!\n";
+        exit(228);
+    }
+        
    
 }
 
@@ -356,7 +318,7 @@ complex_t *evaluate_expression(complex_t * left, int operator, complex_t *right)
     }
 }
 
-// OPERATIONS ON INTEGERS
+// OPERATIONS ON INTEGER _ INTEGER
 int add_int_int(int lval, int rval) {
     return lval + rval;
 }
@@ -389,11 +351,118 @@ bool lessequal_int_int(int lval, int rval) {
     return lval <= rval;
 }
 
+bool equal_int_int(int lval, int rval) {
+    return lval == rval;
+}
+
+bool notequal_int_int(int lval, int rval) {
+    return lval != rval;
+}
+
+// OPERATIONS ON INTEGER _ FLOAT
+float add_int_flt(int lval, float rval) {
+    return lval + rval;
+}
+
+float sub_int_flt(int lval, float rval) {
+    return lval - rval;
+}
+
+float mult_int_flt(int lval, float rval) {
+    return lval * rval;
+}
+
+float div_int_flt(int lval, float rval) {
+    return lval / rval;
+}
+
+bool great_int_flt(int lval, float rval) {
+    return lval > rval;
+}
+
+bool greatequal_int_flt(int lval, float rval) {
+    return lval >= rval;
+}
+
+bool less_int_flt(int lval, float rval) {
+    return lval < rval;
+}
+
+bool lessequal_int_flt(int lval, float rval) {
+    return lval <= rval;
+}
+
+bool equal_int_flt(int lval, float rval) {
+    return lval == rval;
+}
+
+bool notequal_int_flt(int lval, float rval) {
+    return lval != rval;
+}
+
+// OPERATIONS ON FLOAT _ INTEGER
+float sub_flt_int(float lval, int rval) {
+    return lval - rval;
+}
+
+float div_flt_int(float lval, int rval) {
+    return lval / rval;
+}
+
+// OPERATIONS ON FLOAT _ FLOAT
+float add_flt_flt(float lval, float rval) {
+    return lval + rval;
+}
+
+float sub_flt_flt(float lval, float rval) {
+    return lval - rval;
+}
+
+float mult_flt_flt(float lval, float rval) {
+    return lval * rval;
+}
+
+float div_flt_flt(float lval, float rval) {
+    return lval / rval;
+}
+
+bool great_flt_flt(float lval, float rval) {
+    return lval > rval;
+}
+
+bool greatequal_flt_flt(float lval, float rval) {
+    return lval >= rval;
+}
+
+bool less_flt_flt(float lval, float rval) {
+    return lval < rval;
+}
+
+bool lessequal_flt_flt(float lval, float rval) {
+    return lval <= rval;
+}
+
+bool equal_flt_flt(float lval, float rval) {
+    return lval == rval;
+}
+
+bool notequal_flt_flt(float lval, float rval) {
+    return lval != rval;
+}
+
+// OPERATIONS ON ARRAY _ COMPLEX_T
+vector<complex_t> *add_arr_int(vector<complex_t> *lval, complex_t rval) {
+    return lval->push_back(rval);
+}
+
+// TUPLE ADDITION
+
+
+
 complex_t *Evaluate::visit(NTypeCheck *){
      cout << "NTypeCheck" << endl;
     return nullptr;
 }
-
 
 complex_t *Evaluate::visit(NUnary *unary){
     if (DEBUG) cout << "Parsed NUnary {" ;
