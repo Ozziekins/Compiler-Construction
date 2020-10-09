@@ -10,12 +10,17 @@
         "iostream": "cpp",
         "string_view": "cpp",
         "memory": "cpp",
+<<<<<<< HEAD
         "__split_buffer": "cpp",
         "deque": "cpp",
         "list": "cpp",
         "string": "cpp",
         "vector": "cpp",
         "complex": "cpp"
+=======
+        "vector": "cpp",
+        "list": "cpp"
+>>>>>>> f1ebe1bf9b0cf288fda3513e382dc4f401d923e8
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

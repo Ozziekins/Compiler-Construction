@@ -6,10 +6,11 @@ case INTEGER: THING(complex->intVal); break;\
 case FLOAT:   THING(complex->floatVal); break;\
 case STRING:  THING(*(complex->stringVAl)); break;\
 case BOOL:    THING(complex->boolVal); break;\
-case ARRAY:  cout << "\nARRAY :- not implemented??\n"; exit(228);break;\
+case FUNCTION: THING( complex->function ); break;\
+case ARRAY: THING( *complex->arrayVal ); break;\
 case TUPLE: cout << "\nTUPLE :- not implemented??\n";  exit(228);break;\
 case EMPTY: cout << "\nEMPTY :- not implemented??\n";  exit(228);break;\
-default: cout << "\nEMPTY :- not implemented??\n";\
+default: cout << "\nOTHER :- not implemented??\n";\
 }\
 
 #define DO_THING_NUM(complex, THING) \
@@ -17,7 +18,7 @@ switch( complex->type ){ \
 case INTEGER: THING(complex->intVal); break;\
 case FLOAT:   THING(complex->floatVal); break;\
 case BOOL:    THING(complex->boolVal); break;\
-default: cout << "\nEMPTY :- not implemented??\n";\
+default: cout << "\nOTHER :- not implemented??\n";\
 }\
 
 
@@ -35,6 +36,8 @@ string type_name(complex_t complex){
             return "ARRAY";
         case TUPLE: 
             return "TUPLE"; 
+        case FUNCTION:
+            return "FUNCTION";
         default:
             return "EMPTY";
     }
@@ -248,8 +251,8 @@ complex_t * NFunctionCall::accept(Visitor &v) {
 void NParameters::push_parameter(NIdentifier * argument) {
     this->arguments.push_back(argument);
 }
-complex_t * NParameters::accept(Visitor &v) {
-    return v.visit(this);
+complex_t * NParameters::accept(Visitor &v, NExpressions* exps) {
+    return v.visit(this, exps);
 }
 
 //Expressions

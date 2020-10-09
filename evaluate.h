@@ -10,7 +10,7 @@ public:
     typedef map<string, complex_t *>* SymbolTable;
     string str;
     int num;
-    list<map<string, complex_t *>*> scopes;
+    list<map<string, complex_t *>*> scopes = { new map<string, complex_t *>() };// scopes.push_front(  );
 
     void print_symbol_table();
 
@@ -25,7 +25,7 @@ public:
     complex_t *visit(NPrint *);
     complex_t *visit(NFunctionDefinition *);
     complex_t *visit(NFunctionCall *);
-    complex_t *visit(NParameters *);
+    complex_t *visit(NParameters *,  NExpressions *);
     complex_t *visit(NExpressions *);
     complex_t *visit(NIf *);
     complex_t *visit(NIfElse *);

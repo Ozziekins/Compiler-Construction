@@ -239,6 +239,8 @@ private:
     friend class Traverse;
 public:
     vector<pair<string *, NExpression *expression>> list_pairs;
+    void push_assignment(NExpression *expression);
+    void push_assignment(string *, NExpression *expression);
     complex_t *accept(Visitor &);
 };
 

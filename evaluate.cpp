@@ -28,9 +28,10 @@ void Evaluate::print_symbol_table() {
                     cout << "| " << x.first << "= " << x.second->intVal << endl << "| " << endl;
                 else if (!string(type_name(*x.second)).compare("FLOAT"))
                     cout << "| " << x.first << "= " << x.second->floatVal << endl << "| " << endl;
-                        else if (!string(type_name(*x.second)).compare("BOOL"))
+                else if (!string(type_name(*x.second)).compare("BOOL"))
                     cout << "| " << x.first << "= " << x.second->boolVal << endl << "| " << endl;
-                
+                else if (!string(type_name(*x.second)).compare("FUNCTION"))
+                    cout << "| " << x.first << endl << "| " << endl;
                 else if (!string(type_name(*x.second)).compare("EMPTY"))
                     cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
                 else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
@@ -47,13 +48,17 @@ complex_t *Evaluate::visit(NProgram *program){
 }
 
 complex_t *Evaluate::visit(NBlock *block){
- 
-    scopes.push_front( new map<string, complex_t *>() );
 
+    //TODO BREAK ON RETURN
+    // try {
     for(int i = 0; i < (int)block->instructions.size(); i++) {
         block->instructions[i]->accept(*this);
     }
-
+    // }
+    // catch(complex_t* t){
+    //    if (DEBUG) cout << "Encountered A return\n"; 
+    //    throw(t);
+    // }
     return nullptr;
 }
 
@@ -166,39 +171,118 @@ complex_t *Evaluate::visit(NPrint *print){
     //     cout << "Semantic? Error:\n\tOPERATIONS ON EMPTY VALUES ARE NOT ALLOWED\n";
     //     exit(228);
     // }
-
-    #define THING(x) cout << x;
-
     if (DEBUG) cout << "Parsed NPrint" << endl;
-    
-    for(int i = 0; i < (int)print->expressions->expressions.size(); i++)
-        DO_THING(print->expressions->expressions[i]->accept(*this),THING)
 
-    cout << endl;
-    #undef  THING
+    if ((int)print->expressions->expressions.size() > 0){
+        #define THING(x) cout << x;
+        
+        for(int i = 0; i < (int)print->expressions->expressions.size(); i++)
+            DO_THING(print->expressions->expressions[i]->accept(*this),THING)
 
+        cout << endl;
+        #undef  THING
+    }
+    else{
+        cout << "\nSEMANTIC? ERROR:\n\t PRINT WITH NO ARGUMENTS";
+        exit(228);
+    }
     return nullptr;
 }
 
 complex_t *Evaluate::visit(NFunctionDefinition *funcdef){
     if (DEBUG) cout << "NFunctionDefinition" << endl;
-    funcdef->arguments->accept(*this);
-    if (funcdef->block)
-        funcdef->block->accept(*this);
-    if (funcdef->expression)
-        funcdef->expression->accept(*this);
-    return nullptr;
+
+    auto res = create_type();
+    res->type = FUNCTION;
+    res->function = funcdef;
+
+    // funcdef->arguments->accept(*this);
+    // if (funcdef->block)
+    //     funcdef->block->accept(*this);
+    // if (funcdef->expression)
+    //     funcdef->expression->accept(*this);
+    return res;
 }
 
 complex_t *Evaluate::visit(NFunctionCall *funcall){
-    if (DEBUG) cout << "NFunctionCall" << endl;
-    return nullptr;
+
+    if (DEBUG) cout << "NFunctionCall of {"<< *(funcall->id->name) <<"()}" << endl;
+    auto func = funcall->id->accept(*this);
+
+
+    if (func->type == FUNCTION){
+        auto funcdef = func->function;
+
+        if (funcdef->arguments){  
+            if (funcdef->block){
+                try{
+                    scopes.push_front( new map<string, complex_t *>() );
+                    funcdef->arguments->accept(*this, funcall->arguments);
+                    funcdef->block->accept(*this);
+                }
+                catch(complex_t* res){
+                    scopes.pop_front();
+                    return res;
+                }
+            }
+            else{
+                
+                scopes.push_front( new map<string, complex_t *>() );
+                funcdef->arguments->accept(*this, funcall->arguments);
+                auto res = funcdef->expression->accept(*this); //TODO CHECK FOR BUGS 
+                scopes.pop_front();
+                return res;
+            }
+        }
+        else{
+            if (funcdef->block){
+                try{
+                    scopes.push_front( new map<string, complex_t *>() );
+                    funcdef->block->accept(*this);
+                }
+                catch(complex_t* res){
+                    scopes.pop_front();
+                    return res;
+                }
+            }
+            else{
+                // cout << "THE TYPE OF RES IS " << type_name(*funcdef->expression->accept(*this));
+                return funcdef->expression->accept(*this);
+            }
+        }
+
+    }
+    else{
+        cout << "\nSEMANTIC? ERROR:\n\t ATTEMPT TO CALL NON-FUNCTION " << *(funcall->id->name) << endl;
+        exit(228);
+    }
+
+    
+    
+    auto res = create_type(); 
+    res->type = EMPTY;
+    res->stringVAl = new string("eMpTy");
+
+    return res;
 }
 
-complex_t *Evaluate::visit(NParameters *params) {
-    if (DEBUG) cout << "NParameter" << endl;
-    for(int i = 0; i < (int)params->arguments.size(); i++)
-        params->arguments[i]->accept(*this);
+complex_t *Evaluate::visit(NParameters *params, NExpressions * values) {
+    if (DEBUG) cout << "Parsed NParameter" << endl;
+    
+    if ( values->expressions.size() == params->arguments.size() )
+    for(int i = 0; i < (int)params->arguments.size(); i++){
+        
+        // cout << "Argument var " << *params->arguments[i]->name << endl;//accept(*this);
+        // cout << "OF TYPE: " << values->expressions[i]->accept(*this)->type << endl;
+        scopes.front()->insert( { *params->arguments[i]->name, values->expressions[i]->accept(*this)} );
+        // cout << "INSERTED" << endl;
+        // print_symbol_table();
+    }
+    else{
+        cout << "SEMANTIC ERROR:\n\tNUMBER OF PARAMETERS DOES NOT MATCH THE NUMBER OF ARGUMENTS";
+        exit(228);
+    }
+
     return nullptr;
 }
 
@@ -207,6 +291,7 @@ complex_t *Evaluate::visit(NIf *ifstmt){
     
 
     #define THING(x) if ( x ){\
+        scopes.push_front( new map<string, complex_t *>() );\
         ifstmt->ifblock->accept(*this);\
         scopes.pop_front();\
     }\
@@ -228,10 +313,12 @@ complex_t *Evaluate::visit(NIfElse *ifstmt){
     if (DEBUG) cout << "Parsed NIfElse" << endl;
 
     #define THING(x) if ( x ){\
+        scopes.push_front( new map<string, complex_t *>() );\
         ifstmt->ifblock->accept(*this);\
         scopes.pop_front();\
     }\
     else{\
+        scopes.push_front( new map<string, complex_t *>() );\
         ifstmt->elseblock->accept(*this);\
         scopes.pop_front();\
     }\
@@ -243,15 +330,12 @@ complex_t *Evaluate::visit(NIfElse *ifstmt){
     // ifstmt->condition->accept(*this);
     // ifstmt->ifblock->accept(*this);
 
-   
-    
 
     return nullptr;
 }
 
 complex_t *Evaluate::visit(NLoop *loop){
     if (DEBUG) cout << "Parsed NLoop" << endl;
-
 
 
     #define THING(x) while ( x )\
@@ -293,8 +377,9 @@ complex_t *Evaluate::visit(NRangeLoop *loop){
 }
 
 complex_t *Evaluate::visit(NReturn *retstmt){
-    cout << "NReturn" << endl;
-    retstmt->expression->accept(*this);
+    if (DEBUG) cout << "Parsed NReturn" << endl;
+
+    throw retstmt->expression->accept(*this);
     return nullptr;
 }
 
@@ -326,7 +411,6 @@ complex_t *Evaluate::visit(NIdentifier *id){
 
     cout << "\nSEMANTIC? ERROR:\n\tIDENTIFIER " << name << " IS NOT PRESENT IN THE SYMBOL TABLE!\n";
     exit(228);
-
    
 }
 

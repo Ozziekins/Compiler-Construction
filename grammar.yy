@@ -160,13 +160,15 @@ Primary : TOKEN_IDENTIFIER                                              { $$ = n
         | TOKEN_IDENTIFIER TOKEN_DOT TOKEN_INT_LITERAL                  //{ $$ = new NTupleElementIndex(new NIdentifier($1), $3); }
         | TOKEN_IDENTIFIER TOKEN_DOT TOKEN_IDENTIFIER                   //{ $$ = new NTupleElementName(new NIdentifier($1), $3); }
         | TOKEN_IDENTIFIER TOKEN_LSQUARE Expression TOKEN_RSQUARE       //{ $$ = new NArrayElement(new NIdentifier($1), $3); }
-        | TOKEN_IDENTIFIER TOKEN_LPAREN Expressions TOKEN_RPAREN        //{ $$ = new NFunctionCall(new NIdentifier($1), $3); }
+        | TOKEN_IDENTIFIER TOKEN_LPAREN Expressions TOKEN_RPAREN          { $$ = new NFunctionCall(new NIdentifier($1), $3); }
+        | TOKEN_IDENTIFIER TOKEN_LPAREN TOKEN_RPAREN                      { $$ = new NFunctionCall(new NIdentifier($1), new NExpressions() ); }
         ;
 Statement : Assignment                                  { $$ = $1; }
           | Print                                       { $$ = $1; }
           | Return                                      { $$ = $1; }
           | If                                          { $$ = $1; }
           | Loop                                        { $$ = $1; }
+          // | TOKEN_IDENTIFIER TOKEN_LPAREN Expressions TOKEN_RPAREN    TOKEN_SEMI   { $$ = new NFunctionCall(new NIdentifier($1), $3); }
           ;
 Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI   { $$ = new NAssignment($1, $3); }   
            ;
