@@ -1,12 +1,14 @@
-var factorial := func(n) is 
-    if n = 0 then		// Brackets are omitted intentionally
-    	return 1;
-    else
-        return n * factorial(n - 1);
+var c;
+c := func (x, y, z) is 
+  var count := 0;
+    while x >= y loop
+        if y > z then
+            y := y + 1;
+        else
+            z := z - 1;
+        end
+    count := count + 1;
     end
-end;
-var lambdafunc := func(x) => x/1.4;
-
-print lambdafunc(4);
-
-print  factorial(4), " The output should be 24/1.4 ~= 17,142";
+    return count;
+ end;
+ print c(10, 5, 7);

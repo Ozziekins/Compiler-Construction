@@ -166,6 +166,16 @@ Token Lexer::readUntilTokenDetected() {
         return token;
     }
 
+    
+    if ( currentChar == '>' && contents[ currentIndex + 1] == '=' ){
+        Token token =  Token( specialCharMappings[">="], ">=", currentLine, tokenStart );
+
+        advance(); // ??????
+
+        tokenList.push_back(token);
+        return token;
+    }
+
     if ( currentChar == '.' && contents[ currentIndex + 1] == '.' ){
         Token token =  Token( specialCharMappings[".."], "..", currentLine, tokenStart );
 
