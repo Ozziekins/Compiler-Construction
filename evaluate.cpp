@@ -1,139 +1,6 @@
 // A very bad move from me to declare such a global variable
 bool DEBUG = false;
 
-// OPERATIONS ON INTEGER _ INTEGER
-int add_int_int(int lval, int rval) {
-    return lval + rval;
-}
-
-int sub_int_int(int lval, int rval) {
-    return lval - rval;
-}
-
-int mult_int_int(int lval, int rval) {
-    return lval * rval;
-}
-
-int div_int_int(int lval, int rval) {
-    return floor(lval / rval);
-}
-
-bool great_int_int(int lval, int rval) {
-    return lval > rval;
-}
-
-bool greatequal_int_int(int lval, int rval) {
-    return lval >= rval;
-}
-
-bool less_int_int(int lval, int rval) {
-    return lval < rval;
-}
-
-bool lessequal_int_int(int lval, int rval) {
-    return lval <= rval;
-}
-
-bool equal_int_int(int lval, int rval) {
-    return lval == rval;
-}
-
-bool notequal_int_int(int lval, int rval) {
-    return lval != rval;
-}
-
-// OPERATIONS ON INTEGER _ FLOAT
-float add_int_flt(int lval, float rval) {
-    return lval + rval;
-}
-
-float sub_int_flt(int lval, float rval) {
-    return lval - rval;
-}
-
-float mult_int_flt(int lval, float rval) {
-    return lval * rval;
-}
-
-float div_int_flt(int lval, float rval) {
-    return lval / rval;
-}
-
-bool great_int_flt(int lval, float rval) {
-    return lval > rval;
-}
-
-bool greatequal_int_flt(int lval, float rval) {
-    return lval >= rval;
-}
-
-bool less_int_flt(int lval, float rval) {
-    return lval < rval;
-}
-
-bool lessequal_int_flt(int lval, float rval) {
-    return lval <= rval;
-}
-
-bool equal_int_flt(int lval, float rval) {
-    return lval == rval;
-}
-
-bool notequal_int_flt(int lval, float rval) {
-    return lval != rval;
-}
-
-// OPERATIONS ON FLOAT _ INTEGER
-float sub_flt_int(float lval, int rval) {
-    return lval - rval;
-}
-
-float div_flt_int(float lval, int rval) {
-    return lval / rval;
-}
-
-// OPERATIONS ON FLOAT _ FLOAT
-float add_flt_flt(float lval, float rval) {
-    return lval + rval;
-}
-
-float sub_flt_flt(float lval, float rval) {
-    return lval - rval;
-}
-
-float mult_flt_flt(float lval, float rval) {
-    return lval * rval;
-}
-
-float div_flt_flt(float lval, float rval) {
-    return lval / rval;
-}
-
-bool great_flt_flt(float lval, float rval) {
-    return lval > rval;
-}
-
-bool greatequal_flt_flt(float lval, float rval) {
-    return lval >= rval;
-}
-
-bool less_flt_flt(float lval, float rval) {
-    return lval < rval;
-}
-
-bool lessequal_flt_flt(float lval, float rval) {
-    return lval <= rval;
-}
-
-bool equal_flt_flt(float lval, float rval) {
-    return lval == rval;
-}
-
-bool notequal_flt_flt(float lval, float rval) {
-    return lval != rval;
-}
-
-
 // OPERATIONS ON ARRAY _ COMPLEX_T
 vector<complex_t> *add_arr_int(vector<complex_t> *lval, complex_t rval) {
     lval->push_back(rval);
@@ -551,16 +418,16 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
                     {int lval = left->intVal;
                     int rval = right->intVal;
                     switch(optor) {
-                        case PLUS: result->type = INTEGER; result->intVal = add_int_int(lval, rval); break;
-                        case MINUS: result->type = INTEGER; result->intVal = sub_int_int(lval, rval); break;
-                        case MULT: result->type = INTEGER; result->intVal = mult_int_int(lval, rval); break;
-                        case DIV: result->type = INTEGER; result->intVal = div_int_int(lval, rval); break;
-                        case LESS: result->type = BOOL; result->boolVal = less_int_int(lval, rval); break;
-                        case GREAT: result->type = BOOL; result->boolVal = great_int_int(lval, rval); break;
-                        case LEQ: result->type = BOOL; result->boolVal = lessequal_int_int(lval, rval); break;
-                        case GEQ: result->type = BOOL; result->boolVal = greatequal_int_int(lval, rval); break;
-                        case EQUAL: result->type = BOOL; result->boolVal = equal_int_int(lval, rval); break;
-                        case NEQ: result->type = BOOL; result->boolVal = notequal_int_int(lval, rval); break;
+                        case PLUS: result->type = INTEGER; result->intVal = lval + rval; break;
+                        case MINUS: result->type = INTEGER; result->intVal = lval - rval; break;
+                        case MULT: result->type = INTEGER; result->intVal = lval * rval; break;
+                        case DIV: result->type = INTEGER; result->intVal = floor(lval / rval); break;
+                        case LESS: result->type = BOOL; result->boolVal = lval < rval; break;
+                        case GREAT: result->type = BOOL; result->boolVal = lval > rval; break;
+                        case LEQ: result->type = BOOL; result->boolVal = lval <= rval; break;
+                        case GEQ: result->type = BOOL; result->boolVal = lval >= rval; break;
+                        case EQUAL: result->type = BOOL; result->boolVal = lval == rval; break;
+                        case NEQ: result->type = BOOL; result->boolVal = lval != rval; break;
                         default: cout << "OPERATION NOT IMPLEMENTED";
                     }}
                     break;
@@ -568,16 +435,16 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
                     {int lval = left->intVal;
                     float rval = right->floatVal;
                     switch(optor) {
-                        case PLUS: result->type = FLOAT; result->floatVal = add_int_flt(lval, rval); break;
-                        case MINUS: result->type = FLOAT; result->floatVal = sub_int_flt(lval, rval); break;
-                        case MULT: result->type = FLOAT; result->floatVal = mult_int_flt(lval, rval); break;
-                        case DIV: result->type = FLOAT; result->floatVal = div_int_flt(lval, rval); break;
-                        case LESS: result->type = BOOL; result->boolVal = less_int_flt(lval, rval); break;
-                        case GREAT: result->type = BOOL; result->boolVal = great_int_flt(lval, rval); break;
-                        case LEQ: result->type = BOOL; result->boolVal = lessequal_int_flt(lval, rval); break;
-                        case GEQ: result->type = BOOL; result->boolVal = greatequal_int_flt(lval, rval); break;
-                        case EQUAL: result->type = BOOL; result->boolVal = equal_int_flt(lval, rval); break;
-                        case NEQ: result->type = BOOL; result->boolVal = notequal_int_flt(lval, rval); break;
+                        case PLUS: result->type = FLOAT; result->floatVal = lval + rval; break;
+                        case MINUS: result->type = FLOAT; result->floatVal = lval - rval; break;
+                        case MULT: result->type = FLOAT; result->floatVal = lval * rval; break;
+                        case DIV: result->type = FLOAT; result->floatVal = lval / rval; break;
+                        case LESS: result->type = BOOL; result->boolVal = lval < rval; break;
+                        case GREAT: result->type = BOOL; result->boolVal = lval > rval; break;
+                        case LEQ: result->type = BOOL; result->boolVal = lval <= rval; break;
+                        case GEQ: result->type = BOOL; result->boolVal = lval >= rval; break;
+                        case EQUAL: result->type = BOOL; result->boolVal = lval == rval; break;
+                        case NEQ: result->type = BOOL; result->boolVal = lval != rval; break;
                         default: cout << "OPERATION NOT IMPLEMENTED";
                     }}
                     break;
@@ -591,16 +458,16 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
                     {float lval = left->floatVal;
                     int rval = right->intVal;
                     switch(optor) {
-                        case PLUS: result->type = FLOAT; result->floatVal = add_int_flt(rval, lval); break;
-                        case MINUS: result->type = FLOAT; result->floatVal = sub_flt_int(lval, rval); break;
-                        case MULT: result->type = FLOAT; result->floatVal = mult_int_flt(rval, lval); break;
-                        case DIV: result->type = FLOAT; result->floatVal = div_flt_int(lval, rval); break;
-                        case LESS: result->type = BOOL; result->boolVal = ! less_int_flt(rval, lval); break;
-                        case GREAT: result->type = BOOL; result->boolVal = ! great_int_flt(rval, lval); break;
-                        case LEQ: result->type = BOOL; result->boolVal = ! lessequal_int_flt(rval, lval); break;
-                        case GEQ: result->type = BOOL; result->boolVal = ! greatequal_int_flt(rval, lval); break;
-                        case EQUAL: result->type = BOOL; result->boolVal = equal_int_flt(rval, lval); break;
-                        case NEQ: result->type = BOOL; result->boolVal = notequal_int_flt(rval, lval); break;
+                        case PLUS: result->type = FLOAT; result->floatVal = rval + lval; break;
+                        case MINUS: result->type = FLOAT; result->floatVal = lval - rval; break;
+                        case MULT: result->type = FLOAT; result->floatVal = rval * lval; break;
+                        case DIV: result->type = FLOAT; result->floatVal = lval / rval; break;
+                        case LESS: result->type = BOOL; result->boolVal = lval < rval; break;
+                        case GREAT: result->type = BOOL; result->boolVal = rval > lval; break;
+                        case LEQ: result->type = BOOL; result->boolVal = rval <= lval; break;
+                        case GEQ: result->type = BOOL; result->boolVal = rval >= lval; break;
+                        case EQUAL: result->type = BOOL; result->boolVal = rval == lval; break;
+                        case NEQ: result->type = BOOL; result->boolVal = rval != lval; break;
                         default: cout << "OPERATION NOT IMPLEMENTED";
                     }}
                     break;
@@ -608,16 +475,16 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
                     {float lval = left->floatVal;
                     float rval = right->floatVal;
                     switch(optor) {
-                        case PLUS: result->type = FLOAT; result->floatVal = add_flt_flt(lval, rval); break;
-                        case MINUS: result->type = FLOAT; result->floatVal = sub_flt_flt(lval, rval); break;
-                        case MULT: result->type = FLOAT; result->floatVal = mult_flt_flt(lval, rval); break;
-                        case DIV: result->type = FLOAT; result->floatVal = div_flt_flt(lval, rval); break;
-                        case LESS: result->type = BOOL; result->boolVal = less_flt_flt(lval, rval); break;
-                        case GREAT: result->type = BOOL; result->boolVal = great_flt_flt(lval, rval); break;
-                        case LEQ: result->type = BOOL; result->boolVal = lessequal_flt_flt(lval, rval); break;
-                        case GEQ: result->type = BOOL; result->boolVal = greatequal_flt_flt(lval, rval); break;
-                        case EQUAL: result->type = BOOL; result->boolVal = equal_flt_flt(lval, rval); break;
-                        case NEQ: result->type = BOOL; result->boolVal = notequal_flt_flt(lval, rval); break;
+                        case PLUS: result->type = FLOAT; result->floatVal = rval + lval; break;
+                        case MINUS: result->type = FLOAT; result->floatVal = lval - rval; break;
+                        case MULT: result->type = FLOAT; result->floatVal = rval * lval; break;
+                        case DIV: result->type = FLOAT; result->floatVal = lval / rval; break;
+                        case LESS: result->type = BOOL; result->boolVal = lval < rval; break;
+                        case GREAT: result->type = BOOL; result->boolVal = rval > lval; break;
+                        case LEQ: result->type = BOOL; result->boolVal = rval <= lval; break;
+                        case GEQ: result->type = BOOL; result->boolVal = rval >= lval; break;
+                        case EQUAL: result->type = BOOL; result->boolVal = rval == lval; break;
+                        case NEQ: result->type = BOOL; result->boolVal = rval != lval; break;
                         default: cout << "OPERATION NOT IMPLEMENTED";
                     }}
                     break;

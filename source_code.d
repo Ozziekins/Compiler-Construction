@@ -1,10 +1,6 @@
+var i;
 
-var AAA ;
-
-for AAA in 1..10 loop
-    var lol := AAA;
-    print lol;
+for i in 1..10 loop
+    print i + 10;
 end
-
-print AAA;
 
