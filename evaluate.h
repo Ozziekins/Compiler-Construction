@@ -21,6 +21,7 @@ public:
     complex_t *visit(NTuple *);
     complex_t *visit(NStatement *);
     complex_t *visit(NAssignment *);
+    complex_t *visit(NTAssignments *);
     complex_t *visit(NPrint *);
     complex_t *visit(NFunctionDefinition *);
     complex_t *visit(NFunctionCall *);

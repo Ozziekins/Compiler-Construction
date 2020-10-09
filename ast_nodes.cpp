@@ -6,7 +6,7 @@ case INTEGER: THING(complex->intVal); break;\
 case FLOAT:   THING(complex->floatVal); break;\
 case STRING:  THING(*(complex->stringVAl)); break;\
 case BOOL:    THING(complex->boolVal); break;\
-case ARRAY: cout << "\nARRAYS :- not implemented??\n"; exit(228); break;\
+case ARRAY:  cout << "\nARRAY :- not implemented??\n"; exit(228);break;\
 case TUPLE: cout << "\nTUPLE :- not implemented??\n";  exit(228);break;\
 case EMPTY: cout << "\nEMPTY :- not implemented??\n";  exit(228);break;\
 default: cout << "\nEMPTY :- not implemented??\n";\
@@ -71,6 +71,13 @@ complex_t * NAssignment::accept(Visitor &v) {
     return v.visit(this);
 }
 
+//NTAssignments
+complex_t * NTAssignments::accept(Visitor &v) {
+    return v.visit(this);
+}
+
+void push_assignment(NExpression *expression);
+void push_assignment(string *, NExpression *expression);
 
 //Print
 complex_t * NPrint::accept(Visitor &v) {

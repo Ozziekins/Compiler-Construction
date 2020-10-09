@@ -25,6 +25,7 @@
   NTuple *tuple;
   NStatement *statement;
   NAssignment *assignment;
+  NTAssignments *tassign;
   NPrint *print;
   NFunctionDefinition *funcdef;
   NParameters *param;
@@ -96,7 +97,7 @@
 %type <expression> Expression Relation Factor Term Unary Primary Literal 
 %type <funcdef> FunctionLiteral
 %type <expression> ArrayLiteral TupleLiteral
-//%type <statement> Expressions 
+%type <tassign> TupleTail 
 %type <statement> Assignment Return If Loop
 %type <print> Print 
 %type <expressions> Expressions 
@@ -204,20 +205,20 @@ Literal : TOKEN_INT_LITERAL                                   { $$ = new NIntege
         | FunctionLiteral                                     { $$ = $1; }
         ;
 ArrayLiteral : TOKEN_LSQUARE TOKEN_RSQUARE                    { $$ = new NArray(); }
-             | TOKEN_LSQUARE Expressions TOKEN_RSQUARE        { $$ = new NArray(); }
+             | TOKEN_LSQUARE Expressions TOKEN_RSQUARE        { $$ = new NArray($2); }
              ;
 TupleLiteral : TOKEN_LCURLY TOKEN_RCURLY                      { $$ = new NTuple(); } 
-             | TOKEN_LCURLY TOKEN_IDENTIFIER TupleTail        { $$ = new NTuple(); }
-             | TOKEN_LCURLY TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail      { $$ = new NTuple(); }
+             | TOKEN_LCURLY Expression TupleTail              { $3->push_assignment($2); $$ = new NTuple($3); }
+             | TOKEN_LCURLY TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail      { $5->push_assignment($2, $4); $$ = new NTuple($5); }
              ;
-TupleTail : TOKEN_RCURLY
-          | TOKEN_COMMA TOKEN_IDENTIFIER TupleTail
-          | TOKEN_COMMA TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail
+TupleTail : TOKEN_RCURLY                                                            {$$ = new NTAssignments();}
+          | TOKEN_COMMA Expression TupleTail                                        {$$ = $3; $$->push_assignment($2);}
+          | TOKEN_COMMA TOKEN_IDENTIFIER TOKEN_ASSIGNMENT Expression TupleTail      {$$ = $5; $$->push_assignment($2, $4);}
           ;
 FunctionLiteral : TOKEN_FUNC TOKEN_IS Body TOKEN_END                          { $$ = new NFunctionDefinition();  $$->setBody($3); }
                 | TOKEN_FUNC TOKEN_FUNCTOR Expression                         { $$ = new NFunctionDefinition();  $$->setExpression($3); }
-                | TOKEN_FUNC Parameters TOKEN_IS Body TOKEN_END               { $$ = new NFunctionDefinition(); $$->setParameters($2); $$->setBody($4); }
-                | TOKEN_FUNC Parameters TOKEN_FUNCTOR Expression              { $$ = new NFunctionDefinition(); $$->setParameters($2); $$->setExpression($4); }
+                | TOKEN_FUNC Parameters TOKEN_IS Body TOKEN_END               { $$ = new NFunctionDefinition();  $$->setParameters($2); $$->setBody($4); }
+                | TOKEN_FUNC Parameters TOKEN_FUNCTOR Expression              { $$ = new NFunctionDefinition();  $$->setParameters($2); $$->setExpression($4); }
                 ;
 Parameters : TOKEN_LPAREN Identifiers TOKEN_RPAREN                            { $$ = $2; }
            ;

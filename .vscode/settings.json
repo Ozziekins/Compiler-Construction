@@ -14,7 +14,8 @@
         "deque": "cpp",
         "list": "cpp",
         "string": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "complex": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }

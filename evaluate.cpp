@@ -81,13 +81,37 @@ complex_t *Evaluate::visit(NDeclaration *decl){
 }
 
 
-complex_t *Evaluate::visit(NArray *){
-    cout << "NArray" << endl;
-    return nullptr;
+complex_t *Evaluate::visit(NArray *array){
+    if (DEBUG) cout << "Parsed NArray" << endl;
+    auto result = create_type();
+    auto exp = array->expressions;
+    result->type = ARRAY;
+    vector<pair<int, complex_t*>> farray;
+    if (exp != nullptr)
+        for (size_t i = 0; i < exp->expressions.size(); i++)
+        {
+            auto ivalue = exp->expressions[i]->accept(*this);
+            cout << i+1 << type_name(*ivalue) << endl;
+            farray.push_back({i+1, ivalue});
+        }
+    result->arrayVal = &farray;
+    return result;
 }
 
-complex_t *Evaluate::visit(NTuple *){
-    cout << "NTuple" << endl;
+complex_t *Evaluate::visit(NTuple *tuple){
+    if (DEBUG) cout << "Parsed NTuple" << endl;
+    // auto result = create_type();
+    // auto exp = tuple->expressions;
+    // result->type = ARRAY;
+    // vector<pair<int, complex_t*>> farray;
+    // if (exp != nullptr)
+    //     for (size_t i = 0; i < exp->expressions.size(); i++)
+    //     {
+    //         auto ivalue = exp->expressions[i]->accept(*this);
+    //         cout << i+1 << type_name(*ivalue) << endl;
+    //         farray.push_back({i+1, ivalue});
+    //     }
+    // result->arrayVal = &farray;
     return nullptr;
 }
 
@@ -116,6 +140,23 @@ complex_t *Evaluate::visit(NAssignment *assignmnt){
 }
 
 
+complex_t *Evaluate::visit(NTAssignments *tassignmnt){
+
+    // complex_t *var = tassignmnt->identifier->accept(*this);
+    // complex_t *newvar = tassignmnt->expression->accept(*this);
+
+    // #define THING(x) cout << x;
+    // if (DEBUG){
+    //     cout << "Parsed NTAssignments and changed newvar from {";
+    //     DO_THING(var, THING);
+    //     cout << "} to {";
+    //     DO_THING(newvar, THING);
+    //     cout<< "}" << endl;
+    // }
+    // #undef THING
+    // *var = *newvar;
+    return nullptr;
+}
 
 
 complex_t *Evaluate::visit(NPrint *print){

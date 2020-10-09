@@ -43,6 +43,13 @@ complex_t *Traverse::visit(NAssignment *assignmnt){
     return nullptr;
 }
 
+complex_t *Traverse::visit(NTAssignments *tassignmnt){
+    cout << "NTAssignments" << endl;
+    // assignmnt->identifier->accept(*this);
+    // assignmnt->expression->accept(*this);
+    return nullptr;
+}
+
 complex_t *Traverse::visit(NPrint *print){
     cout << "NPrint" << endl;
     for(int i = 0; i < (int)print->expressions->expressions.size(); i++)

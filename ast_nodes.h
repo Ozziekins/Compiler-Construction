@@ -16,8 +16,8 @@ struct complexTypes{
         float floatVal;
         string *stringVAl;
         bool boolVal;
-        vector<complex_t> *arrayVal;
-        vector<pair<string, complex_t>> *tupleVal;
+        vector<pair<int, complex_t*>> *arrayVal;
+        vector<pair<string, complex_t*>> *tupleVal;
     };
 };
 
@@ -35,6 +35,7 @@ class NTuple;
 
 class NStatement;
 class NAssignment;
+class NTAssignments;
 class NPrint;
 class NFunctionDefinition;
 class NFunctionCall;
@@ -70,6 +71,7 @@ public:
     virtual complex_t *visit(NTuple *) = 0;
     virtual complex_t *visit(NStatement *) = 0;
     virtual complex_t *visit(NAssignment *) = 0;
+    virtual complex_t *visit(NTAssignments *) = 0;
     virtual complex_t *visit(NPrint *) = 0;
     virtual complex_t *visit(NFunctionDefinition *) = 0;
     virtual complex_t *visit(NFunctionCall *) = 0;
@@ -231,11 +233,14 @@ public:
     complex_t *accept(Visitor &);
 };
 
-// struct print_t
-// {
-//     NStringLiteral *string_literal;
-//     NExpression *expression;
-// };
+class NTAssignments : public NStatement {
+private:
+    friend class Evaluate; 
+    friend class Traverse;
+public:
+    vector<pair<string *, NExpression *expression>> list_pairs;
+    complex_t *accept(Visitor &);
+};
 
 //Done
 class NPrint : public NStatement {
@@ -364,6 +369,8 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
+    NExpressions *expressions = nullptr;
+    NArray(NExpressions * exp) : expressions(exp) {}
     NArray() {}
     complex_t *accept(Visitor &);
 };
@@ -373,7 +380,9 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    NTuple(){}
+    NTAssignments *pair;
+    void push_assignment(NExpression *, NExpressions *);
+    void push_assignment(NExpression *);
     complex_t *accept(Visitor &);
 };
 
