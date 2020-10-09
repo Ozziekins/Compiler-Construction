@@ -5,21 +5,9 @@
 using namespace std;
 
 // ADDED EMPTY AS -1
-typedef enum types { EMPTY = -1, INTEGER = 0, FLOAT, STRING, BOOL, ARRAY, TUPLE } type_t;
+typedef enum types { EMPTY = -1, INTEGER = 0, FLOAT, STRING, BOOL, ARRAY, TUPLE, FUNCTION } type_t;
 typedef enum Operators {PLUS = 1, MINUS, MULT, DIV, LESS, GREAT, LEQ, GEQ, EQUAL, NEQ, AND, OR, XOR, NOT } Operators;
-typedef struct complexTypes complex_t;
 
-struct complexTypes{
-    type_t type;
-    union {
-        int intVal;
-        float floatVal;
-        string *stringVAl;
-        bool boolVal;
-        vector<complex_t> *arrayVal;
-        vector<pair<string, complex_t>> *tupleVal;
-    };
-};
 
 class Node;
 class NProgram;
@@ -59,6 +47,21 @@ class NReadIntInput;
 class NReadRealInput;
 class NReadStringInput;
 
+typedef struct complexTypes complex_t;
+
+struct complexTypes{
+    type_t type;
+    union {
+        int intVal;
+        float floatVal;
+        string *stringVAl;
+        bool boolVal;
+        vector<complex_t> *arrayVal;
+        vector<pair<string, complex_t>> *tupleVal;
+        NFunctionDefinition* function;
+    };
+};
+
 class Visitor
 {
 public:
@@ -74,7 +77,7 @@ public:
     virtual complex_t *visit(NFunctionDefinition *) = 0;
     virtual complex_t *visit(NFunctionCall *) = 0;
     virtual complex_t *visit(NExpressions *) = 0;
-    virtual complex_t *visit(NParameters *) = 0;
+    virtual complex_t *visit(NParameters *, NExpressions *) = 0;
     virtual complex_t *visit(NIf *) = 0;
     virtual complex_t *visit(NIfElse *) = 0;
     virtual complex_t *visit(NLoop *) = 0;
@@ -264,7 +267,7 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    NParameters *arguments;
+    NParameters *arguments = nullptr;
     NBlock *block = nullptr;
     NExpression *expression = nullptr;
     void setBody(NBlock *block);
@@ -278,9 +281,9 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    vector<NExpression *> arguments;
+    NExpressions * arguments;
     NIdentifier *id;
-    NFunctionCall(NIdentifier *id, vector<NExpression *> arguments) : id(id), 
+    NFunctionCall(NIdentifier *id, NExpressions * arguments) : id(id), 
     arguments(arguments) {}
     complex_t *accept(Visitor &);
 };
@@ -292,7 +295,7 @@ private:
 public:
     vector<NIdentifier *> arguments;
     void push_parameter(NIdentifier * argument);
-    complex_t *accept(Visitor &);
+    complex_t *accept(Visitor &, NExpressions*);
 };
 
 //Done

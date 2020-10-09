@@ -52,11 +52,11 @@ complex_t *Traverse::visit(NPrint *print){
 
 complex_t *Traverse::visit(NFunctionDefinition *funcdef){
     cout << "NFunctionDefinition" << endl;
-    funcdef->arguments->accept(*this);
-    if (funcdef->block)
-        funcdef->block->accept(*this);
-    if (funcdef->expression)
-        funcdef->expression->accept(*this);
+    // funcdef->arguments->accept(*this);
+    // if (funcdef->block)
+    //     funcdef->block->accept(*this);
+    // if (funcdef->expression)
+    //     funcdef->expression->accept(*this);
     return nullptr;
 }
 
@@ -65,10 +65,10 @@ complex_t *Traverse::visit(NFunctionCall *funcall){
     return nullptr;
 }
 
-complex_t *Traverse::visit(NParameters *params) {
-    cout << "NParameter" << endl;
-    for(int i = 0; i < (int)params->arguments.size(); i++)
-        params->arguments[i]->accept(*this);
+complex_t *Traverse::visit(NParameters *params,  NExpressions *exps) {
+    // cout << "NParameter" << endl;
+    // for(int i = 0; i < (int)params->arguments.size(); i++)
+    //     params->arguments[i]->accept(*this, exps);
     return nullptr;
 }
 

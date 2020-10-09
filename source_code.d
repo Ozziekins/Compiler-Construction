@@ -1,15 +1,12 @@
-var this := 7;
-var that := 17.9;
-var those := "anything";
-var e;
+var factorial := func(n) is 
+    if n = 0 then		// Brackets are omitted intentionally
+    	return 1;
+    else
+        return n * factorial(n - 1);
+    end
+end;
+var lambdafunc := func(x) => x/1.4;
 
-var r := this is real;    //TRUE
-var s := that is real;      //TRUE
-var t := those is string;  //TRUE
-var u := e is empty;        //TRUE
+print lambdafunc(4);
 
-
-print "t: ", t;
-print "s: ", s;
-print "r: ", r;
-print "u: ", u;
+print  factorial(4), " The output should be 24/1.4 ~= 17,142";
