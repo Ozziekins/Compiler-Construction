@@ -47,8 +47,8 @@ complex_t *Evaluate::visit(NProgram *program){
 }
 
 complex_t *Evaluate::visit(NBlock *block){
-
-    scopes.push_front( new map<string/*NIdentifier.name* */, complex_t *>() );
+ 
+    scopes.push_front( new map<string, complex_t *>() );
 
     for(int i = 0; i < (int)block->instructions.size(); i++) {
         block->instructions[i]->accept(*this);
@@ -59,7 +59,7 @@ complex_t *Evaluate::visit(NBlock *block){
 
 complex_t *Evaluate::visit(NDeclaration *decl){
     
-    if (DEBUG) cout << "Parsed NDeclaration "; //<< endl;
+    if (DEBUG) cout << "Parsed NDeclaration "; 
     string ident_name = *(decl->identifier->name);
     if (DEBUG) cout << "of variable [" << ident_name << "] : ";
 
@@ -130,8 +130,8 @@ complex_t *Evaluate::visit(NPrint *print){
 
     if (DEBUG) cout << "Parsed NPrint" << endl;
     
-    for(int i = 0; i < (int)print->expressions.size(); i++)
-        DO_THING(print->expressions[i]->accept(*this),THING)
+    for(int i = 0; i < (int)print->expressions->expressions.size(); i++)
+        DO_THING(print->expressions->expressions[i]->accept(*this),THING)
 
     cout << endl;
     #undef  THING
@@ -140,7 +140,7 @@ complex_t *Evaluate::visit(NPrint *print){
 }
 
 complex_t *Evaluate::visit(NFunctionDefinition *funcdef){
-    cout << "NFunctionDefinition" << endl;
+    if (DEBUG) cout << "NFunctionDefinition" << endl;
     funcdef->arguments->accept(*this);
     if (funcdef->block)
         funcdef->block->accept(*this);
@@ -149,8 +149,13 @@ complex_t *Evaluate::visit(NFunctionDefinition *funcdef){
     return nullptr;
 }
 
+complex_t *Evaluate::visit(NFunctionCall *funcall){
+    if (DEBUG) cout << "NFunctionCall" << endl;
+    return nullptr;
+}
+
 complex_t *Evaluate::visit(NParameters *params) {
-    cout << "NParameter" << endl;
+    if (DEBUG) cout << "NParameter" << endl;
     for(int i = 0; i < (int)params->arguments.size(); i++)
         params->arguments[i]->accept(*this);
     return nullptr;
@@ -212,7 +217,7 @@ complex_t *Evaluate::visit(NLoop *loop){
     for(int i = 0; i < (int)loop->block->instructions.size(); i++)\
         loop->block->instructions[i]->accept(*this);\
 
-    scopes.push_front( new map<string/*NIdentifier.name* */, complex_t *>() );
+    scopes.push_front( new map<string, complex_t *>() );
     DO_THING_NUM(loop->condition->accept(*this), THING)
     scopes.pop_front();
     #undef THING
@@ -233,7 +238,7 @@ complex_t *Evaluate::visit(NRangeLoop *loop){
 
         complex->type = INTEGER;
 
-        scopes.push_front( new map<string/*NIdentifier.name* */, complex_t *>() );
+        scopes.push_front( new map<string, complex_t *>() );
         for( complex->intVal = from->intVal; complex->intVal <= to->intVal ; ++(complex->intVal) )
             for(int i = 0; i < (int)loop->block->instructions.size(); i++)
                 loop->block->instructions[i]->accept(*this);
@@ -257,12 +262,17 @@ complex_t *Evaluate::visit(NExpression *){
     return nullptr;
 }
 
+complex_t *Evaluate::visit(NExpressions *){
+    cout << "NExpressions" << endl;
+    return nullptr;
+}
+
+
 complex_t *Evaluate::visit(NIdentifier *id){
     //TODO PROPER SYMBOLTABLES + SCOPE interactions
 
     string name = *(id->name);
     if (DEBUG) cout << "Parsed NIdentifier [" << name << "]" << endl;
-
 
     for (auto& x : scopes)
         if ( (*x).count(*(id->name)) != 0){

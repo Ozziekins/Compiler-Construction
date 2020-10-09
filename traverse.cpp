@@ -45,8 +45,8 @@ complex_t *Traverse::visit(NAssignment *assignmnt){
 
 complex_t *Traverse::visit(NPrint *print){
     cout << "NPrint" << endl;
-    for(int i = 0; i < (int)print->expressions.size(); i++)
-        print->expressions[i]->accept(*this);
+    for(int i = 0; i < (int)print->expressions->expressions.size(); i++)
+        print->expressions->expressions[i]->accept(*this);
     return nullptr;
 }
 
@@ -57,6 +57,11 @@ complex_t *Traverse::visit(NFunctionDefinition *funcdef){
         funcdef->block->accept(*this);
     if (funcdef->expression)
         funcdef->expression->accept(*this);
+    return nullptr;
+}
+
+complex_t *Traverse::visit(NFunctionCall *funcall){
+    cout << "NFunctionCall" << endl;
     return nullptr;
 }
 
@@ -106,6 +111,11 @@ complex_t *Traverse::visit(NReturn *retstmt){
 
 complex_t *Traverse::visit(NExpression *){
     cout << "NExpression" << endl;
+    return nullptr;
+}
+
+complex_t *Traverse::visit(NExpressions *){
+    cout << "NExpressions" << endl;
     return nullptr;
 }
 

@@ -43,11 +43,7 @@
   NTypeCheck *typecheck;
   NUnary *unary;
   // NReadInput *readinput;
-  std::vector<NDeclaration*> *variableVector;
-  std::vector<NStatement*> *statementVector;
-  std::vector<NExpression*> *expressionVector;
-  std::vector<NIdentifier*> *paramVector;
-
+  NExpressions *expressions;
   std::string *string;
   int token;
 }
@@ -102,7 +98,8 @@
 %type <expression> ArrayLiteral TupleLiteral
 //%type <statement> Expressions 
 %type <statement> Assignment Return If Loop
-%type <print> Print Expressions 
+%type <print> Print 
+%type <expressions> Expressions 
 %type <param> Identifiers Parameters
 %type <string> TypeIndicator
 %start Program
@@ -158,15 +155,12 @@ Unary : Primary                                 { $$ = $1; }
       | TOKEN_NOT Primary TOKEN_IS TypeIndicator            { $$ = new NTypeCheck(NOT, $2, $4); }
       | Primary TOKEN_IS TypeIndicator                      { $$ = new NTypeCheck($1, $3); }
       ;
-Primary : TOKEN_IDENTIFIER Tail                             { $$ = new NIdentifier($1); }
-
+Primary : TOKEN_IDENTIFIER                                              { $$ = new NIdentifier($1); }
+        | TOKEN_IDENTIFIER TOKEN_DOT TOKEN_INT_LITERAL                  //{ $$ = new NTupleElementIndex(new NIdentifier($1), $3); }
+        | TOKEN_IDENTIFIER TOKEN_DOT TOKEN_IDENTIFIER                   //{ $$ = new NTupleElementName(new NIdentifier($1), $3); }
+        | TOKEN_IDENTIFIER TOKEN_LSQUARE Expression TOKEN_RSQUARE       //{ $$ = new NArrayElement(new NIdentifier($1), $3); }
+        | TOKEN_IDENTIFIER TOKEN_LPAREN Expressions TOKEN_RPAREN        //{ $$ = new NFunctionCall(new NIdentifier($1), $3); }
         ;
-Tail : /* empty */
-     | TOKEN_DOT TOKEN_INT_LITERAL                   
-     | TOKEN_DOT TOKEN_IDENTIFIER              
-     | TOKEN_LSQUARE Expression TOKEN_RSQUARE   
-     | TOKEN_LPAREN Expressions TOKEN_RPAREN    
-     ;
 Statement : Assignment                                  { $$ = $1; }
           | Print                                       { $$ = $1; }
           | Return                                      { $$ = $1; }
@@ -175,10 +169,10 @@ Statement : Assignment                                  { $$ = $1; }
           ;
 Assignment : Primary TOKEN_ASSIGNMENT Expression TOKEN_SEMI   { $$ = new NAssignment($1, $3); }   
            ;
-Print : TOKEN_PRINT Expressions TOKEN_SEMI                    { $$ = $2; }         
+Print : TOKEN_PRINT Expressions TOKEN_SEMI                    { $$ = new NPrint($2); }         
       ;
-Expressions : Expression                                      { $$ = new NPrint(); $$->push_back($1); }
-            | Expression TOKEN_COMMA Expressions              { $$ = $3; $$->push_back($1); }
+Expressions : Expression                                      { $$ = new NExpressions(); $$->push_argument($1); }
+            | Expression TOKEN_COMMA Expressions              { $$ = $3; $$->push_argument($1); }
             ;
 Return : TOKEN_RETURN Expression TOKEN_SEMI                   { $$ = new NReturn($2); }             
        | TOKEN_RETURN TOKEN_SEMI                              { $$ = new NReturn(); }  

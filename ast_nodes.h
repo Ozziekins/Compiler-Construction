@@ -37,6 +37,8 @@ class NStatement;
 class NAssignment;
 class NPrint;
 class NFunctionDefinition;
+class NFunctionCall;
+class NExpressions;
 class NParameters;
 class NIf;
 class NIfElse;
@@ -70,6 +72,8 @@ public:
     virtual complex_t *visit(NAssignment *) = 0;
     virtual complex_t *visit(NPrint *) = 0;
     virtual complex_t *visit(NFunctionDefinition *) = 0;
+    virtual complex_t *visit(NFunctionCall *) = 0;
+    virtual complex_t *visit(NExpressions *) = 0;
     virtual complex_t *visit(NParameters *) = 0;
     virtual complex_t *visit(NIf *) = 0;
     virtual complex_t *visit(NIfElse *) = 0;
@@ -239,10 +243,21 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    vector<NExpression *> expressions;
-    void push_back(NExpression *expression);
+    NExpressions *expressions;
+    NPrint(NExpressions * expressions): expressions(expressions) {}
     complex_t *accept(Visitor &);
 };
+
+class NExpressions : public NExpression {
+private:
+    friend class Evaluate; 
+    friend class Traverse;
+public:
+    vector<NExpression *> expressions;
+    void push_argument(NExpression * argument);
+    complex_t *accept(Visitor &);
+};
+
 
 class NFunctionDefinition : public NExpression {
 private:
@@ -255,6 +270,18 @@ public:
     void setBody(NBlock *block);
     void setExpression(NExpression *expression);
     void setParameters(NParameters *arguments);
+    complex_t *accept(Visitor &);
+};
+
+class NFunctionCall : public NExpression {
+private:
+    friend class Evaluate; 
+    friend class Traverse;
+public:
+    vector<NExpression *> arguments;
+    NIdentifier *id;
+    NFunctionCall(NIdentifier *id, vector<NExpression *> arguments) : id(id), 
+    arguments(arguments) {}
     complex_t *accept(Visitor &);
 };
 

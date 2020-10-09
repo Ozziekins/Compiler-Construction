@@ -9,6 +9,7 @@ case BOOL:    THING(complex->boolVal); break;\
 case ARRAY: cout << "\nARRAYS :- not implemented??\n"; exit(228); break;\
 case TUPLE: cout << "\nTUPLE :- not implemented??\n";  exit(228);break;\
 case EMPTY: cout << "\nEMPTY :- not implemented??\n";  exit(228);break;\
+default: cout << "\nEMPTY :- not implemented??\n";\
 }\
 
 #define DO_THING_NUM(complex, THING) \
@@ -16,6 +17,7 @@ switch( complex->type ){ \
 case INTEGER: THING(complex->intVal); break;\
 case FLOAT:   THING(complex->floatVal); break;\
 case BOOL:    THING(complex->boolVal); break;\
+default: cout << "\nEMPTY :- not implemented??\n";\
 }\
 
 
@@ -71,11 +73,6 @@ complex_t * NAssignment::accept(Visitor &v) {
 
 
 //Print
-void NPrint::push_back(NExpression *expression) {
-    expressions.insert(expressions.begin(),expression);
-    // expressions.push_back(expression);
-}
-
 complex_t * NPrint::accept(Visitor &v) {
     return v.visit(this);
 }
@@ -235,12 +232,25 @@ complex_t * NFunctionDefinition::accept(Visitor &v) {
 }
 
 
+//FunctionCall
+complex_t * NFunctionCall::accept(Visitor &v) {
+    return v.visit(this);
+}
 
 //Parameters
 void NParameters::push_parameter(NIdentifier * argument) {
     this->arguments.push_back(argument);
 }
 complex_t * NParameters::accept(Visitor &v) {
+    return v.visit(this);
+}
+
+//Expressions
+void NExpressions::push_argument(NExpression * argument) {
+    this->expressions.insert(this->expressions.begin(), argument);
+}
+
+complex_t * NExpressions::accept(Visitor &v) {
     return v.visit(this);
 }
 

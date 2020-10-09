@@ -14,7 +14,9 @@ public:
     complex_t *visit(NAssignment *);
     complex_t *visit(NPrint *);
     complex_t *visit(NFunctionDefinition *);
+    complex_t *visit(NFunctionCall *);
     complex_t *visit(NParameters *);
+    complex_t *visit(NExpressions *);
     complex_t *visit(NIf *);
     complex_t *visit(NIfElse *);
     complex_t *visit(NLoop *);
