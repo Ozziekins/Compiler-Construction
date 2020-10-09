@@ -323,9 +323,20 @@ complex_t *Evaluate::visit(NStringLiteral *slit){
     return sval;
 }
 
-complex_t *Evaluate::visit(NTypeCheck *){
-     cout << "NTypeCheck" << endl;
-    return nullptr;
+complex_t *Evaluate::visit(NTypeCheck * check){
+    if (DEBUG) cout << "Parsed NTypeCheck" << endl;
+
+    auto value = check->primary->accept(*this);
+
+    if ( check->op == NOT && value->type != BOOL  ){
+        cout << "SEMANTIC? ERROR:\n\t USING NOT ON NON-BOOLEAN LITERALS";
+    } 
+
+    auto res = create_type();
+    res->type = BOOL;
+    res->boolVal = ( check->type == value->type ); 
+
+    return res;
 }
 
 
@@ -363,12 +374,20 @@ complex_t *Evaluate::visit(NUnary *unary){
             exit(228);
         }
     }
+    else if (value->type == BOOL){
+        if (op == NOT)
+            value->boolVal = !exp->boolVal;
+        else{
+            cout << "Semantic? Error:\n\tILLEGAL UNARY OPERATION: " << op << endl;
+            exit(228);
+        }
+    }
     else{
         cout << "Semantic? Error:\n\tILLEGAL TYPE FOUND IN UNARY OPERATION\n";
         exit(228);
     }
 
-    cout << endl;
+    if (DEBUG) cout << endl;
     return value;
 }
 

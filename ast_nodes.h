@@ -349,12 +349,12 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    int op;
+    int op = 0;
     NExpression *primary;
-    string *type;
-    NTypeCheck(int op, NExpression *expression, string *type) : 
+    int type;
+    NTypeCheck(int op, NExpression *expression, int type) : 
         op(op), primary(expression), type(type) {}
-    NTypeCheck(NExpression *expression, string *type) : 
+    NTypeCheck(NExpression *expression, int type) : 
         primary(expression), type(type) {}
     complex_t *accept(Visitor &);
 };

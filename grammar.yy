@@ -101,7 +101,7 @@
 %type <print> Print 
 %type <expressions> Expressions 
 %type <param> Identifiers Parameters
-%type <string> TypeIndicator
+%type <token> TypeIndicator
 %start Program
 
 %%
@@ -186,13 +186,13 @@ Loop : TOKEN_WHILE Expression LoopBody                                          
      ; 
 LoopBody : TOKEN_LOOP Body TOKEN_END                          { $$ = $2; }
          ;
-TypeIndicator : TOKEN_INT                                     { $$ = $1; }                   
-              | TOKEN_REAL                                    { $$ = $1; }
-              | TOKEN_BOOL                                    { $$ = $1; }
-              | TOKEN_STRING                                  { $$ = $1; }
-              | TOKEN_EMPTY                                   { $$ = $1; }
-              | TOKEN_ARRAY                                   { $$ = $1; }
-              | TOKEN_TUPLE                                   { $$ = $1; }
+TypeIndicator : TOKEN_INT                                     { $$ = INTEGER; }                   
+              | TOKEN_REAL                                    { $$ = FLOAT; }
+              | TOKEN_BOOL                                    { $$ = BOOL; }
+              | TOKEN_STRING                                  { $$ = STRING; }
+              | TOKEN_EMPTY                                   { $$ = EMPTY; }
+              | TOKEN_ARRAY                                   { $$ = ARRAY; }
+              | TOKEN_TUPLE                                   { $$ = TUPLE; }
               ;
 Literal : TOKEN_INT_LITERAL                                   { $$ = new NIntegerLiteral(atol($1->c_str())); }
         | TOKEN_REAL_LITERAL                                  { $$ = new NReal(atof($1->c_str())); }
