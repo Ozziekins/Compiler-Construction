@@ -608,8 +608,8 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
         case BOOL:
             switch(right_t) {
                 case BOOL:
-                    {bool lval = left->intVal;
-                    bool rval = right->intVal;
+                    {bool lval = left->boolVal;
+                    bool rval = right->boolVal;
                     switch(optor) {
                         case AND: result->type = BOOL; result->boolVal = lval && rval; break;
                         case OR: result->type = BOOL; result->boolVal = lval || rval; break;
@@ -643,13 +643,8 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
                 string lval = *(left->stringVAl);
                 string rval = *(right->stringVAl);
                 switch(optor) {
-                    case PLUS: 
-                        result->type = STRING;
-                        result->stringVAl = new string(lval + rval); 
-                        break;
-                    default: 
-                        cout << "OPERATION NOT IMPLEMENTED";
-                        break;
+                    case PLUS: result->type = STRING; result->stringVAl = new string(lval + rval);break;
+                    default: cout << "OPERATION NOT IMPLEMENTED"; break;
                 }
             }
             else{

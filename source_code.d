@@ -1,25 +1,11 @@
-var this := 7;
-var that := 17.9;
-var those := "anything";
-var e;
+var factorial := func(n) is 
+    if n = 0 then		// Brackets are omitted intentionally
+    	return 1;
+    else
+        return n * factorial(n - 1);
+    end
+end;
 
-var r := this is int;    //TRUE
-var s := that is real;      //TRUE
-var t := those is string;  //TRUE
-var u := e is empty;        //TRUE
+var lambdafunc := func(x)=> x/1.4;
 
-//var sas := empty;
-//var syas := empty;
-//print sas + syas;	//ERROR
-
-print r;
-print s;
-print t;
-print u;
-
-var a := true and true;
-var b := not true;
-var c := false xor false;
-var d := true or true;
-
-print "if " , a , " then not " , b , " but " + " if " , c , " then " , d;
+print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17,142";
