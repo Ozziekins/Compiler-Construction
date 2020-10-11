@@ -89,7 +89,7 @@ private:
             {"<",TOKEN_LESS},
             {"<=",TOKEN_LEQ},
             {">",TOKEN_GREAT},
-            {"=>",TOKEN_GEQ},
+            {">=",TOKEN_GEQ},
             {"+=",TOKEN_INCREMENT},
             {"readString",TOKEN_READSTRING},
             {"readInt",TOKEN_READINT},

@@ -766,7 +766,20 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
                     cout << "OPERATION NOT POSSIBLE";
             }
             break;
-        default: cout << "OPERATION NOT IMPLEMENTED";
+        case STRING:
+            if (right_t == STRING ){
+                string lval = *(left->stringVAl);
+                string rval = *(right->stringVAl);
+                switch(optor) {
+                    case PLUS: result->type = STRING; result->stringVAl = new string(lval + rval);break;
+                    default: cout << "OPERATION NOT IMPLEMENTED"; break;
+                }
+            }
+            else{
+                cout << "\nILLEGEAL OPERATION ON STRING\n";
+            }
+            break;
+        default: cout << "\nOPERATION ON THIS TYPE NOT IMPLEMENTED\n";
     }
     return result;
 }
