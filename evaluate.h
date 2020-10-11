@@ -18,6 +18,9 @@ public:
     complex_t *visit(NBlock *);
     complex_t *visit(NDeclaration *);
     complex_t *visit(NArray *);
+    complex_t *visit(NArrayElement *);
+    complex_t *visit(NTupleElementIndex *);
+    complex_t *visit(NTupleElementName *);
     complex_t *visit(NTuple *);
     complex_t *visit(NStatement *);
     complex_t *visit(NAssignment *);

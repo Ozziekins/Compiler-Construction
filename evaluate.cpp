@@ -1,15 +1,25 @@
+#include <cctype>
+
 // A very bad move from me to declare such a global variable
 bool DEBUG = false;
 
-// OPERATIONS ON ARRAY _ COMPLEX_T
-vector<complex_t> *add_arr_int(vector<complex_t> *lval, complex_t rval) {
-    lval->push_back(rval);
+// OPERATIONS ON ARRAY _ ARRAY
+map<int, complex_t*> *add_arr_arr(map<int, complex_t*> *lval, map<int, complex_t*> *rval) {
+    auto size = lval->size();
+    int counter = 1;
+    for( auto i : *rval) {
+        lval->insert({size + counter, i.second});
+        counter++;
+    }
     return lval;
 }
 
+
 // TUPLE ADDITION
-
-
+vector<pair<string, complex_t*>> *add_tup_tup(vector<pair<string, complex_t*>> *lval, vector<pair<string, complex_t*>> *rval) {
+    for (auto item : *rval) lval->push_back(item);
+    return lval;
+}
 
 void Evaluate::print_symbol_table() {
     int depth = 0;
@@ -34,6 +44,8 @@ void Evaluate::print_symbol_table() {
                     cout << "| " << x.first << endl << "| " << endl;
                 else if (!string(type_name(*x.second)).compare("EMPTY"))
                     cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
+                else if (!string(type_name(*x.second)).compare("TUPLE"))
+                    cout << "| " << x.first << endl << "| " << endl;
                 else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
                 //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
@@ -88,36 +100,34 @@ complex_t *Evaluate::visit(NDeclaration *decl){
 
 complex_t *Evaluate::visit(NArray *array){
     if (DEBUG) cout << "Parsed NArray" << endl;
-    auto result = create_type();
+    complex_t * result = create_type();
     auto exp = array->expressions;
     result->type = ARRAY;
-    vector<pair<int, complex_t*>> farray;
+    map<int, complex_t*> *farray = new map<int, complex_t*>();
     if (exp != nullptr)
         for (size_t i = 0; i < exp->expressions.size(); i++)
         {
             auto ivalue = exp->expressions[i]->accept(*this);
-            cout << i+1 << type_name(*ivalue) << endl;
-            farray.push_back({i+1, ivalue});
+            farray->insert({i+1, ivalue});
         }
-    result->arrayVal = &farray;
+    result->arrayVal = farray;
     return result;
 }
 
 complex_t *Evaluate::visit(NTuple *tuple){
     if (DEBUG) cout << "Parsed NTuple" << endl;
-    // auto result = create_type();
-    // auto exp = tuple->expressions;
-    // result->type = ARRAY;
-    // vector<pair<int, complex_t*>> farray;
-    // if (exp != nullptr)
-    //     for (size_t i = 0; i < exp->expressions.size(); i++)
-    //     {
-    //         auto ivalue = exp->expressions[i]->accept(*this);
-    //         cout << i+1 << type_name(*ivalue) << endl;
-    //         farray.push_back({i+1, ivalue});
-    //     }
-    // result->arrayVal = &farray;
-    return nullptr;
+    auto result = create_type();
+    result->type = TUPLE;
+    auto tple = tuple->pairs;
+    vector<pair<string, complex_t*>> *storetple = new vector<pair<string, complex_t*>>();
+    if (tple != nullptr) {
+        for(auto it = tple->list_pairs.begin(); it != tple->list_pairs.end(); ++it) {
+            auto value =  it->second->accept(*this);
+            storetple->push_back({*(it->first), value});
+        }
+    }
+    result->tupleVal = storetple;
+    return result;
 }
 
 complex_t *Evaluate::visit(NStatement *stmt){
@@ -147,23 +157,90 @@ complex_t *Evaluate::visit(NAssignment *assignmnt){
 
 complex_t *Evaluate::visit(NTAssignments *tassignmnt){
 
-    // complex_t *var = tassignmnt->identifier->accept(*this);
-    // complex_t *newvar = tassignmnt->expression->accept(*this);
-
-    // #define THING(x) cout << x;
-    // if (DEBUG){
-    //     cout << "Parsed NTAssignments and changed newvar from {";
-    //     DO_THING(var, THING);
-    //     cout << "} to {";
-    //     DO_THING(newvar, THING);
-    //     cout<< "}" << endl;
-    // }
-    // #undef THING
-    // *var = *newvar;
     return nullptr;
 }
 
+complex_t *Evaluate::visit(NArrayElement *arrayelt) {
+    auto index = arrayelt->expression->accept(*this);
+    if (index->type == INTEGER){
+        auto name = *(arrayelt->name->name);
+        auto somevalue = create_type();
+        somevalue->type = INTEGER;
+        somevalue->intVal = 0;
+        for (auto& x : scopes)
+            if ( (*x).count(name) != 0){
+                auto result = (*x)[name];
+                auto check = result->arrayVal->find(index->intVal);
+                if (check != result->arrayVal->end()) {
+                    return check->second;
+                }
+                result->arrayVal->insert({index->intVal, somevalue});
+                return result->arrayVal->at(index->intVal);
+            }
+            else{
+                if (DEBUG) cout << "Not found in this scope; " << x->size() << " ;trying outer one...\n";
+            }
 
+        cout << "\nSEMANTIC? ERROR:\n\tIDENTIFIER " << name << " IS NOT PRESENT IN THE SYMBOL TABLE!\n";
+        exit(228);
+    } else
+    {
+        cout << "Array Indices can only be integer values\n";
+    }
+    
+    return nullptr;
+}
+
+complex_t *Evaluate::visit(NTupleElementIndex *tuplelit) {
+    auto name = *(tuplelit->name->name);
+    auto index = atoi(tuplelit->index->c_str());
+    for (auto& x : scopes)
+        if ( (*x).count(name) != 0){
+            auto result = (*x)[name];
+            if (result->tupleVal->size() > index){
+                auto value = result->tupleVal->at(index-1);
+                return value.second;
+            } else {
+                cout << "INDEX NOT ACCESSIBLE\n";
+                exit(228);
+            }
+        }
+        else{
+            if (DEBUG) cout << "Not found in this scope; " << x->size() << " ;trying outer one...\n";
+        }
+
+    cout << "\nSEMANTIC? ERROR:\n\tIDENTIFIER " << name << " IS NOT PRESENT IN THE SYMBOL TABLE!\n";
+    cout << "Tuple members can be accessed only with integer values\n";
+    exit(228);
+
+    return nullptr;
+}
+complex_t *Evaluate::visit(NTupleElementName *tuplelit) {
+    auto name = *(tuplelit->name->name);
+    auto ident = *(tuplelit->id);
+    auto somevalue = create_type();
+    somevalue->type = INTEGER;
+    somevalue->intVal = 0;
+    for (auto& x : scopes)
+        if ( (*x).count(name) != 0){
+            auto result = (*x)[name];
+            int counter = 0;
+            for (auto i = result->tupleVal->begin(); i != result->tupleVal->end(); i++){
+                if (i->first.compare(ident) == 0) {
+                    return i->second;
+                }
+                counter++;
+            }
+            result->tupleVal->push_back({ident, somevalue});
+            return result->tupleVal->at(counter).second;
+        }
+        else{
+            if (DEBUG) cout << "Not found in this scope; " << x->size() << " ;trying outer one...\n";
+        }
+    cout << "SUCH A TUPLE MEMBER DOESN'T EXIST\n";
+    exit(228);
+    return nullptr;
+}
 complex_t *Evaluate::visit(NPrint *print){
 
     //TODO CHECK FOR EMPTY???
@@ -649,8 +726,8 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
         case BOOL:
             switch(right_t) {
                 case BOOL:
-                    {bool lval = left->intVal;
-                    bool rval = right->intVal;
+                    {bool lval = left->boolVal;
+                    bool rval = right->boolVal;
                     switch(optor) {
                         case AND: result->type = BOOL; result->boolVal = lval && rval; break;
                         case OR: result->type = BOOL; result->boolVal = lval || rval; break;
@@ -665,16 +742,26 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
             break;
         case ARRAY:
             switch(right_t) {
-                case ARRAY:
-                    break;
+                case ARRAY:{
+                    auto lval = left->arrayVal;
+                    auto rval = right->arrayVal;
+                    switch(optor) {
+                        case PLUS: result->type = ARRAY; result->arrayVal = add_arr_arr(lval, rval); break;
+                        default: cout << "OPERATION NOT IMPLEMENTED";
+                }} break;
                 default:
                     cout << "OPERATION NOT POSSIBLE";
             }
             break;
         case TUPLE:
             switch(right_t) {
-                case ARRAY:
-                    break;
+                case TUPLE:{
+                    auto lval = left->tupleVal;
+                    auto rval = right->tupleVal;
+                    switch(optor) {
+                        case PLUS: result->type = TUPLE; result->tupleVal = add_tup_tup(lval, rval); break;
+                        default: cout << "OPERATION NOT IMPLEMENTED";
+                }} break;
                 default:
                     cout << "OPERATION NOT POSSIBLE";
             }

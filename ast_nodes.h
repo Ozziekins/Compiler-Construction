@@ -1,25 +1,15 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <map>
+#include <list>
 
 using namespace std;
 
 // ADDED EMPTY AS -1
-typedef enum types { EMPTY = -1, INTEGER = 0, FLOAT, STRING, BOOL, ARRAY, TUPLE } type_t;
+typedef enum types { EMPTY = -1, INTEGER = 0, FLOAT, STRING, BOOL, ARRAY, TUPLE, FUNCTION } type_t;
 typedef enum Operators {PLUS = 1, MINUS, MULT, DIV, LESS, GREAT, LEQ, GEQ, EQUAL, NEQ, AND, OR, XOR, NOT } Operators;
 typedef struct complexTypes complex_t;
-
-struct complexTypes{
-    type_t type;
-    union {
-        int intVal;
-        float floatVal;
-        string *stringVAl;
-        bool boolVal;
-        vector<pair<int, complex_t*>> *arrayVal;
-        vector<pair<string, complex_t*>> *tupleVal;
-    };
-};
 
 class Node;
 class NProgram;
@@ -30,6 +20,9 @@ class NBlock;
 
 class NDeclaration;
 class NArray;
+class NArrayElement;
+class NTupleElementName;
+class NTupleElementIndex;
 class NTuple;
 
 
@@ -60,6 +53,19 @@ class NReadIntInput;
 class NReadRealInput;
 class NReadStringInput;
 
+struct complexTypes{
+    type_t type;
+    union {
+        int intVal;
+        float floatVal;
+        string *stringVAl;
+        bool boolVal;
+        map<int, complex_t*> *arrayVal;
+        vector<pair<string, complex_t*>> *tupleVal;
+        NFunctionDefinition* function;
+    };
+};
+
 class Visitor
 {
 public:
@@ -68,6 +74,9 @@ public:
     virtual complex_t *visit(NDeclaration *) = 0;
 
     virtual complex_t *visit(NArray *) = 0;
+    virtual complex_t *visit(NArrayElement *) = 0;
+    virtual complex_t *visit(NTupleElementName *) = 0;
+    virtual complex_t *visit(NTupleElementIndex *) = 0;
     virtual complex_t *visit(NTuple *) = 0;
     virtual complex_t *visit(NStatement *) = 0;
     virtual complex_t *visit(NAssignment *) = 0;
@@ -76,7 +85,7 @@ public:
     virtual complex_t *visit(NFunctionDefinition *) = 0;
     virtual complex_t *visit(NFunctionCall *) = 0;
     virtual complex_t *visit(NExpressions *) = 0;
-    virtual complex_t *visit(NParameters *) = 0;
+    virtual complex_t *visit(NParameters *, NExpressions *) = 0;
     virtual complex_t *visit(NIf *) = 0;
     virtual complex_t *visit(NIfElse *) = 0;
     virtual complex_t *visit(NLoop *) = 0;
@@ -160,9 +169,44 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    // string type = string("EMPTY");
     string *name;
     NIdentifier(string *name);
+    complex_t *accept(Visitor &);
+};
+
+class NArrayElement : public NExpression {
+private:
+    friend class Evaluate; 
+    friend class Traverse;
+public:
+    NIdentifier *name;
+    NExpression *expression;
+    NArrayElement(NIdentifier *name, NExpression *expression) : 
+    name(name), expression(expression) {}
+    complex_t *accept(Visitor &);
+};
+
+class NTupleElementIndex : public NExpression {
+private:
+    friend class Evaluate; 
+    friend class Traverse;
+public:
+    NIdentifier *name;
+    string *index;
+    NTupleElementIndex(NIdentifier *name, string *index) : 
+    name(name), index(index) {}
+    complex_t *accept(Visitor &);
+};
+
+class NTupleElementName : public NExpression {
+private:
+    friend class Evaluate; 
+    friend class Traverse;
+public:
+    NIdentifier *name;
+    string *id;
+    NTupleElementName(NIdentifier *name, string *id) : 
+    name(name), id(id) {}
     complex_t *accept(Visitor &);
 };
 
@@ -238,7 +282,7 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    vector<pair<string *, NExpression *expression>> list_pairs;
+    list<pair<string *, NExpression *>> list_pairs;
     void push_assignment(NExpression *expression);
     void push_assignment(string *, NExpression *expression);
     complex_t *accept(Visitor &);
@@ -263,6 +307,8 @@ public:
     vector<NExpression *> expressions;
     void push_argument(NExpression * argument);
     complex_t *accept(Visitor &);
+    NExpressions(){}
+    NExpressions(vector<NExpression *> expressions): expressions(expressions) {}
 };
 
 
@@ -285,9 +331,9 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    vector<NExpression *> arguments;
+    NExpressions * arguments;
     NIdentifier *id;
-    NFunctionCall(NIdentifier *id, vector<NExpression *> arguments) : id(id), 
+    NFunctionCall(NIdentifier *id, NExpressions * arguments) : id(id), 
     arguments(arguments) {}
     complex_t *accept(Visitor &);
 };
@@ -299,7 +345,7 @@ private:
 public:
     vector<NIdentifier *> arguments;
     void push_parameter(NIdentifier * argument);
-    complex_t *accept(Visitor &);
+    complex_t *accept(Visitor &, NExpressions*);
 };
 
 //Done
@@ -382,9 +428,9 @@ private:
     friend class Evaluate; 
     friend class Traverse;
 public:
-    NTAssignments *pair;
-    void push_assignment(NExpression *, NExpressions *);
-    void push_assignment(NExpression *);
+    NTAssignments *pairs = nullptr;
+    NTuple() {}
+    NTuple(NTAssignments *pairs) : pairs(pairs) {}
     complex_t *accept(Visitor &);
 };
 

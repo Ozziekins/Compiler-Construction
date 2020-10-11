@@ -156,10 +156,10 @@ Unary : Primary                                 { $$ = $1; }
       | TOKEN_NOT Primary TOKEN_IS TypeIndicator            { $$ = new NTypeCheck(NOT, $2, $4); }
       | Primary TOKEN_IS TypeIndicator                      { $$ = new NTypeCheck($1, $3); }
       ;
-Primary : TOKEN_IDENTIFIER                                              { $$ = new NIdentifier($1); }
-        | TOKEN_IDENTIFIER TOKEN_DOT TOKEN_INT_LITERAL                  //{ $$ = new NTupleElementIndex(new NIdentifier($1), $3); }
-        | TOKEN_IDENTIFIER TOKEN_DOT TOKEN_IDENTIFIER                   //{ $$ = new NTupleElementName(new NIdentifier($1), $3); }
-        | TOKEN_IDENTIFIER TOKEN_LSQUARE Expression TOKEN_RSQUARE       //{ $$ = new NArrayElement(new NIdentifier($1), $3); }
+Primary : TOKEN_IDENTIFIER                                                { $$ = new NIdentifier($1); }
+        | TOKEN_IDENTIFIER TOKEN_DOT TOKEN_INT_LITERAL                    { $$ = new NTupleElementIndex(new NIdentifier($1), $3); }
+        | TOKEN_IDENTIFIER TOKEN_DOT TOKEN_IDENTIFIER                     { $$ = new NTupleElementName(new NIdentifier($1), $3); }
+        | TOKEN_IDENTIFIER TOKEN_LSQUARE Expression TOKEN_RSQUARE         { $$ = new NArrayElement(new NIdentifier($1), $3); }
         | TOKEN_IDENTIFIER TOKEN_LPAREN Expressions TOKEN_RPAREN          { $$ = new NFunctionCall(new NIdentifier($1), $3); }
         | TOKEN_IDENTIFIER TOKEN_LPAREN TOKEN_RPAREN                      { $$ = new NFunctionCall(new NIdentifier($1), new NExpressions() ); }
         ;

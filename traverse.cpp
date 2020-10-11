@@ -26,6 +26,21 @@ complex_t *Traverse::visit(NArray *){
     return nullptr;
 }
 
+complex_t *Traverse::visit(NArrayElement *) {
+    cout << "NArrayElement" << endl;
+    return nullptr;
+}
+
+complex_t *Traverse::visit(NTupleElementIndex *) {
+    cout << "NTupleElementIndex" << endl;
+    return nullptr;
+}
+
+complex_t *Traverse::visit(NTupleElementName *) {
+    cout << "NTupleElementName" << endl;
+    return nullptr;
+}
+
 complex_t *Traverse::visit(NTuple *){
     cout << "NTuple" << endl;
     return nullptr;

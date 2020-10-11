@@ -7,7 +7,7 @@ case FLOAT:   THING(complex->floatVal); break;\
 case STRING:  THING(*(complex->stringVAl)); break;\
 case BOOL:    THING(complex->boolVal); break;\
 case FUNCTION: THING( complex->function ); break;\
-case ARRAY: THING( *complex->arrayVal ); break;\
+case ARRAY: cout << "\nArray :- \n"; break;\
 case TUPLE: cout << "\nTUPLE :- not implemented??\n";  exit(228);break;\
 case EMPTY: cout << "\nEMPTY :- not implemented??\n";  exit(228);break;\
 default: cout << "\nOTHER :- not implemented??\n";\
@@ -21,6 +21,13 @@ case BOOL:    THING(complex->boolVal); break;\
 default: cout << "\nOTHER :- not implemented??\n";\
 }\
 
+string map_string(map<int , complex_t *> imap) {
+    string str;
+    for (auto item : imap){
+        str += to_string(item.first) + " : " + to_string(item.second->type) + "_";
+    }
+    return str;
+}
 
 string type_name(complex_t complex){
     switch( complex.type ){
@@ -79,8 +86,13 @@ complex_t * NTAssignments::accept(Visitor &v) {
     return v.visit(this);
 }
 
-void push_assignment(NExpression *expression);
-void push_assignment(string *, NExpression *expression);
+void NTAssignments::push_assignment(NExpression *expression) {
+    this->list_pairs.push_front({new string("undefined"), expression});
+}
+
+void NTAssignments::push_assignment(string *id, NExpression *expression) {
+    this->list_pairs.push_front({id, expression});
+}
 
 //Print
 complex_t * NPrint::accept(Visitor &v) {
@@ -274,6 +286,21 @@ complex_t * NTypeCheck::accept(Visitor &v) {
 
 //Array
 complex_t * NArray::accept(Visitor &v) {
+    return v.visit(this);
+}
+
+//NArrayElement
+complex_t *NArrayElement::accept(Visitor &v) {
+    return v.visit(this);
+}
+
+//NTupleElementIndex
+complex_t *NTupleElementIndex::accept(Visitor &v) {
+    return v.visit(this);
+}
+
+//NTupleElementName
+complex_t *NTupleElementName::accept(Visitor &v) {
     return v.visit(this);
 }
 
