@@ -7,7 +7,7 @@ bool DEBUG = false;
 map<int, complex_t*> *add_arr_arr(map<int, complex_t*> *lval, map<int, complex_t*> *rval) {
     auto size = lval->size();
     int counter = 1;
-    for( auto i : *rval) {
+    for( auto i : (map<int, complex_t*>) *rval) {
         lval->insert({size + counter, i.second});
         counter++;
     }
@@ -45,6 +45,8 @@ void Evaluate::print_symbol_table() {
                 else if (!string(type_name(*x.second)).compare("EMPTY"))
                     cout << "| " << x.first << "= " << *(x.second->stringVAl) << endl << "| " << endl;
                 else if (!string(type_name(*x.second)).compare("TUPLE"))
+                    cout << "| " << x.first << endl << "| " << endl;
+                else if (!string(type_name(*x.second)).compare("ARRAY"))
                     cout << "| " << x.first << endl << "| " << endl;
                 else cout << "\n STRANGE TYPE ENCOUTERED !!!! \n";
                 //TODO ADD OTHER ONES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -142,7 +144,7 @@ complex_t *Evaluate::visit(NAssignment *assignmnt){
 
     #define THING(x) cout << x;
     if (DEBUG){
-        cout << "Parsed NAssignment and changed newvar from {";
+        cout << "Parsed NAssignment and changed variable from {";
         DO_THING(var, THING);
         cout << "} to {";
         DO_THING(newvar, THING);
@@ -185,7 +187,8 @@ complex_t *Evaluate::visit(NArrayElement *arrayelt) {
         exit(228);
     } else
     {
-        cout << "Array Indices can only be integer values\n";
+        cout << "\nSEMANTIC? ERROR:\n\tArray Indices can only be integer values\n";
+        exit(228);
     }
     
     return nullptr;
@@ -194,19 +197,21 @@ complex_t *Evaluate::visit(NArrayElement *arrayelt) {
 complex_t *Evaluate::visit(NTupleElementIndex *tuplelit) {
     auto name = *(tuplelit->name->name);
     auto index = atoi(tuplelit->index->c_str());
+    //cout << "INDEX IS "<< index << endl;
+    //cout << "NAME IS "<< name << endl;
     for (auto& x : scopes)
         if ( (*x).count(name) != 0){
             auto result = (*x)[name];
-            if (result->tupleVal->size() > index){
+            if (result->tupleVal->size() >= index){
                 auto value = result->tupleVal->at(index-1);
                 return value.second;
             } else {
-                cout << "INDEX NOT ACCESSIBLE\n";
+                cout << "\nSEMANTIC? ERROR:\n\tTUPLE INDEX NOT ACCESSIBLE\n";
                 exit(228);
             }
         }
         else{
-            if (DEBUG) cout << "Not found in this scope; " << x->size() << " ;trying outer one...\n";
+            if (DEBUG) cout << "[TUPLE]Not found in this scope; " << x->size() << " ;trying outer one...\n";
         }
 
     cout << "\nSEMANTIC? ERROR:\n\tIDENTIFIER " << name << " IS NOT PRESENT IN THE SYMBOL TABLE!\n";
@@ -232,6 +237,7 @@ complex_t *Evaluate::visit(NTupleElementName *tuplelit) {
                 counter++;
             }
             result->tupleVal->push_back({ident, somevalue});
+            //result->type = TUPLE;
             return result->tupleVal->at(counter).second;
         }
         else{
@@ -253,9 +259,21 @@ complex_t *Evaluate::visit(NPrint *print){
     if ((int)print->expressions->expressions.size() > 0){
         #define THING(x) cout << x;
         
-        for(int i = 0; i < (int)print->expressions->expressions.size(); i++)
-            DO_THING(print->expressions->expressions[i]->accept(*this),THING)
-
+        for(int i = 0; i < (int)print->expressions->expressions.size(); i++){
+            auto exp = print->expressions->expressions[i]->accept(*this);
+            if ( exp->type == ARRAY ){
+                    int counter = 0;
+                    for( auto i : *(exp->arrayVal) ) {
+                        cout << i.first;
+                        if ( counter != ( exp->arrayVal->size() - 1) )
+                            cout << ", ";
+                        counter++;
+                    }
+            }
+            else{
+                DO_THING(exp,THING)
+            }
+        }
         cout << endl;
         #undef  THING
     }

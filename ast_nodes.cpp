@@ -7,8 +7,8 @@ case FLOAT:   THING(complex->floatVal); break;\
 case STRING:  THING(*(complex->stringVAl)); break;\
 case BOOL:    THING(complex->boolVal); break;\
 case FUNCTION: THING( complex->function ); break;\
-case ARRAY: cout << "\nArray :- \n"; break;\
-case TUPLE: cout << "\nTUPLE :- not implemented??\n";  exit(228);break;\
+case ARRAY: cout << "\nTHIS THING REGARDING ARRAYS SHOULD NOT BE DISPLAYED :- \n"; break;\
+case TUPLE: THING( complex->tupleVal );break;\
 case EMPTY: cout << "\nEMPTY :- not implemented??\n";  exit(228);break;\
 default: cout << "\nOTHER :- not implemented??\n";\
 }\

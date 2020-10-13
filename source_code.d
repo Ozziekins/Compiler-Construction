@@ -1,11 +1,16 @@
-var factorial := func(n) is 
-    if n = 0 then		// Brackets are omitted intentionally
-    	return 1;
-    else
-        return n * factorial(n - 1);
-    end
-end;
+var testArray := [1];
+var weirdStruct := {testArray};
 
-var lambdafunc := func(x)=> x/1.4;
+var test := 1;
+weirdStruct := weirdStruct + {test} ;// Now it should be like this { Array, Array size }
 
-print  lambdafunc( factorial(4) ), " The output should be 24/1.4 ~= 17,142";
+var i := (5-4);
+while ( i < 10/2 ) loop //Will go from 1 to 4 (5 not included) 
+     weirdStruct.1 := weirdStruct.1 + weirdStruct.1;
+     weirdStruct.2 := weirdStruct.2 + 1;
+     
+     i := i + 1;
+end 
+     
+print "Array is ", weirdStruct.1, " While size is ", weirdStruct.2; // Allow printing of arrays??? 
+     
