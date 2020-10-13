@@ -146,7 +146,10 @@ print mult; //540
 
 ## SNIPPET 7: Arithmetic operations & Dynamic Type conversion
 ```javascript
-var inumber1 := 10, inumber2 := 2, rnumber1 := 2.4, rnumber2 := 0.1;
+var inumber1 := 10;
+var inumber2 := 2;
+var rnumber1 := 2.4;
+var rnumber2 := 0.1;
 var result;
 
 result := inumber1 + rnumber2;
