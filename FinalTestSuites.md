@@ -204,12 +204,11 @@ end;
 ## SNIPPET 10: array operations and loops
 
 ```javascript
-var temp := [0, 0, 0]
+var temp := [0, 0, 0];
 var new := []; // empty array declaration 
-var array := temp + new 
+var array := temp + new;
 print ("Array before insertion : ");
-for i in array
-    loop
+for i in array loop
         print i;
     end 
   
