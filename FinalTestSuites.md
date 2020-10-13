@@ -260,12 +260,8 @@ print "This car is a ", carDescription.color, " ", carDescription.1, " ",
 var arrayRandom := [];
 arrayRandom[2] := 20;
 arrayRandom[4] := func (x, y) => x * y;
-arrayRandom[6] := {x:=15, y:= 17};
-arrayRandom[8] := ["Monday", "Friday"];
 
-print arrayRandom[4](5,4);     //20
-print arrayRandom[6].x;      //15
-print arrayRandom[8][1];     //Monday
+print arrayRandom[2];     //20
 ```
 
 
@@ -276,8 +272,9 @@ print arrayRandom[8][1];     //Monday
 var something := 1;
 something := func(x) is
    return x + 1;
-end
-print something(5); //6
+end;
+var answer :=  something(5);
+print answer; //6
 ```
 
 
@@ -295,22 +292,23 @@ c := func (x, y, z) is
     count := count + 1;
     end
     return count;
- end
- print c(10, 5, 7);
+ end;
+ print c(10, 5, 7); //9
 ```
 
 ## SNIPPET 15: (summation of the first N numbers)
 ```javascript
 var summation := func (N) is
-	var counter := 1, result := 0
+	var counter := 1;
+	var result := 0;
 	while counter <= N loop
-		result := result + counter
-		counter := counter + 1
-	end
-return result
-end 
-
-print summation(5);			//15
+		result := result + counter;
+		counter := counter + 1;
+		end
+return result;
+end;
+ 
+print summation(5); //15
 ```
 
 
@@ -322,7 +320,7 @@ var factorial := func(n) is
     	return 1;
     else
         return n * factorial(n - 1);
-    end;
+    end
 end;
 var lambdafunc := func(x)=> x/1.4;
 
