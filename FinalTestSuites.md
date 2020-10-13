@@ -58,21 +58,23 @@ print "if " , a , " then not " , b , " but " + " if " , c , " then " , d;
 var uninitialized;
 
 //Should not print
-if (not ( uninitialized is empty ) ) then
+var proverka := uninitialized is empty;
+if not proverka then
 	print "Well, this is wrong.... \n It should be empty";
-end;
+end
   
 //Should not print too
 uninitialized := true;
-if ( uninitialized is not bool ) then
+var proverka2 := uninitialized is bool;
+if not proverka2 then
 	print "Well, this is wrong as well.... \n It should be bool";
-end;
+end
 
 // This one should print 
-uninitialized := "Everything is good?"
+uninitialized := "Everything is good?";
 if ( uninitialized is string ) then
 	print uninitialized;
-end;
+end
 ````
 
 
