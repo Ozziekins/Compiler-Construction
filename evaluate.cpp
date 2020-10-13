@@ -659,8 +659,7 @@ complex_t *evaluate_expression(complex_t * left, Operators optor, complex_t *rig
     complex_t* result = create_type();
     switch(left_t) {
         case EMPTY:
-            cout << "No possible operations with EMPTY types\n";
-            break;
+            cout << "\nSEMANTIC? ERROR:\n\tNo possible operations with EMPTY types\n"; exit(228); break;
         case INTEGER:
             switch(right_t) {
                 case INTEGER:

@@ -1,16 +1,26 @@
-var testArray := [1];
-var weirdStruct := {testArray};
+var this := 7;
+var that := 17.9;
+var those := "anything";
+var e;
 
-var test := 1;
-weirdStruct := weirdStruct + {test} ;// Now it should be like this { Array, Array size }
+var r := this is int;    //TRUE
+var s := that is real;      //TRUE
+var t := those is string;  //TRUE
+var u := e is empty;        //TRUE
 
-var i := (5-4);
-while ( i < 10/2 ) loop //Will go from 1 to 4 (5 not included) 
-     weirdStruct.1 := weirdStruct.1 + weirdStruct.1;
-     weirdStruct.2 := weirdStruct.2 + 1;
-     
-     i := i + 1;
-end 
-     
-print "Array is ", weirdStruct.1, " While size is ", weirdStruct.2; // Allow printing of arrays??? 
-     
+var sas;
+var syas ;
+
+print sas + syas;	//ERROR
+
+print r;
+print s;
+print t;
+print u;
+
+var a := true and true;
+var b := not true;
+var c := false xor false;
+var d := true or true;
+
+print "if " , a , " then not " , b , " but " + " if " , c , " then " , d;
