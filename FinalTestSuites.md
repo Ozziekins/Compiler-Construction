@@ -58,21 +58,23 @@ print "if " , a , " then not " , b , " but " + " if " , c , " then " , d;
 var uninitialized;
 
 //Should not print
-if (not ( uninitialized is empty ) ) then
+var proverka := uninitialized is empty;
+if not proverka then
 	print "Well, this is wrong.... \n It should be empty";
-end;
+end
   
 //Should not print too
 uninitialized := true;
-if ( uninitialized is not bool ) then
+var proverka2 := uninitialized is bool;
+if not proverka2 then
 	print "Well, this is wrong as well.... \n It should be bool";
-end;
+end
 
 // This one should print 
-uninitialized := "Everything is good?"
+uninitialized := "Everything is good?";
 if ( uninitialized is string ) then
 	print uninitialized;
-end;
+end
 ````
 
 
@@ -129,13 +131,12 @@ print isPi, isNotPi;        //false true
 var x := 15; 
 var y := 36; 
 
+print "The max var from x and y is "; // 36 
 if x > y then 
     print x; 
 else 
     print y; 
 end 
-
-print "The max var from x and y is "; // 36 
 
 var mult := x * y; 
 
@@ -145,7 +146,10 @@ print mult; //540
 
 ## SNIPPET 7: Arithmetic operations & Dynamic Type conversion
 ```javascript
-var inumber1 := 10, inumber2 := 2, rnumber1 := 2.4, rnumber2 := 0.1;
+var inumber1 := 10;
+var inumber2 := 2;
+var rnumber1 := 2.4;
+var rnumber2 := 0.1;
 var result;
 
 result := inumber1 + rnumber2;
@@ -173,13 +177,15 @@ var weirdStruct := {testArray};
 var test := 1;
 weirdStruct := weirdStruct + {test} ;// Now it should be like this { Array, Array size }
 
-var i = (5-4);
+var i := (5-4);
 while ( i < 10/2 ) loop //Will go from 1 to 4 (5 not included) 
      test.1 := test.1 + test.1;
      test.2 := test.2 + 1;
      
-     i += 1;
-end; 
+     i := i + 1;
+end 
+     
+print "Array is", test.1, "While size is ", test.2; // Allow printing of arrays??? 
      
 print "Array is", test.1, "While size is ", test.2; // Allow printing of arrays???
 ````
@@ -198,12 +204,11 @@ end;
 ## SNIPPET 10: array operations and loops
 
 ```javascript
-var temp := [0, 0, 0]
+var temp := [0, 0, 0];
 var new := []; // empty array declaration 
-var array := temp + new 
+var array := temp + new;
 print ("Array before insertion : ");
-for i in array
-    loop
+for i in array loop
         print i;
     end 
   
@@ -255,12 +260,8 @@ print "This car is a ", carDescription.color, " ", carDescription.1, " ",
 var arrayRandom := [];
 arrayRandom[2] := 20;
 arrayRandom[4] := func (x, y) => x * y;
-arrayRandom[6] := {x:=15, y:= 17};
-arrayRandom[8] := ["Monday", "Friday"];
 
-print arrayRandom[4](5,4);     //20
-print arrayRandom[6].x;      //15
-print arrayRandom[8][1];     //Monday
+print arrayRandom[2];     //20
 ```
 
 
@@ -271,8 +272,9 @@ print arrayRandom[8][1];     //Monday
 var something := 1;
 something := func(x) is
    return x + 1;
-end
-print something(5); //6
+end;
+var answer :=  something(5);
+print answer; //6
 ```
 
 
@@ -290,22 +292,23 @@ c := func (x, y, z) is
     count := count + 1;
     end
     return count;
- end
- print c(10, 5, 7);
+ end;
+ print c(10, 5, 7); //9
 ```
 
 ## SNIPPET 15: (summation of the first N numbers)
 ```javascript
 var summation := func (N) is
-	var counter := 1, result := 0
+	var counter := 1;
+	var result := 0;
 	while counter <= N loop
-		result := result + counter
-		counter := counter + 1
-	end
-return result
-end 
-
-print summation(5);			//15
+		result := result + counter;
+		counter := counter + 1;
+		end
+return result;
+end;
+ 
+print summation(5); //15
 ```
 
 
@@ -317,7 +320,7 @@ var factorial := func(n) is
     	return 1;
     else
         return n * factorial(n - 1);
-    end;
+    end
 end;
 var lambdafunc := func(x)=> x/1.4;
 
