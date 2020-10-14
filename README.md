@@ -19,3 +19,4 @@ To track the progress of our CC course project
 **Step 4:** edit the source_code.d according to D language  
 **Step 5:** bison -v grammar.yy (make sure to have bison version 3 and above)  
 **Step 6:** make
+**Step 6:** make
