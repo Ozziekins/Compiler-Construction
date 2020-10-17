@@ -56,16 +56,26 @@ Token Lexer::readLiteral() {
 
     //Reading numbers
     if (isdigit(currentChar)) {
+        bool dot_encountered = false;
 
         while (isdigit(currentChar) || //TODO check in fthis line can cause segfaults!!!!!!!!!!!!!!!!!!!!!!!!!
-                ( currentChar == '.' && isdigit(contents[currentIndex + 1]) && isdigit(contents[currentIndex - 1]) ) ) {
+                ( currentChar == '.' && isdigit(contents[currentIndex + 1])
+                && isdigit(contents[currentIndex - 1]) && !dot_encountered) ) {
+
+            if (currentChar == '.')
+                dot_encountered = true;
+
             tokenValue += currentChar;
             advance();
         }
 
-        finalToken = Token(Token::TOKEN_LITERAL, tokenValue, currentLine, currentPosOnLine - 1); //TODO check -1
-    }
 
+
+        if (dot_encountered)
+            finalToken = Token(Token::TOKEN_REAL_LITERAL, tokenValue, currentLine, currentPosOnLine - tokenValue.length());
+        else
+            finalToken = Token(Token::TOKEN_INT_LITERAL, tokenValue, currentLine, currentPosOnLine - tokenValue.length()); //TODO check -1
+    }
     //For actual strings
     else {
         //Skipping the current "
@@ -79,7 +89,7 @@ Token Lexer::readLiteral() {
         tokenValue = contents.substr(currentIndex, stringLength);
 
         //Saving result now; so that we won't have problems because of moving forward in the source code
-        finalToken = Token(Token::TOKEN_LITERAL, tokenValue, currentLine, currentPosOnLine - 1);
+        finalToken = Token(Token::TOKEN_STRING_LITERAL, tokenValue, currentLine, currentPosOnLine - 1);
 
         //Move to the end of the string; after semicolon
         this->currentIndex = quotePosition + 1;
@@ -92,19 +102,18 @@ Token Lexer::readLiteral() {
 }
 
 Token Lexer::readIdentifier() {
-    std::string identifierName;
+    std::string unknownTokenValue;
 
     while (isalnum(currentChar)) {
-        identifierName += currentChar;
+        unknownTokenValue += currentChar;
         advance();
     }
 
-    if (std::find(keywords.begin(), keywords.end(), identifierName) != keywords.end())
-        return Token(Token::TOKEN_KEYWORD, identifierName, currentLine, currentPosOnLine - identifierName.length());
-    else if (std::find(operators.begin(), operators.end(), identifierName) != operators.end())
-        return Token(Token::TOKEN_OPERATOR, identifierName, currentLine, currentPosOnLine - identifierName.length());
+    if (specialCharMappings.count(std::string() + unknownTokenValue) != 0) {
+        return Token(specialCharMappings[std::string()+unknownTokenValue], unknownTokenValue, currentLine, currentPosOnLine - unknownTokenValue.length());
+    }
     else
-        return Token(Token::TOKEN_IDENTIFIER, identifierName, currentLine, currentPosOnLine - identifierName.length());
+        return Token(Token::TOKEN_IDENTIFIER, unknownTokenValue, currentLine, currentPosOnLine - unknownTokenValue.length());
 }
 
 //For tokens other than Identifiers and Strings
@@ -124,29 +133,25 @@ Token Lexer::readUntilTokenDetected() {
 
     std::string unknownTokenValue;
 
-    //TODO Does the line really not change???
+
     unsigned int tokenStart = currentPosOnLine;
 
-    //Special case for single characters with identifiers
-    if (specialCharMappings.count(currentChar) != 0) {
-        return Token(specialCharMappings[currentChar], std::string() + currentChar, currentLine, currentPosOnLine);
-    }
-
     //Going until its end if it is not a single char
-    while (currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 &&
-           !isalnum(currentChar)) {
+    while (currentChar != ' ' && currentChar != '\n' && currentChar != 0 && currentChar != 32 && !isalnum(currentChar)) {
+
         unknownTokenValue += currentChar; //Concatenate
         //This is to complete reading some tokens without implementing going back
         if (contents[currentIndex + 1] == ' ' || contents[currentIndex + 1] == '\n' ||
-            contents[currentIndex + 1] == '\0' || isalnum(contents[currentIndex + 1]))
+            contents[currentIndex + 1] == '\0' || isalnum(contents[currentIndex + 1]) || contents[currentIndex + 1] == ';')
             break;
         else
             advance();
     }
 
-    //Check for operators
-    if (std::find(operators.begin(), operators.end(), unknownTokenValue) != operators.end())
-        return Token(Token::TOKEN_OPERATOR, unknownTokenValue, currentLine, tokenStart);
+    //Special case for single characters with identifiers
+    if (specialCharMappings.count(std::string() + unknownTokenValue) != 0) {
+        return Token(specialCharMappings[std::string()+unknownTokenValue], unknownTokenValue, currentLine, tokenStart);
+    }
     else {
         std::cout << "\n\n READ A STRANGE THING \n \n";
         return Token(Token::TOKEN_UNKNOWN, unknownTokenValue, currentLine, tokenStart);

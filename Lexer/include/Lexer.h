@@ -41,25 +41,57 @@ public:
     }
     Token getNextToken();
 
-    //Mappings of tokens
-    std::vector<std::string> keywords = {"for", "in", "loop", "while",
-                                         "if","then", "else",
-                                         "var", "is", "func",
-                                         "true", "false",
-                                         "end", "return",
-                                         "print","readInt", "readReal","readString",
-                                         "bool","int","real","string","empty" };
-
-    std::vector<std::string> operators = {"+","-","/","*",">","<","=",".","<=",">=","/=",":=","+=","=>", "not", "and", "or", "xor"};
-    std::map<char,Token::typeEnum> specialCharMappings ={
-            {';', Token::TOKEN_SEMI},
-            {'(', Token::TOKEN_LPAREN},
-            {')', Token::TOKEN_RPAREN},
-            {'[', Token::TOKEN_LSQUARE},
-            {']', Token::TOKEN_RSQUARE},
-            {'{', Token::TOKEN_LCURLY},
-            {'}', Token::TOKEN_RCURLY},
-            {',', Token::TOKEN_COMMA}
+private:
+    std::map<std::string ,Token::typeEnum> specialCharMappings ={
+            {";", Token::TOKEN_SEMI},
+            {"(", Token::TOKEN_LPAREN},
+            {")", Token::TOKEN_RPAREN},
+            {"[", Token::TOKEN_LSQUARE},
+            {"]", Token::TOKEN_RSQUARE},
+            {"{", Token::TOKEN_LCURLY},
+            {"}", Token::TOKEN_RCURLY},
+            {",", Token::TOKEN_COMMA},
+            {":=",Token::TOKEN_ASSIGNMENT},
+            {"=>",Token::TOKEN_FUNCTOR},
+            {"func",Token::TOKEN_FUNC},
+            {"end",Token::TOKEN_END},
+            {"if",Token::TOKEN_IF},
+            {"then",Token::TOKEN_THEN},
+            {"else",Token::TOKEN_ELSE},
+            {"print",Token::TOKEN_PRINT},
+            {"return",Token::TOKEN_RETURN},
+            {"loop",Token::TOKEN_LOOP},
+            {"var",Token::TOKEN_VAR},
+            {"while",Token::TOKEN_WHILE},
+            {"for",Token::TOKEN_FOR},
+            {"in",Token::TOKEN_IN},
+            {"and",Token::TOKEN_AND},
+            {"or",Token::TOKEN_OR},
+            {"xor",Token::TOKEN_XOR},
+            {"not",Token::TOKEN_NOT},
+            {"empty",Token::TOKEN_EMPTY},
+            {"int",Token::TOKEN_INT},
+            {"real",Token::TOKEN_REAL},
+            {"bool",Token::TOKEN_BOOL},
+            {"string",Token::TOKEN_STRING},
+            {"true",Token::TOKEN_TRUE},
+            {"false",Token::TOKEN_FALSE},
+            {"is",Token::TOKEN_IS},
+            {".",Token::TOKEN_DOT},
+            {"+",Token::TOKEN_PLUS},
+            {"-",Token::TOKEN_MINUS},
+            {"*",Token::TOKEN_MULT},
+            {"/",Token::TOKEN_DIV},
+            {"=",Token::TOKEN_EQUAL},
+            {"/=",Token::TOKEN_NEQ},
+            {"<",Token::TOKEN_LESS},
+            {"<=",Token::TOKEN_LEQ},
+            {">",Token::TOKEN_GREAT},
+            {"=>",Token::TOKEN_GEQ},
+            {"+=",Token::TOKEN_INCREMENT},
+            {"readString",Token::TOKEN_READSTRING},
+            {"readReal",Token::TOKEN_READINT},
+            {"readInt",Token::TOKEN_READREAL}
     };
 };
 
